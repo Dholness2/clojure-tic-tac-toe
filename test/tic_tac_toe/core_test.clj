@@ -1,14 +1,20 @@
 (ns tic-tac-toe.core-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.core :refer :all]))
-(def board ["_" "_" "_" "_" "_" "_" "_" "_" "_"])
+(def board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]])
+(def rowsize 3)
+
+(deftest board-create
+	(testing "Create new board based on user input"
+		(is ( =  [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] ( create-empty-board )))))
 
 (deftest board-move
-	(testing "Create new board based on user input"
-		(is ( =  ["_" "_" "_" "_" "_" "_" "_" "_" "_"] ( create-empty-board )))))
+	(testing "creates a new vector with updated representation of the board"
+	  (is ( = [["x" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (move [0 0] "x" board)))))
+
 (deftest valid-move-zer0
  (testing "test to mke sure user input is within game move option[0-8]")
- 	(is (= true (validmove? 0))))
+ 	(is (= false (validmove? 0))))
 
 (deftest valid-move-one
  (testing "test to mke sure user input is within game move option[0-8]")
@@ -42,6 +48,10 @@
  (testing "test to mke sure user input is within game move option[0-8]")
  	(is (= true (validmove? 8))))
 
+(deftest valid-move-eight
+ (testing "test to mke sure user input is within game move option[0-8]")
+ 	(is (= true (validmove? 9))))
+
 
 (deftest invalid-move-less-than-zero
  (testing "test to mke sure user input is within game move option[0-8]")
@@ -53,7 +63,7 @@
 
 (deftest get-move
   (testing "gets players move"
-	(is (= 4 (with-in-str "4"(user-input-move))))))
+	(is (= [1 0] (with-in-str "4"(user-input-move  rowsize))))))
 
 (deftest view-clear
 	(testing "clears terminal"
@@ -61,24 +71,24 @@
 
 (deftest view-show
 	(testing "dispays the board"
-	( is(= (println board)(display-board board 3 )))))
+	( is(= (println board)(display-board board )))))
 
 (deftest computer-next-move 
 	(testing "Computer next move"
-	(is (=  0 (computer-move board)))))
+	(is (=  [0 0] (computer-move board 3)))))
 
 (deftest board-draw 
 	(testing "game is a draw"
 	(is (=  true (draw? ["x" "y" "y" "x" "x" "Y" "Y" "x" "y" ])))))
 
 (deftest board-row-check 
-	(testing "game is a draw"
-	(is (=  "x" (row-check ["x" "x" "x" "y" "x" "Y" "Y" "x" "y" ] 3 )))))
+	(testing "check for winner from row"
+	(is (=  "x" (row-check ["x" "x" "x" "y" "x" "Y" "Y" "x" "y" ])))))
 
 
 (deftest board-colunm-check 
-	(testing "game is a draw"
-	(is (=  "x" (column-check ["y" "x" "x" "y" "x" "Y" "Y" "x" "y" ] 3 3 )))))
+	(testing "check for winner from column"
+	(is (=  "y" (column-check ["y" "x" "x" "y" "Y" "Y" "Y" "x" "y" ])))))
 
 
 

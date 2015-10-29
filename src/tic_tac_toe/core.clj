@@ -1,79 +1,86 @@
 (ns tic-tac-toe.core
   (:gen-class))
+(require 'clojure.core.matrix)
 
   (defn create-empty-board []
-	["_" "_" "_" "_" "_" "_" "_" "_" "_"])
+	[["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]])
    
-  (defn move 
-    [location player board]
-    (assoc board location player ))
+  (defn move [location player board]
+    (assoc-in board location player ))
 
   
-(defn validmove? [move]
-  	(if (and (<= move 8)(>=  move 0))
+  (defn validmove? [move]
+    (if (and (<= move 9)(>=  move 1))
       true 
-      false
-  	))
+      false))
 
-(defn user-input-move []
+  (defn matrix-convrt [move rowsize]
+  	[ (quot ( - move 1) rowsize) (mod (- move 1) rowsize ) ])
+
+
+  (defn user-input-move [ rowsize ]
     (println "what is your next move")
     (def input (read-string(read-line)))
     (if(= true (validmove? input))
-      input
+      (matrix-convrt input rowsize)
       (do (println "invalid selection") 
       	   (user-input-move))))
   
-  (defn computer-move [board]
-  	(.indexOf board "_"))
+  (defn computer-move [board rowsize]
+  	(matrix-convrt (+ 1(.indexOf (flatten board) "_")) rowsize))
 
-  (defn display-board [board w]
+  (defn display-board [board]
   	(if(= false (empty? board))
-  	  (let[ row (take w board)]
-        (println  (clojure.string/join row))
-		(display-board(drop w board)w))
+  	  (let[ row ((vec(take 1 board))0)]
+        (println (clojure.string/join row))
+		(display-board (drop 1 board)))
   	    ))
 
-
-  (defn row-check [board width]
-  	(let[ row (vec(take width board)) ]
+  (defn row-check [board]
+  	(let[ row (vec(take 1 board)) ]
       (if (or (= "_" (some #{"_"} row)) (>= (count(distinct row)) 2)) 
-                (row-check (drop width board) width)
+                (row-check (drop 1 board))
             	(row 0))))
 
- (defn column-check [board width columns]
-    (let 	
-  	[ col (vec(map (fn [index](get board index)) [(- width columns) (+ (- width columns) width) (+ (- width columns) (* width 2)) ]))]
-    (if (or (= "_" (some #{"_"} col)) (>= (count (distinct col)) 2))
-       (column-check board width (- columns 1))
-       (col 0))))
+ (defn column-check [board]
+   (row-check (clojure.core.matrix/transpose board)))
 
-
-  (defn  draw? [board]
+ (defn  draw? [board]
   	(if-not(= "_" (some #{"_"} board))
       true
       false))
 
+ 
+ (defn winnner? [board]
+ 	(if (= true (row-check board)) (println row-check board))
+ 	(if (= true (column-check board)) (println column-check board))
+ 	(if (= true (draw? board )) (println "its a draw")
+ 		nil))
 
-(defn clear-terminal[]
+
+
+ (defn clear-terminal[]
     (println "\033[2J"))
   
 
-  (defn game-runner 
+
+
+(defn game-runner 
  ([welcome]
    (println welcome)
    (def current-board (create-empty-board))
-   (display-board current-board 3)
-   	(def current-board (move (user-input-move) "X" current-board)) 
+   (display-board current-board )
+   	(def current-board (move (user-input-move 3) "X" current-board)) 
     (clear-terminal)
-    (display-board current-board 3)
+    (display-board current-board )
    (game-runner current-board "X"))
  ([board player]
-	(def current-board (move (computer-move board) "O" board))
+	(def current-board (move (computer-move board 3) "O" board))
     (clear-terminal)
-    (display-board current-board 3 )
-    (def current-board (move (user-input-move) player current-board))
+    (display-board current-board  )
+    (def current-board (move (user-input-move 3) player current-board))
     (clear-terminal)
-    (display-board current-board 3)
+    (display-board current-board )
     (game-runner current-board "X")))
 
 (defn -main []
