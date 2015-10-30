@@ -88,11 +88,24 @@
 
 (deftest board-colunm-check 
 	(testing "check for winner from column"
-	(is (=  "y" (column-check [["y" "x" "x"] ["y" "Y" "Y"] ["Y" "x" "y"] ])))))
+	(is (=  "y" (column-check [["y" "x" "x"] ["y" "Y" "Y"] ["y" "x" "y"]])))))
+
+
+(deftest determine-equality 
+  (testing "checks for matches"
+  (is (= true (check-equality ["x" "x" "x"] )))))
+
+(deftest get-nested-elements 
+  (testing "gets nested elements in board"
+  (is (= '("y" "y" "y")(get-location [["y" "x" "x"] ["y" "y" "Y"] ["Y" "x" "y"]] [0 1 2 ] )))))
+
+(deftest diagonal-checker 
+	(testing "checks for any diagonal wins"
+	(is (= "y" (diagonal-check [["y" "x" "_"]["x" "y" "x"]["x" "x" "y"]] 3)))))
 
 (deftest winner-test 
    (testing "check for win state or draw") 
-   (is (= "y" (winner? [["x" "x" "x"] ["y" "x" "Y"] ["x" "x" "y"] ])))
+   (is (=  "x" (winner? [["x" "x" "x"] ["y" "x" "Y"] ["x" "x" "y"] ])))
    )
 
 (deftest open-move
