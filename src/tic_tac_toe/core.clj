@@ -14,17 +14,22 @@
       true 
       false))
 
-  (defn matrix-convrt [move rowsize]
+  (defn movetaken? [board move]
+     (if(= "_" ((vec (flatten board)) (- move 1)))
+     	false
+     	true))
+
+ (defn matrix-convrt [move rowsize]
   	[ (quot ( - move 1) rowsize) (mod (- move 1) rowsize ) ])
+  
 
-
-  (defn user-input-move [ rowsize ]
+ (defn user-input-move [board rowsize ]
     (println "what is your next move")
     (def input (read-string(read-line)))
-    (if(= true (validmove? input))
+    (if(and (validmove? input) (= false movetaken?  board input))
       (matrix-convrt input rowsize)
       (do (println "invalid selection") 
-      	   (user-input-move))))
+      	   (user-input-move rowsize))))
   
   (defn computer-move [board rowsize]
   	(matrix-convrt (+ 1(.indexOf (flatten board) "_")) rowsize))
@@ -40,18 +45,18 @@
   	(let[ row (vec(take 1 board)) ]
       (if (or (= "_" (some #{"_"} row)) (>= (count(distinct row)) 2)) 
                 (row-check (drop 1 board))
-            	(row 0))))
+            	((row 0) 0))))
 
  (defn column-check [board]
    (row-check (clojure.core.matrix/transpose board)))
 
  (defn  draw? [board]
-  	(if-not(= "_" (some #{"_"} board))
+  	(if-not(= "_" (some #{"_"} (flatten board)))
       true
       false))
 
  
- (defn winnner? [board]
+ (defn winner? [board]
  	(if (= true (row-check board)) (println row-check board))
  	(if (= true (column-check board)) (println column-check board))
  	(if (= true (draw? board )) (println "its a draw")
@@ -70,7 +75,7 @@
    (println welcome)
    (def current-board (create-empty-board))
    (display-board current-board )
-   	(def current-board (move (user-input-move 3) "X" current-board)) 
+   	(def current-board (move (user-input-move current-board 3) "X" current-board)) 
     (clear-terminal)
     (display-board current-board )
    (game-runner current-board "X"))
@@ -78,7 +83,7 @@
 	(def current-board (move (computer-move board 3) "O" board))
     (clear-terminal)
     (display-board current-board  )
-    (def current-board (move (user-input-move 3) player current-board))
+    (def current-board (move (user-input-move current-board  3) player current-board))
     (clear-terminal)
     (display-board current-board )
     (game-runner current-board "X")))

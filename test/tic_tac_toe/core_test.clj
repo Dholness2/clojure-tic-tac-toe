@@ -63,7 +63,7 @@
 
 (deftest get-move
   (testing "gets players move"
-	(is (= [1 0] (with-in-str "4"(user-input-move  rowsize))))))
+	(is (= [1 0] (with-in-str "4"(user-input-move board rowsize))))))
 
 (deftest view-clear
 	(testing "clears terminal"
@@ -79,19 +79,25 @@
 
 (deftest board-draw 
 	(testing "game is a draw"
-	(is (=  true (draw? ["x" "y" "y" "x" "x" "Y" "Y" "x" "y" ])))))
+	(is (=  true (draw? [["x" "y" "y"] ["x" "y" "x"] ["Y" "x" "y"] ])))))
 
 (deftest board-row-check 
 	(testing "check for winner from row"
-	(is (=  "x" (row-check ["x" "x" "x" "y" "x" "Y" "Y" "x" "y" ])))))
+	(is (=  "x" (row-check [["x" "x" "x"] ["y" "x" "Y"] ["Y" "x" "y"] ])))))
 
 
 (deftest board-colunm-check 
 	(testing "check for winner from column"
-	(is (=  "y" (column-check ["y" "x" "x" "y" "Y" "Y" "Y" "x" "y" ])))))
+	(is (=  "y" (column-check [["y" "x" "x"] ["y" "Y" "Y"] ["Y" "x" "y"] ])))))
 
+(deftest winner-test 
+   (testing "check for win state or draw") 
+   (is (= "y" (winner? [["x" "x" "x"] ["y" "x" "Y"] ["x" "x" "y"] ])))
+   )
 
-
+(deftest move-taken
+ (testing "checks to see if move is taken")
+  (is (= true (movetaken? [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] 1))))
 
 
 
