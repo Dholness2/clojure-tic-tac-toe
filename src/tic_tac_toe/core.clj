@@ -14,22 +14,22 @@
       true 
       false))
 
-  (defn movetaken? [board move]
+  (defn moveopen? [board move]
      (if(= "_" ((vec (flatten board)) (- move 1)))
-     	false
-     	true))
+     	true 
+     	false))
 
  (defn matrix-convrt [move rowsize]
   	[ (quot ( - move 1) rowsize) (mod (- move 1) rowsize ) ])
   
 
- (defn user-input-move [board rowsize ]
+ (defn user-input-move [board rowsize]
     (println "what is your next move")
     (def input (read-string(read-line)))
-    (if(and (validmove? input) (= false movetaken?  board input))
+    (if(and (validmove? input) (moveopen? board input))
       (matrix-convrt input rowsize)
       (do (println "invalid selection") 
-      	   (user-input-move rowsize))))
+      	   (user-input-move board rowsize))))
   
   (defn computer-move [board rowsize]
   	(matrix-convrt (+ 1(.indexOf (flatten board) "_")) rowsize))
@@ -62,14 +62,9 @@
  	(if (= true (draw? board )) (println "its a draw")
  		nil))
 
-
-
- (defn clear-terminal[]
+(defn clear-terminal[]
     (println "\033[2J"))
   
-
-
-
 (defn game-runner 
  ([welcome]
    (println welcome)

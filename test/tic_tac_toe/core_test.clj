@@ -95,9 +95,9 @@
    (is (= "y" (winner? [["x" "x" "x"] ["y" "x" "Y"] ["x" "x" "y"] ])))
    )
 
-(deftest move-taken
+(deftest open-move
  (testing "checks to see if move is taken")
-  (is (= true (movetaken? [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] 1))))
+  (is (= false (moveopen? [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] 1))))
 
 
 
