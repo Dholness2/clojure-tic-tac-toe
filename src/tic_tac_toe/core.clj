@@ -47,12 +47,12 @@
       true ))
 
   (defn row-check 
-  ([board]
+    ([board]
   	(let[ row (first (take 1 board)) ]
       (if(or (= "_" (some #{"_"} row)) (>= (count(distinct row)) 2)) 
         (row-check (drop 1 board))
         (row-check board (get row 0)))))
-   ([board winner]
+    ([board winner]
        winner))
 
  (defn column-check [board]
@@ -64,7 +64,7 @@
  (defn get-diagnoals [board rowsize]
  	(let[diagonal-indexs-top  (vec(take rowsize (iterate inc 0))) 
  		 diagonal-indexs-bottom	(vec(take rowsize (iterate  dec (- rowsize 1))))]
-      [(get-location board diagonal-indexs-top)  (get-location board diagonal-indexs-bottom)]))
+      [(get-location board diagonal-indexs-top)  (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
 
  (defn diagonal-check [board rowsize]
     (let [diagonal-top     ((get-diagnoals board rowsize) 0)
@@ -83,7 +83,7 @@
  	(cond 
    	 (row-check board) (row-check board)
    	 (column-check board) (column-check board)
-   	 ; (diagonal-check board 3) (diagonal-check  board3)
+   	 
      (draw? board ) "its a draw"))
 
 (defn clear-terminal[]
