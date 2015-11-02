@@ -42,7 +42,7 @@
   	    ))
 
   (defn check-equality [items] 
-    (if (or (= "_" (some #{"_"} items) (>= (count(distinct items)) 2)))
+    (if (or (= "_" (some #{"_"} items)) (>= (count(distinct items)) 2))
       false
       true ))
 
@@ -83,7 +83,7 @@
  	(cond 
    	 (row-check board) (row-check board)
    	 (column-check board) (column-check board)
-   	 
+   	 (diagonal-check board 3) (diagonal-check board 3)
      (draw? board ) "its a draw"))
 
 (defn clear-terminal[]
