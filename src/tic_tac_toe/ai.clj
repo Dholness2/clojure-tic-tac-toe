@@ -17,10 +17,13 @@
 	 (= "x"  (winner? board)) (- (game-depth board) 10)
 	  :else 0))
 
-; (defn possible-moves (board iteration moves)
-;   (if (and (= iteration (- (board-size board) 1)) (= "_" (nth board iteration)))
-;    (possible-moves board (+ 1 iteration) (conj moves (nth board iteration))) 
-
+(defn possible-moves [board iteration moves]
+  (if (< iteration (board-size board))
+      (do (if (= "_" (nth (flatten board) iteration))
+             (possible-moves board  (+ 1 iteration) (conj moves (+ 1 iteration))) 
+             (possible-moves board  (+ 1 iteration) moves)))
+       moves))
+      
  
 
 

@@ -43,7 +43,6 @@
   (testing "scores the current game state of the board with a minimizing win"
    (is (= 4 (score-game board-winner-y)))))
 
-
-; (deftest game-possible-moves
-;   (testing "possble moves"
-;     (is (= [1 2 3 4 5 6 7 8 9 10 ] (possble-moves board)))))
+(deftest game-possible-moves
+  (testing "returns a vector of possible moves"
+    (is (= [1 2 3 4 5 6 7 8 9 ] (possible-moves board 0 [])))))
