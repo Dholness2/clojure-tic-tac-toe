@@ -46,3 +46,16 @@
 (deftest game-possible-moves
   (testing "returns a vector of possible moves"
     (is (= [1 2 3 4 5 6 7 8 9 ] (possible-moves board 0 [])))))
+
+(deftest best-move-possible-max 
+  (testing "returns the score of the best maximizing move"
+    (is (= [10 9] (best-move [1 2 3 4 5 6 7 8 9] [2 3 4 5 6 7 8 9 10] true )))))
+
+(deftest best-move-possible-mini 
+  (testing "returns the score of the best minimizing move"
+    (is (= [2 1] (best-move [1 2 3 4 5 6 7 8 9] [2 3 4 5 6 7 8 9 10] false )))))
+
+(deftest minimax-test
+  (testing "return the best move and its score"
+    (is (= [0 1]  (minimax board true )))))
+
