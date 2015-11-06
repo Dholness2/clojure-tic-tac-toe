@@ -7,6 +7,7 @@
 (def board-depth-four [["_" "_" "o"] ["_" "_" "_"] ["o" "x" "x"]]) 
 (def board-winner-x   [["x" "x" "x"] ["o" "_" "o"] ["_" "o" "_"]])
 (def board-winner-y   [["o" "o" "o"] ["x" "_" "x"] ["_" "x" "_"]])
+(def board-minimax    [["o" "_" "o"] ["_" "_" "x"] ["_" "x" "x"]])
 
 
 (deftest board-size-count
@@ -47,15 +48,30 @@
   (testing "returns a vector of possible moves"
     (is (= [1 2 3 4 5 6 7 8 9 ] (possible-moves board 0 [])))))
 
+(deftest max-index
+  (testing "finds the index of the max move"
+    (is (= 7 (find-max-index [10 20 30 40 50 60 70 80])))))
+
+(deftest min-index 
+  (testing "finds the min index"
+    (is (= 0 (find-min-index [0 1 2 3 4 5 6 7 8 9])))))                              
+
 (deftest best-move-possible-max 
   (testing "returns the score of the best maximizing move"
-    (is (= [10 9] (best-move [1 2 3 4 5 6 7 8 9] [2 3 4 5 6 7 8 9 10] true )))))
+    (is (=[10 9] (best-move [1 2 3 4 5 6 7 8 9] [2 3 4 5 6 7 8 9 10] true )))))
 
 (deftest best-move-possible-mini 
   (testing "returns the score of the best minimizing move"
-    (is (= [2 1] (best-move [1 2 3 4 5 6 7 8 9] [2 3 4 5 6 7 8 9 10] false )))))
+    (is (= 1 (best-move [1 2 3 4 5 6 7 8 9] [2 3 4 5 6 7 8 9 10] false )))))
+
+(deftest possible-board-state
+  (testing "return a psovble bard state based on input"
+    (is (=      (possible-board 1 "x" board)))))
+
+(deftest game-end-state
+  (testing "return true if the game is over"
+    (is (= "x" (game-over? [["x" "x" "x"] ["o" "_" "o"] ["_" "o" "_"]])))))
 
 (deftest minimax-test
   (testing "return the best move and its score"
-    (is (= [0 1]  (minimax board true )))))
-
+    (is (= [1] (minimax board-minimax true )))))
