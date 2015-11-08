@@ -1,15 +1,6 @@
 (ns tic-tac-toe.ai
-  (:require [tic-tac-toe.board :refer :all]))
-
-(defn board-size [board]
- (* (count board ) (count(first board))))
-
-(defn empty-spaces [board]
-  ((frequencies (flatten board)) "_"))
-
-
-(defn game-depth [board]
-  (- (board-size board) (empty-spaces board)))
+  (:require [tic-tac-toe.board :refer :all]
+            [tic-tac-toe.game :refer :all]))
 
 (defn score-game [board]
 	(cond
@@ -56,6 +47,11 @@
         (if (= true maximizing)
           (best-score-index(vec (map (fn [board] (last (minimax board false))) (board-states open-positions board "o"))) maximizing)
           (best-score-index(vec (map (fn [board] (last (minimax board true))) (board-states open-positions board "x"))) maximizing)))))
+
+ (defn ai-move [board]
+    (let [open-positions (possible-moves board 0 [] )
+          move-score    (minimax board true)]
+      (matrix-convrt  (open-positions (first move-score)) 3)))
 
 
 
