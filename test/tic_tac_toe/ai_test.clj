@@ -3,12 +3,13 @@
   	        [tic-tac-toe.board :refer :all]
   	        [tic-tac-toe.ai :refer :all]))
 
-(def board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) 
-(def board-depth-four [["_" "_" "o"] ["_" "_" "_"] ["o" "x" "x"]]) 
+(def board [["x" "x" "_"] ["o" "_" "o"] ["_" "_" "_"]])
+(def board-depth-four [["_" "_" "o"] ["_" "_" "_"] ["o" "x" "x"]])
 (def board-winner-x   [["x" "x" "x"] ["o" "_" "o"] ["_" "o" "_"]])
 (def board-winner-y   [["o" "o" "o"] ["x" "_" "x"] ["_" "x" "_"]])
 (def board-minimax    [["o" "_" "o"] ["_" "_" "x"] ["_" "x" "x"]])
-
+(def board-complete   [["o" "x" "o"] ["x" "o" "x"] ["x" "o" "x"]])
+(def board-x-win   [["x" "x" "x"] ["o" "_" "o"] ["_" "_" "_"]])
 
 (deftest board-size-count
  (testing "board size"
@@ -23,8 +24,8 @@
 	(testing "returns the amount of unoccupied spaces in the board"
 	(is (= 9 (empty-spaces board)))))
 
-(deftest depth-counter  
-  (testing "gets game depth" 
+(deftest depth-counter
+  (testing "gets game depth"
   	(is (= 0  (game-depth board)))))
 
 (deftest depth-counter-four-steps
@@ -52,17 +53,17 @@
   (testing "finds the index of the max move"
     (is (= 7 (find-max-index [10 20 30 40 50 60 70 80])))))
 
-(deftest min-index 
+(deftest min-index
   (testing "finds the min index"
-    (is (= 0 (find-min-index [0 1 2 3 4 5 6 7 8 9])))))                              
+    (is (= 0 (find-min-index [0 1 2 3 4 5 6 7 8 9])))))
 
-(deftest best-move-possible-max 
+(deftest best-move-possible-max
   (testing "returns the score of the best maximizing move"
-    (is (=[10 9] (best-move [1 2 3 4 5 6 7 8 9] [2 3 4 5 6 7 8 9 10] true )))))
+    (is (=[10 9] (best-score-index [2 3 4 5 6 7 8 9 10] true )))))
 
-(deftest best-move-possible-mini 
+(deftest best-move-possible-mini
   (testing "returns the score of the best minimizing move"
-    (is (= 1 (best-move [1 2 3 4 5 6 7 8 9] [2 3 4 5 6 7 8 9 10] false )))))
+    (is (= [2 1] (best-score-index  [2 3 4 5 6 7 8 9 10] false )))))
 
 (deftest possible-board-state
   (testing "return a psovble bard state based on input"
@@ -72,6 +73,18 @@
   (testing "return true if the game is over"
     (is (= "x" (game-over? [["x" "x" "x"] ["o" "_" "o"] ["_" "o" "_"]])))))
 
+; (deftest minimax-test
+;   (testing "return the best move and its score"
+;     (is (= [1] (minimax board-minimax true )))))
+
+ (deftest minimax-test
+  (testing "return the score of a complete game"
+    (is (=  0 (minimax board-complete true )))))
+
 (deftest minimax-test
-  (testing "return the best move and its score"
-    (is (= [1] (minimax board-minimax true )))))
+  (testing "return the score of a x win game"
+    (is (=  -5 (minimax board-x-win true )))))
+
+(deftest minimax-test
+  (testing "openmoves"
+    (is (=  nil (minimax board true )))))
