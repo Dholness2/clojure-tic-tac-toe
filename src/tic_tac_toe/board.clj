@@ -1,27 +1,25 @@
 (ns tic-tac-toe.board)
- (require 'clojure.core.matrix)
+  (require 'clojure.core.matrix)
 
-  (defn create-empty-board [rows cols]
-    (vec (take rows (repeat (vec (take cols (repeat "_")))))))
+(def empty-space "_")
 
-  (defn board-size [board]
-    (* (count board ) (count(first board))))
+(defn create-empty-board [rows cols]
+  (vec (take rows (repeat (vec (take cols (repeat empty-space)))))))
 
-  (defn empty-spaces [board]
+(defn board-size [board]
+  (* (count board) (count (first board))))
+
+(defn empty-spaces [board]
   ((frequencies (flatten board)) "_"))
 
- (defn move [location player board]
-    (assoc-in board location player ))
+(defn move [location player board]
+  (assoc-in board location player))
 
  (defn validmove? [move]
-    (if (and (<= move 9)(>=  move 1))
-      true
-      false))
+    (and (<= move 9) (>=  move 1)))
 
   (defn moveopen? [board move]
-     (if(= "_" ((vec (flatten board)) (- move 1)))
-     	true
-     	false))
+    (= "_" ((vec (flatten board)) (- move 1))))
 
   (defn matrix-convrt [move rowsize]
   	[ (quot ( - move 1) rowsize) (mod (- move 1) rowsize ) ])
@@ -29,7 +27,7 @@
   (defn check-equality [items]
     (if (or (= "_" (some #{"_"} items)) (>= (count(distinct items)) 2))
       false
-      true ))
+      true))
 
   (defn row-check
     ([board]

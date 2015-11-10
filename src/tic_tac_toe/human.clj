@@ -5,7 +5,6 @@
          [tic-tac-toe.display :refer :all]
          [tic-tac-toe.game :refer :all]))
 
-
 (defn valid-selection [input board]
   (and (number? input) (validmove? input) (moveopen? board input)))
 
