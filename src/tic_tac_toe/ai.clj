@@ -42,7 +42,7 @@
 
  (defn minimax [board maximizing]
    (if (game-over? board)
-       [nil (score-game board)]
+       [-1 (score-game board)]
       (let [open-positions (possible-moves board 0 [] )]
         (if (= true maximizing)
           (best-score-index(vec (map (fn [board] (last (minimax board false))) (board-states open-positions board "o"))) maximizing)

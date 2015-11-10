@@ -1,7 +1,8 @@
 (ns tic-tac-toe.ai-test
   (:require [clojure.test :refer :all]
   	        [tic-tac-toe.board :refer :all]
-  	        [tic-tac-toe.ai :refer :all]))
+  	        [tic-tac-toe.ai :refer :all]
+            [tic-tac-toe.game :refer :all]))
 
 (def board [["x" "x" "_"] ["o" "_" "o"] ["_" "_" "_"]])
 (def board-empty [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]])
@@ -83,7 +84,7 @@
 
 (deftest minimax-test
   (testing "return the score of a x win game"
-    (is (=[nil -5] (minimax board-x-win true )))))
+    (is (=[-1 -5] (minimax board-x-win true )))))
 
  (deftest ai-best-move
    (testing "returns the winning move"
@@ -91,4 +92,14 @@
 
 (deftest ai-best-move
    (testing "returns the best move to block win"
-     (is (=  2 (ai-move board-x-block)))))
+     (is (=  [0 1] (ai-move board-x-block)))))
+
+(deftest board-states-test
+  (testing "return possible-board boards states based on available moves"
+    (is = (board-states [1 2 3 5 6] board "x"))))
+
+
+
+
+
+

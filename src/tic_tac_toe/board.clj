@@ -1,15 +1,14 @@
 (ns tic-tac-toe.board)
  (require 'clojure.core.matrix)
 
-(defn create-empty-board [rows cols]
+  (defn create-empty-board [rows cols]
     (vec (take rows (repeat (vec (take cols (repeat "_")))))))
 
-  (defn create-move-index [rows cols]
-  	 (take rows (partition cols (iterate inc 1))))
+  (defn board-size [board]
+    (* (count board ) (count(first board))))
 
-   (defn print-move-index [moves]
-   	 println (apply str (nth moves 0))
-   	 (print-move-index (drop 1 moves)))
+  (defn empty-spaces [board]
+  ((frequencies (flatten board)) "_"))
 
  (defn move [location player board]
     (assoc-in board location player ))
@@ -27,14 +26,6 @@
   (defn matrix-convrt [move rowsize]
   	[ (quot ( - move 1) rowsize) (mod (- move 1) rowsize ) ])
 
- (defn user-input-move [board rowsize]
-    (println "what is your next move")
-    (def input (read-string(read-line)))
-    (if(and (validmove? input) (moveopen? board input))
-      (matrix-convrt input rowsize)
-      (do (println "invalid selection")
-      	   (user-input-move board rowsize))))
-
   (defn check-equality [items]
     (if (or (= "_" (some #{"_"} items)) (>= (count(distinct items)) 2))
       false
@@ -49,18 +40,18 @@
     ([board winner]
        winner))
 
- (defn column-check [board]
+  (defn column-check [board]
    (row-check (clojure.core.matrix/transpose board)))
 
- (defn get-location [board locations]
+  (defn get-location [board locations]
    (map (fn [location] (get-in board [location location])) locations))
 
- (defn get-diagnoals [board rowsize]
+  (defn get-diagnoals [board rowsize]
  	(let[diagonal-indexs-top  (vec(take rowsize (iterate inc 0)))
  		 diagonal-indexs-bottom	(vec(take rowsize (iterate  dec (- rowsize 1))))]
         [(get-location board diagonal-indexs-top)  (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
 
- (defn diagonal-check [board rowsize]
+  (defn diagonal-check [board rowsize]
     (let [diagonal-top     ((get-diagnoals board rowsize) 0)
     	   diagonal-bottom ((get-diagnoals board rowsize) 1)]
     (if (check-equality diagonal-top)
@@ -68,9 +59,3 @@
     	(if (check-equality diagonal-bottom)
     	    (first diagonal-bottom)))))
 
-
-(defn board-size [board]
- (* (count board ) (count(first board))))
-
-(defn empty-spaces [board]
-  ((frequencies (flatten board)) "_"))
