@@ -50,59 +50,59 @@
     (testing "test to mke sure user input is within game move option[0-8]")
  	  (is (= true (validmove? 6))))
 
-(deftest valid-move-seven
- (testing "test to mke sure user input is within game move option[0-8]")
- 	(is (= true (validmove? 7))))
+  (deftest valid-move-seven
+   (testing "test to mke sure user input is within game move option[0-8]")
+   	(is (= true (validmove? 7))))
 
-(deftest valid-move-eight
- (testing "test to mke sure user input is within game move option[0-8]")
- 	(is (= true (validmove? 8))))
+  (deftest valid-move-eight
+   (testing "test to mke sure user input is within game move option[0-8]")
+   	(is (= true (validmove? 8))))
 
-(deftest valid-move-eight
- (testing "test to mke sure user input is within game move option[0-8]")
- 	(is (= true (validmove? 9))))
+  (deftest valid-move-eight
+   (testing "test to mke sure user input is within game move option[0-8]")
+   	(is (= true (validmove? 9))))
 
-(deftest invalid-move-less-than-zero
- (testing "test to mke sure user input is within game move option[0-8]")
- 	(is (= false (validmove? -1))))
+  (deftest invalid-move-less-than-zero
+   (testing "test to mke sure user input is within game move option[0-8]")
+   	(is (= false (validmove? -1))))
 
-(deftest invalid-move-greater-than-eight
- (testing "test to mke sure user input is within game move option[0-8]")
- (is (= false (validmove? 20))))
+  (deftest invalid-move-greater-than-eight
+   (testing "test to mke sure user input is within game move option[0-8]")
+   (is (= false (validmove? 20))))
 
-(deftest open-move
- (testing "checks to see if move is taken")
-  (is (= false (moveopen? [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] 1))))
+  (deftest open-move
+   (testing "checks to see if move is taken")
+    (is (= false (moveopen? [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] 1))))
 
-(deftest matrix-convrt-test
- (testing "takes the users move and converts to nested vector location ")
-  (is (= [0 0] (matrix-convrt 1 3))))
+  (deftest matrix-convrt-test
+   (testing "takes the users move and converts to nested vector location ")
+    (is (= [0 0] (matrix-convrt 1 3))))
 
-(deftest board-row-check 
-	(testing "check for winner from row"
-	(is (=  "x" (row-check [["x" "x" "x"] ["y" "x" "Y"] ["Y" "x" "y"] ])))))
+  (deftest board-row-check 
+  	(testing "check for winner from row"
+  	(is (=  "x" (row-check [["x" "x" "x"] ["y" "x" "Y"] ["Y" "x" "y"] ])))))
 
-(deftest board-colunm-check 
-	(testing "check for winner from column"
-	(is (=  "y" (column-check [["y" "x" "x"] ["y" "Y" "Y"] ["y" "x" "y"]])))))
+  (deftest board-colunm-check 
+  	(testing "check for winner from column"
+  	(is (=  "y" (column-check [["y" "x" "x"] ["y" "Y" "Y"] ["y" "x" "y"]])))))
 
-(deftest determine-equality 
-  (testing "checks for matches"
-  (is (= true (check-equality ["x" "x" "x"] )))))
+  (deftest determine-equality 
+    (testing "checks for matches"
+    (is (= true (check-equality ["x" "x" "x"] )))))
 
-(deftest get-nested-elements 
-  (testing "gets nested elements in board"
-  (is (= '("y" "y" "y")(get-location [["y" "x" "x"] ["y" "y" "Y"] ["Y" "x" "y"]] [0 1 2 ] )))))
+  (deftest get-nested-elements 
+    (testing "gets nested elements in board"
+    (is (= '("y" "y" "y")(get-location [["y" "x" "x"] ["y" "y" "Y"] ["Y" "x" "y"]] [0 1 2 ] )))))
 
-(deftest diagonal-checker 
-	(testing "checks for any diagonal wins"
-	(is (= "y" (diagonal-check [["y" "x" "_"]["x" "y" "x"]["x" "x" "y"]] 3)))))
+  (deftest diagonal-checker 
+  	(testing "checks for any diagonal wins"
+  	(is (= "y" (diagonal-check [["y" "x" "_"]["x" "y" "x"]["x" "x" "y"]] 3)))))
 
-(deftest get-diagnoals-test
-  (let [board [["x" "_" "_" ]["_" "x" "_" ]["_" "_" "x" ]]
-  		rowsize 3]
-    (testing "gets diagonal positions"
-	  (is (= (get-diagnoals board 3)))))) 
+  (deftest get-diagnoals-test
+    (let [board [["x" "_" "_" ]["_" "x" "_" ]["_" "_" "x" ]]
+    		rowsize 3]
+      (testing "gets diagonal positions"
+  	  (is (= (get-diagnoals board 3)))))) 
 
 
 
