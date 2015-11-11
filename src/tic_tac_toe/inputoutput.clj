@@ -1,6 +1,5 @@
 (ns tic-tac-toe.inputoutput)
 
-
 (defn send-output[output]
   (println output))
 

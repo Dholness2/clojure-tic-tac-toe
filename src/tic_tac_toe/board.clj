@@ -3,8 +3,8 @@
 
 (def empty-space "_")
 
-(defn create-empty-board [rows cols]
-  (vec (take rows (repeat (vec (take cols (repeat empty-space)))))))
+(defn create-empty-board [diemension]
+  (vec (take diemension (repeat (vec (take diemension (repeat empty-space)))))))
 
 (defn board-size [board]
   (* (count board) (count (first board))))
@@ -15,45 +15,45 @@
 (defn move [location player board]
   (assoc-in board location player))
 
- (defn validmove? [move]
-    (and (<= move 9) (>=  move 1)))
+(defn validmove? [move]
+  (and (<= move 9) (>=  move 1)))
 
-  (defn moveopen? [board move]
-    (= "_" ((vec (flatten board)) (- move 1))))
+(defn moveopen? [board move]
+  (= "_" ((vec (flatten board)) (- move 1))))
 
-  (defn matrix-convrt [move rowsize]
-  	[ (quot ( - move 1) rowsize) (mod (- move 1) rowsize ) ])
+(defn matrix-convrt [move rowsize]
+  [(quot (- move 1) rowsize) (mod (- move 1) rowsize)])
 
-  (defn check-equality [items]
-    (if (or (= "_" (some #{"_"} items)) (>= (count(distinct items)) 2))
-      false
-      true))
+(defn check-equality [items]
+  (if (or (= "_" (some #{"_"} items)) (>= (count(distinct items)) 2))
+    false
+    true))
 
-  (defn row-check
-    ([board]
-  	(let[ row (first (take 1 board))]
-      (if(or (= "_" (some #{"_"} row)) (>= (count(distinct row)) 2))
+(defn row-check
+  ([board]
+    (let[ row (first (take 1 board))]
+      (if (or (= "_" (some #{"_"} row)) (>= (count(distinct row)) 2))
         (row-check (drop 1 board))
         (row-check board (get row 0)))))
-    ([board winner]
-       winner))
+  ([board winner]
+    winner))
 
-  (defn column-check [board]
-   (row-check (clojure.core.matrix/transpose board)))
+(defn column-check [board]
+  (row-check (clojure.core.matrix/transpose board)))
 
-  (defn get-location [board locations]
-   (map (fn [location] (get-in board [location location])) locations))
+(defn get-location [board locations]
+  (map (fn [location] (get-in board [location location])) locations))
 
-  (defn get-diagnoals [board rowsize]
- 	(let[diagonal-indexs-top  (vec(take rowsize (iterate inc 0)))
- 		 diagonal-indexs-bottom	(vec(take rowsize (iterate  dec (- rowsize 1))))]
-        [(get-location board diagonal-indexs-top)  (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
+(defn get-diagnoals [board rowsize]
+  (let[diagonal-indexs-top  (vec(take rowsize (iterate inc 0)))
+ 	     diagonal-indexs-bottom	(vec(take rowsize (iterate  dec (- rowsize 1))))]
+      [(get-location board diagonal-indexs-top)  (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
 
-  (defn diagonal-check [board rowsize]
-    (let [diagonal-top     ((get-diagnoals board rowsize) 0)
-    	   diagonal-bottom ((get-diagnoals board rowsize) 1)]
+(defn diagonal-check [board rowsize]
+  (let [diagonal-top     ((get-diagnoals board rowsize) 0)
+    	  diagonal-bottom ((get-diagnoals board rowsize) 1)]
     (if (check-equality diagonal-top)
-    	(first diagonal-top)
-    	(if (check-equality diagonal-bottom)
-    	    (first diagonal-bottom)))))
+      (first diagonal-top)
+      (if (check-equality diagonal-bottom)
+    	  (first diagonal-bottom)))))
 

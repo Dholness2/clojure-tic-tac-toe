@@ -40,18 +40,18 @@
 (defn game-over? [board]
   (or (winner? board) (= 8 (game-depth board))))
 
- (defn minimax [board maximizing]
-   (if (game-over? board)
-       [-1 (score-game board)]
-      (let [open-positions (possible-moves board 0 [] )]
-        (if (= true maximizing)
-          (best-score-index(vec (map (fn [board] (last (minimax board false))) (board-states open-positions board "o"))) maximizing)
-          (best-score-index(vec (map (fn [board] (last (minimax board true))) (board-states open-positions board "x"))) maximizing)))))
+(defn minimax [board maximizing]
+  (if (game-over? board)
+    [-1 (score-game board)]
+    (let [open-positions (possible-moves board 0 [] )]
+      (if (= true maximizing)
+        (best-score-index(vec (map (fn [board] (last (minimax board false))) (board-states open-positions board "o"))) maximizing)
+        (best-score-index(vec (map (fn [board] (last (minimax board true))) (board-states open-positions board "x"))) maximizing)))))
 
- (defn ai-move [board]
-    (let [open-positions (possible-moves board 0 [] )
-          move-score    (minimax board true)]
-      (matrix-convrt  (open-positions (first move-score)) 3)))
+(defn ai-move [board]
+  (let [open-positions (possible-moves board 0 [] )
+        move-score    (minimax board true)]
+    (matrix-convrt  (open-positions (first move-score)) 3)))
 
 
 

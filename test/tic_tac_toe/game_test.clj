@@ -5,6 +5,7 @@
             [tic-tac-toe.display :refer :all]
             [tic-tac-toe.game :refer :all]
             [tic-tac-toe.ai :refer :all]))
+
 (deftest board-draw 
 	(testing "game is a draw"
 	(is (=  true (draw? [["x" "y" "y"] ["x" "y" "x"] ["Y" "x" "y"]])))))
