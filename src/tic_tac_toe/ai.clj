@@ -1,6 +1,6 @@
 (ns tic-tac-toe.ai
   (:require [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.game :refer :all]))
+            [tic-tac-toe.game :refer [winner? draw?]]))
 
 (defn score-game [board]
 	(cond

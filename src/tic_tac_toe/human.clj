@@ -1,4 +1,4 @@
-(ns tic-tac-toe.human
+ (ns tic-tac-toe.human
   (:gen-class)
 (require [tic-tac-toe.board :refer :all]
          [tic-tac-toe.ai :refer :all]
