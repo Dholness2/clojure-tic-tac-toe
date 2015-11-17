@@ -66,6 +66,10 @@
   (testing "return a psovble bard state based on input"
     (is (=      (possible-board 1 "x" board)))))
 
+(deftest game-end-state
+  (testing "return true if the game is over"
+    (is (= "x" (game-over? [["x" "x" "x"] ["o" "_" "o"] ["_" "o" "_"]])))))
+
 (deftest minimax-test
   (testing "return best sore and its index its score"
     (is (= [1] (minimax board-minimax true )))))
