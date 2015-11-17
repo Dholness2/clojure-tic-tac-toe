@@ -1,11 +1,12 @@
 (ns tic-tac-toe.ai
   (:require [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.game :refer [winner? draw?]]))
+            [tic-tac-toe.game :refer  :all]
+            ))
 
 (defn score-game [board]
 	(cond
-	 (= "o" (winner? board)) (- 10 (game-depth board))
-	 (= "x"  (winner? board)) (- (game-depth board) 10)
+	 (= player2-marker (winner? board)) (- 10 (game-depth board))
+	 (= player1-marker (winner? board)) (- (game-depth board) 10)
 	  :else 0))
 
 (defn possible-moves [board iteration moves]
@@ -38,20 +39,20 @@
     (map score-game board-states ))
 
 (defn game-over? [board]
-  (or (winner? board) (= 8 (game-depth board))))
+  (winner? board))
 
 (defn minimax [board maximizing]
-  (if (game-over? board)
-    [-1 (score-game board)]
-    (let [open-positions (possible-moves board 0 [] )]
-      (if (= true maximizing)
-        (best-score-index(vec (map (fn [board] (last (minimax board false))) (board-states open-positions board "o"))) maximizing)
-        (best-score-index(vec (map (fn [board] (last (minimax board true))) (board-states open-positions board "x"))) maximizing)))))
+  (if (game-over? board) 
+    [0 (score-game board)]
+  (let [open-positions (possible-moves board 0 [] )]
+    (if (= true maximizing)
+      (best-score-index(vec (map (fn [board] (last (minimax board false))) (board-states open-positions board player2-marker))) maximizing)
+      (best-score-index(vec (map (fn [board] (last (minimax board true))) (board-states open-positions board player1-marker))) maximizing)))))
 
 (defn ai-move [board]
   (let [open-positions (possible-moves board 0 [] )
         move-score    (minimax board true)]
-    (matrix-convrt  (open-positions (first move-score)) 3)))
+    (matrix-convrt  (open-positions (first move-score)) 3 )))
 
 
 

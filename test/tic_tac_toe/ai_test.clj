@@ -18,10 +18,6 @@
  (testing "board size"
    (is (= 9 (board-size board-empty)))))
 
-(deftest board-size-count
- (testing "board size"
-   (is (= 9 (board-size board-empty)))))
-
 (deftest empty-moves-count
 	(testing "returns the amount of unoccupied spaces in the board"
 	(is (= 9 (empty-spaces board-empty)))))

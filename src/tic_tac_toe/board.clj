@@ -10,7 +10,9 @@
   (* (count board) (count (first board))))
 
 (defn empty-spaces [board]
-  ((frequencies (flatten board)) "_"))
+  (if ((frequencies (flatten board)) empty-space)
+     ((frequencies (flatten board)) empty-space)
+      0))
 
 (defn move [location player board]
   (assoc-in board location player))
@@ -25,14 +27,14 @@
   [(quot (- move 1) rowsize) (mod (- move 1) rowsize)])
 
 (defn check-equality [items]
-  (if (or (= "_" (some #{"_"} items)) (>= (count(distinct items)) 2))
+  (if (or (= empty-space (some #{empty-space} items)) (>= (count(distinct items)) 2))
     false
     true))
 
 (defn row-check
   ([board]
     (let[ row (first (take 1 board))]
-      (if (or (= "_" (some #{"_"} row)) (>= (count(distinct row)) 2))
+      (if (or (= empty-space (some #{empty-space} row)) (>= (count(distinct row)) 2))
         (row-check (drop 1 board))
         (row-check board (get row 0)))))
   ([board winner]
