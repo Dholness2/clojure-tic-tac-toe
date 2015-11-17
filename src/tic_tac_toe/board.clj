@@ -10,7 +10,9 @@
   (* (count board) (count (first board))))
 
 (defn empty-spaces [board]
-  ((frequencies (flatten board)) "_"))
+  (if ((frequencies (flatten board)) "_")
+     ((frequencies (flatten board)) "_")
+      0))
 
 (defn move [location player board]
   (assoc-in board location player))

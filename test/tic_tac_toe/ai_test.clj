@@ -18,10 +18,6 @@
  (testing "board size"
    (is (= 9 (board-size board-empty)))))
 
-(deftest board-size-count
- (testing "board size"
-   (is (= 9 (board-size board-empty)))))
-
 (deftest empty-moves-count
 	(testing "returns the amount of unoccupied spaces in the board"
 	(is (= 9 (empty-spaces board-empty)))))
@@ -69,10 +65,6 @@
 (deftest possible-board-state
   (testing "return a psovble bard state based on input"
     (is (=      (possible-board 1 "x" board)))))
-
-(deftest game-end-state
-  (testing "return true if the game is over"
-    (is (= "x" (game-over? [["x" "x" "x"] ["o" "_" "o"] ["_" "o" "_"]])))))
 
 (deftest minimax-test
   (testing "return best sore and its index its score"
