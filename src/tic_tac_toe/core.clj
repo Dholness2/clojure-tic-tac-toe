@@ -6,7 +6,7 @@
            [tic-tac-toe.human :refer :all]
            [tic-tac-toe.display :refer :all]))
 
-(defn game-runner [board]
+5(defn game-runner [board]
   (display-iteration board)
   (if-not (winner? board)
     (let [user-move (user-input-move board board-dimensions)
