@@ -23,7 +23,7 @@
   (first (first (sort-by second (map-indexed vector collection)))))
 
 (defn best-score-index[scores  maximizing]
-  (if ( = true maximizing)
+  (if maximizing
 	  (let [ max-score-index  (find-max-index scores)]
 	      [ max-score-index (scores max-score-index)])
     (let [ min-score-index  (find-min-index scores)]
@@ -38,21 +38,19 @@
 (defn score-board-states [board-states]
     (map score-game board-states ))
 
-(defn game-over? [board]
-  (winner? board))
-
 (defn minimax [board maximizing]
-  (if (game-over? board) 
+  (if (winner? board) 
     [0 (score-game board)]
   (let [open-positions (possible-moves board 0 [] )]
-    (if (= true maximizing)
+    (if  maximizing
       (best-score-index(vec (map (fn [board] (last (minimax board false))) (board-states open-positions board player2-marker))) maximizing)
       (best-score-index(vec (map (fn [board] (last (minimax board true))) (board-states open-positions board player1-marker))) maximizing)))))
 
 (defn ai-move [board]
   (let [open-positions (possible-moves board 0 [] )
         move-score    (minimax board true)]
-    (matrix-convrt  (open-positions (first move-score)) 3 )))
+   (if-not (empty? open-positions)    
+     (matrix-convrt  (open-positions (first move-score)) 3 ))))
 
 
 
