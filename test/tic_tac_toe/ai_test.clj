@@ -14,25 +14,11 @@
 (def board-x-win   [["x" "x" "x"] ["o" "_" "o"] ["_" "_" "_"]])
 (def board-x-block   [["x" "_" "x"] ["o" "_" "_"] ["_" "_" "_"]])
 
-(deftest board-size-count
- (testing "board size"
-   (is (= 9 (board-size board-empty)))))
-
-(deftest empty-moves-count
-	(testing "returns the amount of unoccupied spaces in the board"
-	(is (= 9 (empty-spaces board-empty)))))
-
-(deftest depth-counter
-  (testing "gets game depth"
-  	(is (= 0  (game-depth board-empty)))))
-
-(deftest depth-counter-four-steps
-	(testing "gets game depth"
-	 (is (= 4 (game-depth board-depth-four)))))
 
 (deftest game-state-score-draw
-  (testing "scores the current game state of the board"
-   (is (= 0 (score-game board)))))
+  (let [board-empty  [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
+    (testing "scores the current game state of the board"
+   (is (= 0 (score-game board-empty))))))
 
 (deftest game-state-score-mini-x
   (testing "scores the current game state of the board with a minimizing win"
@@ -46,14 +32,6 @@
   (testing "returns a vector of possible moves"
     (is (= [1 2 3 4 5 6 7 8 9 ] (possible-moves board-empty 0 [])))))
 
-(deftest max-index
-  (testing "finds the index of the max move"
-    (is (= 7 (find-max-index [10 20 30 40 50 60 70 80])))))
-
-(deftest min-index
-  (testing "finds the min index"
-    (is (= 0 (find-min-index [0 1 2 3 4 5 6 7 8 9])))))
-
 (deftest best-move-possible-max
   (testing "returns the  index and score of the best maximizing move"
     (is (=[8 10] (best-score-index [2 3 4 5 6 7 8 9 10] true )))))
@@ -66,10 +44,6 @@
   (testing "return a psovble bard state based on input"
     (is (=      (possible-board 1 "x" board)))))
 
-(deftest game-end-state
-  (testing "return true if the game is over"
-    (is (= "x" (game-over? [["x" "x" "x"] ["o" "_" "o"] ["_" "o" "_"]])))))
-
 (deftest minimax-test
   (testing "return best sore and its index its score"
     (is (= [1] (minimax board-minimax true )))))
@@ -80,7 +54,7 @@
 
 (deftest minimax-test
   (testing "return the score of a x win game"
-    (is (=[-1 -5] (minimax board-x-win true )))))
+    (is (=[0 -5] (minimax board-x-win true )))))
 
  (deftest ai-best-move
    (testing "returns the winning move"

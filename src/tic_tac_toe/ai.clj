@@ -16,18 +16,10 @@
              (possible-moves board  (+ 1 iteration) moves)))
        moves))
 
-(defn find-max-index [collection]
-  (first (last (sort-by second (map-indexed vector collection)))))
-
-(defn find-min-index [collection]
-  (first (first (sort-by second (map-indexed vector collection)))))
-
 (defn best-score-index[scores  maximizing]
   (if maximizing
-	  (let [ max-score-index  (find-max-index scores)]
-	      [ max-score-index (scores max-score-index)])
-    (let [ min-score-index  (find-min-index scores)]
-	      [min-score-index  (scores min-score-index)])))
+	  [(.indexOf scores (apply max scores)) (apply max scores)]
+    [(.indexOf scores (apply min scores)) (apply min scores)]))
 
 (defn possible-board [location marker current-board ]
   (move (matrix-convrt location 3) marker current-board))
