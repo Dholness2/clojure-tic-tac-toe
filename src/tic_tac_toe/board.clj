@@ -1,5 +1,5 @@
-(ns tic-tac-toe.board)
-(require 'clojure.core.matrix)
+(ns tic-tac-toe.board
+(:require [clojure.core.matrix :refer [transpose]]))
 
 (def empty-space "_")
 
@@ -41,7 +41,7 @@
     winner))
 
 (defn column-check [board]
-  (row-check (clojure.core.matrix/transpose board)))
+  (row-check (transpose board)))
 
 (defn get-location [board locations]
   (map (fn [location] (get-in board [location location])) locations))
