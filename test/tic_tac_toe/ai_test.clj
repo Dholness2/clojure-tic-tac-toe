@@ -4,55 +4,60 @@
   	        [tic-tac-toe.ai :refer :all]
             [tic-tac-toe.game :refer :all]))
 
-(def board [["x" "x" "_"] ["o" "_" "o"] ["_" "_" "_"]])
-(def board-empty [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]])
-(def board-depth-four [["_" "_" "o"] ["_" "_" "_"] ["o" "x" "x"]])
-(def board-winner-x   [["x" "x" "x"] ["o" "_" "o"] ["_" "o" "_"]])
-(def board-winner-y   [["o" "o" "o"] ["x" "_" "x"] ["_" "x" "_"]])
-(def board-minimax    [["o" "_" "o"] ["_" "_" "x"] ["_" "x" "x"]])
-(def board-complete   [["o" "x" "o"] ["x" "o" "x"] ["x" "o" "x"]])
-(def board-x-win   [["x" "x" "x"] ["o" "_" "o"] ["_" "_" "_"]])
-(def board-x-block   [["x" "_" "x"] ["o" "_" "_"] ["_" "_" "_"]])
+(deftest game-state-score-draw-depth-zero
+  (let [board-empty  [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
+    (testing "scores the current game state of the board at a game depth of zero"
+   (is (= 0 (score-game board-empty))))))
 
-(deftest board-size-count
- (testing "board size"
-   (is (= 9 (board-size board-empty)))))
+(deftest game-state-score-draw-depth-nine
+  (let [board [["x" "o" "x"] ["x" "o" "o"] ["o" "x" "x"]]]
+    (testing "scores the current game state of the board at a game depth of nine"
+   (is (= 0 (score-game board))))))
 
-(deftest empty-moves-count
-	(testing "returns the amount of unoccupied spaces in the board"
-	(is (= 9 (empty-spaces board-empty)))))
+(deftest game-state-score-depth-one
+  (let [board  [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
+    (testing "scores the current game state of the board at a game depth of one"
+   (is (= 0 (score-game board))))))
 
-(deftest depth-counter
-  (testing "gets game depth"
-  	(is (= 0  (game-depth board-empty)))))
+(deftest game-state-score-depth-two
+  (let [board  [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "_"]]]
+    (testing "scores the current game state of the board at a game depth of two"
+   (is (= 0 (score-game board))))))
 
-(deftest depth-counter-four-steps
-	(testing "gets game depth"
-	 (is (= 4 (game-depth board-depth-four)))))
+(deftest game-state-score-depth-three
+  (let [board  [["x" "_" "x"] ["_" "o" "_"] ["_" "_" "_"]]]
+    (testing "scores the current game state of the board at a game depth of three"
+   (is (= 0 (score-game board))))))
 
-(deftest game-state-score-draw
-  (testing "scores the current game state of the board"
-   (is (= 0 (score-game board)))))
+(deftest game-state-score-depth-four
+  (let [board  [["x" "x" "_"] ["o" "_" "o"] ["_" "_" "_"]]]
+    (testing "scores the current game state of the board at a game depth of four"
+   (is (= 0 (score-game board))))))
 
-(deftest game-state-score-mini-x
-  (testing "scores the current game state of the board with a minimizing win"
-   (is (= -4 (score-game board-winner-x)))))
+(deftest game-state-score-max-depth-five
+  (let [board [["o" "o" "o"] ["x" "_" "x"] ["_" "_" "_"]]]
+    (testing "scores the current game state of the board at a game depth of five"
+   (is (= 5 (score-game board))))))
 
-(deftest game-state-score-mini-y
-  (testing "scores the current game state of the board with a minimizing win"
-   (is (= 4 (score-game board-winner-y)))))
+(deftest game-state-score-min-depth-six
+  (let [board [["x" "_" "x"] ["o" "_" "o"] ["o" "_" "x"]]]
+    (testing "scores the current game state of the board at a game depth of six"
+   (is (= 0 (score-game board))))))
+
+(deftest game-state-score-max-depth-seven
+  (let [board [["o" "x" "o"] ["x" "o" "x"] ["x" "_" "o"]]]
+    (testing "scores the current game state of the board at a game depth of seven"
+   (is (= 2 (score-game board))))))
+
+(deftest game-state-score-depth-eight
+  (let [board [["x" "o" "x"] ["o" "_" "o"] ["x" "o" "x"]]]
+    (testing "scores the current game state of the board at a game depth of eight"
+   (is (= 0 (score-game board))))))
 
 (deftest game-possible-moves
+  (let [board  [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "y"]]]
   (testing "returns a vector of possible moves"
-    (is (= [1 2 3 4 5 6 7 8 9 ] (possible-moves board-empty 0 [])))))
-
-(deftest max-index
-  (testing "finds the index of the max move"
-    (is (= 7 (find-max-index [10 20 30 40 50 60 70 80])))))
-
-(deftest min-index
-  (testing "finds the min index"
-    (is (= 0 (find-min-index [0 1 2 3 4 5 6 7 8 9])))))
+    (is (= [ 2 3 4  6 7 8] (possible-moves board  0 []))))))
 
 (deftest best-move-possible-max
   (testing "returns the  index and score of the best maximizing move"
@@ -63,36 +68,19 @@
     (is (= [0 2] (best-score-index  [2 3 4 5 6 7 8 9 10] false )))))
 
 (deftest possible-board-state
-  (testing "return a psovble bard state based on input"
-    (is (=      (possible-board 1 "x" board)))))
-
-(deftest game-end-state
-  (testing "return true if the game is over"
-    (is (= "x" (game-over? [["x" "x" "x"] ["o" "_" "o"] ["_" "o" "_"]])))))
+  (testing "return a posible board state based on input"
+   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
+    (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 player1-marker board))))))
 
 (deftest minimax-test
-  (testing "return best sore and its index its score"
-    (is (= [1] (minimax board-minimax true )))))
-
- (deftest minimax-test
-  (testing "return the score of a complete game"
-    (is (=  0 (minimax board-complete true )))))
-
-(deftest minimax-test
-  (testing "return the score of a x win game"
-    (is (=[-1 -5] (minimax board-x-win true )))))
+ (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
+  (testing "return best score and its index based on the board state"
+    (is (= [0 4] (minimax board true ))))))
 
  (deftest ai-best-move
-   (testing "returns the winning move"
-     (is (=  2 (ai-move board-minimax)))))
-
-(deftest ai-best-move
-   (testing "returns the best move to block win"
-     (is (=  [0 1] (ai-move board-x-block)))))
-
-(deftest board-states-test
-  (testing "return possible-board boards states based on available moves"
-    (is = (board-states [1 2 3 5 6] board "x"))))
+  (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
+   (testing "returns the best move location"
+      (is (= [0 2] (ai-move board))))))
 
 
 
