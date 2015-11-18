@@ -1,5 +1,5 @@
 (ns tic-tac-toe.board)
-  (require 'clojure.core.matrix)
+(require 'clojure.core.matrix)
 
 (def empty-space "_")
 

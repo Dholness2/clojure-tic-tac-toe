@@ -6,48 +6,53 @@
 
 (deftest game-state-score-draw-depth-zero
   (let [board-empty  [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
-    (testing "scores the current game state of the board"
+    (testing "scores the current game state of the board at a game depth of zero"
    (is (= 0 (score-game board-empty))))))
 
 (deftest game-state-score-draw-depth-nine
-  (let [board-empty  [["x" "o" "x"] ["o" "x" "o"] ["x" "x" "o"]]]
-    (testing "scores the current game state of the board"
-   (is (= -1 (score-game board-empty))))))
+  (let [board [["x" "o" "x"] ["x" "o" "o"] ["o" "x" "x"]]]
+    (testing "scores the current game state of the board at a game depth of nine"
+   (is (= 0 (score-game board))))))
 
 (deftest game-state-score-depth-one
   (let [board  [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
-    (testing "scores the current game state of the board "
+    (testing "scores the current game state of the board at a game depth of one"
    (is (= 0 (score-game board))))))
 
 (deftest game-state-score-depth-two
   (let [board  [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "_"]]]
-    (testing "scores the current game state of the board "
+    (testing "scores the current game state of the board at a game depth of two"
    (is (= 0 (score-game board))))))
 
 (deftest game-state-score-depth-three
   (let [board  [["x" "_" "x"] ["_" "o" "_"] ["_" "_" "_"]]]
-    (testing "scores the current game state of the board "
+    (testing "scores the current game state of the board at a game depth of three"
    (is (= 0 (score-game board))))))
 
 (deftest game-state-score-depth-four
   (let [board  [["x" "x" "_"] ["o" "_" "o"] ["_" "_" "_"]]]
-    (testing "scores the current game state of the board "
+    (testing "scores the current game state of the board at a game depth of four"
    (is (= 0 (score-game board))))))
 
 (deftest game-state-score-max-depth-five
-  (let [board-player-two-win  [["o" "o" "o"] ["x" "_" "x"] ["_" "_" "_"]]]
-    (testing "scores the current game state of the board  "
-   (is (= 5 (score-game board-player-two-win))))))
+  (let [board [["o" "o" "o"] ["x" "_" "x"] ["_" "_" "_"]]]
+    (testing "scores the current game state of the board at a game depth of five"
+   (is (= 5 (score-game board))))))
 
 (deftest game-state-score-min-depth-six
   (let [board [["x" "_" "x"] ["o" "_" "o"] ["o" "_" "x"]]]
-    (testing "scores the current game state of the board "
+    (testing "scores the current game state of the board at a game depth of six"
    (is (= 0 (score-game board))))))
 
 (deftest game-state-score-max-depth-seven
-  (let [board-player-two-win  [["o" "x" "o"] ["x" "_" "x"] ["x" "_" "o"]]]
-    (testing "scores the current game state of the board "
-   (is (= 0 (score-game board-player-two-win))))))
+  (let [board [["o" "x" "o"] ["x" "o" "x"] ["x" "_" "o"]]]
+    (testing "scores the current game state of the board at a game depth of seven"
+   (is (= 2 (score-game board))))))
+
+(deftest game-state-score-depth-eight
+  (let [board [["x" "o" "x"] ["o" "_" "o"] ["x" "o" "x"]]]
+    (testing "scores the current game state of the board at a game depth of eight"
+   (is (= 0 (score-game board))))))
 
 (deftest game-possible-moves
   (let [board  [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "y"]]]
@@ -67,7 +72,7 @@
    (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
     (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 player1-marker board))))))
 
-(deftest minimax-test-one
+(deftest minimax-test
  (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
   (testing "return best score and its index based on the board state"
     (is (= [0 4] (minimax board true ))))))

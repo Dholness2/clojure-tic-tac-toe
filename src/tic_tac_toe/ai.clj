@@ -1,6 +1,6 @@
 (ns tic-tac-toe.ai
-  (:require [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.game :refer  :all]))
+  (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space]]
+            [tic-tac-toe.game :refer  [game-depth player1-marker player2-marker winner?]]))
 
 (defn score-game [board]
 	(cond
@@ -10,7 +10,7 @@
 
 (defn possible-moves [board iteration moves]
   (if (< iteration (board-size board))
-      (do (if (= "_" (nth (flatten board) iteration))
+      (do (if (= empty-space (nth (flatten board) iteration))
              (possible-moves board  (+ 1 iteration) (conj moves (+ 1 iteration)))
              (possible-moves board  (+ 1 iteration) moves)))
        moves))
@@ -27,7 +27,7 @@
   (map (fn [move] (possible-board move marker board )) open-positions))
 
 (defn minimax [board maximizing]
-  (if (winner? board)
+  (if (or (winner? board) (= 1 (game-depth board))) 
      (let [score (score-game board)
            score-index 0 ]
        [score-index score]) 
