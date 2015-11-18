@@ -1,5 +1,5 @@
-(ns tic-tac-toe.board)
-(require 'clojure.core.matrix)
+(ns tic-tac-toe.board
+(:require [clojure.core.matrix :refer [transpose]]))
 
 (def empty-space "_")
 
@@ -27,21 +27,7 @@
   [(quot (- move 1) rowsize) (mod (- move 1) rowsize)])
 
 (defn check-equality [items]
-  (if (or (= empty-space (some #{empty-space} items)) (>= (count(distinct items)) 2))
-    false
-    true))
-
-(defn row-check
-  ([board]
-    (let[ row (first (take 1 board))]
-      (if (or (= empty-space (some #{empty-space} row)) (>= (count(distinct row)) 2))
-        (row-check (drop 1 board))
-        (row-check board (get row 0)))))
-  ([board winner]
-    winner))
-
-(defn column-check [board]
-  (row-check (clojure.core.matrix/transpose board)))
+   (or (not= empty-space (some #{empty-space} items)) (<= (count(distinct items)) 2)))
 
 (defn get-location [board locations]
   (map (fn [location] (get-in board [location location])) locations))
@@ -50,12 +36,4 @@
   (let[diagonal-indexs-top  (vec(take rowsize (iterate inc 0)))
  	     diagonal-indexs-bottom	(vec(take rowsize (iterate  dec (- rowsize 1))))]
       [(get-location board diagonal-indexs-top)  (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
-
-(defn diagonal-check [board rowsize]
-  (let [diagonal-top     ((get-diagnoals board rowsize) 0)
-    	  diagonal-bottom ((get-diagnoals board rowsize) 1)]
-    (if (check-equality diagonal-top)
-      (first diagonal-top)
-      (if (check-equality diagonal-bottom)
-    	  (first diagonal-bottom)))))
 

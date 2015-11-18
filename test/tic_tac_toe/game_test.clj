@@ -6,6 +6,19 @@
             [tic-tac-toe.game :refer :all]
             [tic-tac-toe.ai :refer :all]))
 
+
+(deftest board-row-check 
+  (testing "check for winner from row"
+    (is (=  "x" (row-check [["x" "x" "x"] ["y" "x" "Y"] ["Y" "x" "y"] ])))))
+
+(deftest board-colunm-check 
+  (testing "check for winner from column"
+    (is (=  "y" (column-check [["y" "x" "x"] ["y" "Y" "Y"] ["y" "x" "y"]])))))
+
+(deftest diagonal-checker 
+  (testing "checks for any diagonal wins"
+    (is (= "y" (diagonal-check [["y" "x" "_"]["x" "y" "x"]["x" "x" "y"]] 3)))))
+
 (deftest board-draw 
 	(testing "game is a draw"
 	(is (=  true (draw? [["x" "y" "y"] ["x" "y" "x"] ["Y" "x" "y"]])))))

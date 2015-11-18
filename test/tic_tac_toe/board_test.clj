@@ -77,14 +77,6 @@
   (testing "takes the users move and converts to nested vector location ")
     (is (= [0 0] (matrix-convrt 1 3))))
 
-(deftest board-row-check 
-  (testing "check for winner from row"
-    (is (=  "x" (row-check [["x" "x" "x"] ["y" "x" "Y"] ["Y" "x" "y"] ])))))
-
-(deftest board-colunm-check 
-  (testing "check for winner from column"
-    (is (=  "y" (column-check [["y" "x" "x"] ["y" "Y" "Y"] ["y" "x" "y"]])))))
-
 (deftest determine-equality 
   (testing "checks for matches"
     (is (= true (check-equality ["x" "x" "x"] )))))
@@ -92,10 +84,6 @@
 (deftest get-nested-elements 
   (testing "gets nested elements in board"
     (is (= '("y" "y" "y")(get-location [["y" "x" "x"] ["y" "y" "Y"] ["Y" "x" "y"]] [0 1 2 ] )))))
-
-(deftest diagonal-checker 
-  (testing "checks for any diagonal wins"
-    (is (= "y" (diagonal-check [["y" "x" "_"]["x" "y" "x"]["x" "x" "y"]] 3)))))
 
 (deftest get-diagnoals-test
   (let [board [["x" "_" "_" ]["_" "x" "_" ]["_" "_" "x" ]]
