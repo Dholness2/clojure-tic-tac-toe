@@ -83,7 +83,7 @@
 
 (deftest get-nested-elements 
   (testing "gets nested elements in board"
-    (is (= '("y" "y" "y")(get-location [["y" "x" "x"] ["y" "y" "Y"] ["Y" "x" "y"]] [0 1 2 ] )))))
+    (is (= '("y" "y" "y")(get-location [["y" "x" "x"] ["y" "y" "y"] ["y" "x" "y"]] [0 1 2 ] )))))
 
 (deftest get-diagnoals-test
   (let [board [["x" "_" "_" ]["_" "x" "_" ]["_" "_" "x" ]]

@@ -1,6 +1,6 @@
 (ns tic-tac-toe.ai
   (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space]]
-            [tic-tac-toe.game :refer  [game-depth player1-marker player2-marker winner?]]))
+            [tic-tac-toe.game :refer  [game-depth player2-marker winner?]]))
 
 (defn score-game [board]
 	(cond
@@ -42,10 +42,9 @@
    (if-not (empty? open-positions)    
      (matrix-convrt (open-positions (first move-score)) 3))))
 
-
-
-
-
+(defrecord AiPlayer[marker]  
+  PlayerProtocol 
+    (next-move [player board] (ai-move board marker)))
 
 
 
