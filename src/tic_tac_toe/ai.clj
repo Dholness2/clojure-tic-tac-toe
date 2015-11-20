@@ -1,6 +1,7 @@
 (ns tic-tac-toe.ai
-  (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space]]
-            [tic-tac-toe.game :refer  [game-depth player1-marker player2-marker winner?]]))
+  (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move]]
+            [tic-tac-toe.game :refer  [game-depth  player1-marker player2-marker winner?]]
+             [tic-tac-toe.protocol.player :refer :all]))
 
 (defn score-game [board]
 	(cond
@@ -27,10 +28,10 @@
   (map (fn [move] (possible-board move marker board )) open-positions))
 
 (defn minimax [board maximizing]
-  (if (or (winner? board) (= 1 (game-depth board))) 
+  (if (or (winner? board) (= 1 (game-depth board)))
      (let [score (score-game board)
            score-index 0 ]
-       [score-index score]) 
+       [score-index score])
     (let [open-positions (possible-moves board 0 [] )]
       (if  maximizing
         (best-score-index(vec (map (fn [board] (last (minimax board false))) (board-states open-positions board player2-marker))) maximizing)
@@ -39,9 +40,12 @@
 (defn ai-move [board]
   (let [open-positions (possible-moves board 0 [])
         move-score (minimax board true)]
-   (if-not (empty? open-positions)    
+   (if-not (empty? open-positions)
      (matrix-convrt (open-positions (first move-score)) 3))))
 
+(defrecord AiPlayer[marker]
+  PlayerProtocol
+    (next-move [player board] (move (ai-move board) marker board)))
 
 
 
@@ -55,8 +59,4 @@
 
 
 
-
-
-
- 
 

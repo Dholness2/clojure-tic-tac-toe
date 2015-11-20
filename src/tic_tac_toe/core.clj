@@ -1,20 +1,26 @@
 (ns tic-tac-toe.core
   (:gen-class)
+
   (require [tic-tac-toe.board :refer :all]
            [tic-tac-toe.game :refer :all]
            [tic-tac-toe.ai :refer :all]
+           [tic-tac-toe.display :refer :all]
            [tic-tac-toe.human :refer :all]
-           [tic-tac-toe.display :refer :all]))
+           [tic-tac-toe.protocol.player :refer :all]))
 
-5(defn game-runner [board]
+(defn game-runner [board player1 player2]
   (display-iteration board)
   (if-not (winner? board)
-    (let [user-move (user-input-move board board-dimensions)
-          current-board (move user-move player1-marker board)]
+    (let [current-board (next-move player1 board)]
       (display-iteration current-board)
-      (if (ai-move current-board) (game-runner (move (ai-move current-board) player2-marker current-board))))
+      (if-not (winner? board)(game-runner (next-move player2 current-board)player1 player2)))
     (print-winner board)))
 
 (defn -main []
-  (let [emptyboard (create-empty-board board-dimensions)]
-    (game-runner emptyboard)))
+
+(def human (->HumanPlayer "x"))
+(def ai (->AiPlayer "o"))
+
+ (let [emptyboard (create-empty-board board-dimensions)]
+     (game-runner emptyboard human  ai )))
+

@@ -26,7 +26,7 @@
       (if (check-equality diagonal-bottom)
         (first diagonal-bottom)))))
 
-(defn  draw? [board]
+(defn draw? [board]
   (if-not(= empty-space (some #{empty-space} (flatten board)))
     true
     false))
