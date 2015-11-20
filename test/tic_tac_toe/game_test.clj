@@ -1,10 +1,7 @@
 (ns tic-tac-toe.game-test
   (:require [clojure.test :refer :all]
-            [tic-tac-toe.core :refer :all]
             [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.display :refer :all]
-            [tic-tac-toe.game :refer :all]
-            [tic-tac-toe.ai :refer :all]))
+            [tic-tac-toe.game :refer :all]))
 
 
 (deftest board-row-check 
