@@ -1,7 +1,6 @@
  (ns tic-tac-toe.human
-  (:gen-class)
-(require [tic-tac-toe.board :refer :all]
-         [tic-tac-toe.game :refer :all]
+(:require [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move]]
+         [tic-tac-toe.game :refer [board-dimensions]]
          [tic-tac-toe.protocol.player :refer :all]))
 
 (defn valid-selection [input board]

@@ -45,7 +45,7 @@
 
 (defrecord AiPlayer[marker]
   PlayerProtocol
-    (next-move [player board] (move (ai-move board) marker board)))
+  (next-move [player board] (move (ai-move board) marker board)))
 
 
 

@@ -27,8 +27,8 @@
 
 (defrecord TerminalDisplay []
   DisplayProtocol
-   (display-state [display board] (display-iteration board))
-   (display-winner [display board] (print-winner board)))
+  (display-state [display board] (display-iteration board))
+  (display-winner [display board] (print-winner board)))
 
 
 
