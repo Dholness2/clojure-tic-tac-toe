@@ -27,9 +27,7 @@
         (first diagonal-bottom)))))
 
 (defn draw? [board]
-  (if-not(= empty-space (some #{empty-space} (flatten board)))
-    true
-    false))
+  (not (= empty-space (some #{empty-space} (flatten board)))))
 
 (defn winner? [board]
   (cond

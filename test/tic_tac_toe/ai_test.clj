@@ -1,9 +1,9 @@
 (ns tic-tac-toe.ai-test
   (:require [clojure.test :refer :all]
-  	        [tic-tac-toe.board :refer :all]
-  	        [tic-tac-toe.ai :refer :all]
-            [tic-tac-toe.game :refer :all]
-            [tic-tac-toe.protocol.player :refer :all]))
+            [tic-tac-toe.ai :refer :all]
+  	        [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move]]
+            [tic-tac-toe.game :refer  [game-depth  player1-marker player2-marker winner?]]
+            [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
 (deftest game-state-score-draw-depth-zero
   (let [board-empty  [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]

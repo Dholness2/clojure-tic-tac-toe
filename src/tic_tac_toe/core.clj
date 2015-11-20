@@ -1,7 +1,6 @@
 (ns tic-tac-toe.core
   (:gen-class)
-
-  (require [tic-tac-toe.board :refer :all]
+ (require [tic-tac-toe.board :refer :all]
            [tic-tac-toe.game :refer :all]
            [tic-tac-toe.ai :refer :all]
            [tic-tac-toe.display :refer :all]
