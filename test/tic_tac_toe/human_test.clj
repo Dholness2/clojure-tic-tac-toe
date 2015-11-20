@@ -32,5 +32,5 @@
   (let [player  (->HumanPlayer "x")
         board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "creates defrecord of player protocol"
-      (is (= [["_" "_" "_"] ["x" "_" "_"] ["_" "_" "_"] (next-move player board))))))
+      (is (= [["_" "_" "_"] ["x" "_" "_"] ["_" "_" "_"]] (next-move player board))))))
 

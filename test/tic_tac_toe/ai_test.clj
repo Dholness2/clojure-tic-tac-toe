@@ -2,7 +2,8 @@
   (:require [clojure.test :refer :all]
   	        [tic-tac-toe.board :refer :all]
   	        [tic-tac-toe.ai :refer :all]
-            [tic-tac-toe.game :refer :all]))
+            [tic-tac-toe.game :refer :all]
+            [tic-tac-toe.protocol.player :refer :all]))
 
 (deftest game-state-score-draw-depth-zero
   (let [board-empty  [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
@@ -81,6 +82,13 @@
   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
    (testing "returns the best move location"
       (is (= [0 2] (ai-move board))))))
+
+(deftest ai-record
+  (let [player  (->AiPlayer "o")
+        board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+    (testing "creates defrecord of player protocol"
+      (is (= [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] (next-move player board))))))
+
 
 
 

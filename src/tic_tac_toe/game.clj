@@ -2,7 +2,7 @@
   (:require [tic-tac-toe.board :refer [get-diagnoals check-equality empty-space empty-spaces board-size]]
      [clojure.core.matrix :refer [transpose]]))
 
-(def player1-marker)
+(def player1-marker "x")
 (def player2-marker "o")
 (def board-dimensions 3)
 
@@ -26,7 +26,7 @@
       (if (check-equality diagonal-bottom)
         (first diagonal-bottom)))))
 
-(defn  draw? [board]
+(defn draw? [board]
   (if-not(= empty-space (some #{empty-space} (flatten board)))
     true
     false))
