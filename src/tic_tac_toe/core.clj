@@ -3,10 +3,10 @@
  (require [tic-tac-toe.board :refer :all]
            [tic-tac-toe.game :refer :all]
            [tic-tac-toe.ai :refer :all]
-           [tic-tac-toe.display.terminal :refer :all]
+           [tic-tac-toe.display.terminal :refer [->TerminalDisplay]]
            [tic-tac-toe.human :refer :all]
            [tic-tac-toe.protocol.player :refer :all]
-           [tic-tac-toe.protocol.display :refer :all]))
+           [tic-tac-toe.protocol.display :refer [display-state display-winner]]))
 
 (defn game-runner [board display player1 player2]
   (display-state  display board)

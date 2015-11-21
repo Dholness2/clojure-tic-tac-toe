@@ -5,5 +5,5 @@
    (read-string(read-line)))
 
 (defrecord ConsoleInput []
-	InputProtocol
-      (get-input [input] get-move))
+  InputProtocol
+  (get-input [input] get-move))

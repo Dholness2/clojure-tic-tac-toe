@@ -78,16 +78,85 @@
   (testing "return best score and its index based on the board state"
     (is (= [0 4] (minimax board true ))))))
 
- (deftest ai-best-move
+ (deftest ai-best-move-win-one
   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
    (testing "returns the best move location"
       (is (= [0 2] (ai-move board))))))
+
+ (deftest ai-best-move-block-horizontial
+  (let [board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]]]
+   (testing "returns the best move location"
+      (is (= [1 1] (ai-move board))))))
+
+ (deftest ai-best-move-block-horizontial
+  (let [board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]]
+   (testing "returns the best move location"
+      (is (= [0 1] (ai-move board))))))
+
+ (deftest ai-best-move-block-horizontial
+  (let [board  [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]]
+   (testing "returns the best move location"
+      (is (= [2 1] (ai-move board))))))
+ 
+ (deftest ai-best-move-block-diagonal
+  (let [board  [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]]]
+   (testing "returns the best move location"
+      (is (= [2 2] (ai-move board))))))
+
+ (deftest ai-best-move-block-diagonal
+  (let [board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]]]
+   (testing "returns the best move location"
+      (is (= [2 0] (ai-move board))))))
+
+ (deftest ai-best-move-block-verticle 
+  (let [board  [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]]]
+   (testing "returns the best move location"
+      (is (= [2 2] (ai-move board))))))   
 
 (deftest ai-record
   (let [player  (->AiPlayer "o")
         board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "creates defrecord of player protocol"
       (is (= [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] (next-move player board))))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -9,17 +9,21 @@
 	 (= player1-marker (winner? board)) (- (game-depth board) 10)
 	  :else 0))
 
-(defn possible-moves [board iteration moves]
-  (if (< iteration (board-size board))
+(defn possible-moves 
+  ([board]
+    (possible-moves board 0 []))
+  ([board iteration moves]
+     (if (< iteration (board-size board))
       (do (if (= empty-space (nth (flatten board) iteration))
              (possible-moves board  (+ 1 iteration) (conj moves (+ 1 iteration)))
              (possible-moves board  (+ 1 iteration) moves)))
-       moves))
+       moves)))
 
 (defn best-score-index[scores  maximizing]
-  (if maximizing
-	  [(.indexOf scores (apply max scores)) (apply max scores)]
-    [(.indexOf scores (apply min scores)) (apply min scores)]))
+  (let [scores (vec scores)]
+    (if maximizing
+	    [(.indexOf scores (apply max scores)) (apply max scores)]
+      [(.indexOf scores (apply min scores)) (apply min scores)])))
 
 (defn possible-board [location marker current-board ]
   (move (matrix-convrt location 3) marker current-board))
@@ -27,18 +31,26 @@
 (defn board-states [open-positions board marker]
   (map (fn [move] (possible-board move marker board )) open-positions))
 
+(declare minimax)
+
+(defn score [board maximizing open-positions player]
+  (map (fn [board] (last (minimax board false))) (board-states open-positions board player)))
+
+(defn get-best-score-for [board maximizing]
+  (let [open-positions (possible-moves board)]
+    (if maximizing
+      (best-score-index (score board maximizing open-positions player2-marker) maximizing)
+      (best-score-index (score board maximizing open-positions player1-marker) maximizing))))
+    
 (defn minimax [board maximizing]
   (if (or (winner? board) (= 1 (game-depth board)))
      (let [score (score-game board)
            score-index 0 ]
        [score-index score])
-    (let [open-positions (possible-moves board 0 [] )]
-      (if  maximizing
-        (best-score-index(vec (map (fn [board] (last (minimax board false))) (board-states open-positions board player2-marker))) maximizing)
-        (best-score-index(vec (map (fn [board] (last (minimax board true))) (board-states open-positions board player1-marker))) maximizing)))))
+    (get-best-score-for board maximizing)))
 
 (defn ai-move [board]
-  (let [open-positions (possible-moves board 0 [])
+  (let [open-positions (possible-moves board)
         move-score (minimax board true)]
    (if-not (empty? open-positions)
      (matrix-convrt (open-positions (first move-score)) 3))))
