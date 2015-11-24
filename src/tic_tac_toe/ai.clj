@@ -1,13 +1,25 @@
 (ns tic-tac-toe.ai
   (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move]]
-            [tic-tac-toe.game :refer  [game-depth  player1-marker player2-marker winner?]]
+            [tic-tac-toe.game :refer  [game-depth winner?]]
              [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
 
+(def marker-1 "x")
+(def marker-2 "o")
+(def place-holder (atom {:player-marker marker-1 :ai-marker marker-2}))
+
+(def max-score 1)
+(def min-score -1)
+(def draw-score 0)
+
+(defn switch-markers [place-holder marker-1 marker-2]
+ (swap! place-holder assoc (first(keys @place-holder)) marker-2 (last(keys @place-holder)) marker-1))
+ 
 (defn score-game [board]
-	(cond
-	 (= player2-marker (winner? board)) (- 10 (game-depth board))
-	 (= player1-marker (winner? board)) (- (game-depth board) 10)
-	  :else 0))
+  (let [winner (winner? board)]
+	  (cond
+	   (= (@place-holder :ai-marker) winner ) (- 10 (game-depth board))
+	   (= (@place-holder :player-marker) winner) (- (game-depth board) 10)
+     :else 0)))
 
 (defn possible-moves 
   ([board]
@@ -39,8 +51,8 @@
 (defn get-best-score-for [board maximizing]
   (let [open-positions (possible-moves board)]
     (if maximizing
-      (best-score-index (score board maximizing open-positions player2-marker) maximizing)
-      (best-score-index (score board maximizing open-positions player1-marker) maximizing))))
+      (best-score-index (score board maximizing open-positions (@place-holder :ai-marker)) maximizing)
+      (best-score-index (score board maximizing open-positions (@place-holder :player-marker)) maximizing))))
     
 (defn minimax [board maximizing]
   (if (or (winner? board) (= 1 (game-depth board)))
@@ -52,12 +64,11 @@
 (defn ai-move [board]
   (let [open-positions (possible-moves board)
         move-score (minimax board true)]
-   (if-not (empty? open-positions)
-     (matrix-convrt (open-positions (first move-score)) 3))))
+   (matrix-convrt (open-positions (first move-score)) 3)))
 
 (defrecord AiPlayer[marker]
   PlayerProtocol
-  (next-move [player board] (move (ai-move board) marker board)))
+  (next-move [player board] (if-not (winner? board) (move (ai-move board) marker board))))
 
 
 
