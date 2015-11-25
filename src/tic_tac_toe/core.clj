@@ -2,8 +2,8 @@
   (:gen-class)
  (require [tic-tac-toe.board :refer :all]
            [tic-tac-toe.game :refer :all]
-           [tic-tac-toe.ai :refer :all]
-           [tic-tac-toe.display.terminal :refer [->TerminalDisplay]]
+           [tic-tac-toe.ai :refer [->AiPlayer place-holder switch-markers marker-1 marker-2 ]]
+           [tic-tac-toe.display.terminal :refer [->TerminalDisplay print-winner]]
            [tic-tac-toe.human :refer :all]
            [tic-tac-toe.protocol.player :refer :all]
            [tic-tac-toe.protocol.display :refer [display-state display-winner]]))
@@ -13,15 +13,29 @@
   (if-not (winner? board)
     (let [current-board (next-move player1 board)]
       (display-state display current-board)
-      (if-not (winner? board)(game-runner (next-move player2 current-board) display player1 player2)))
+      (if-not (winner? current-board)
+        (game-runner (next-move player2 current-board) display player1 player2)
+        (print-winner current-board)))
     (print-winner board)))
 
+(defn set-markers [human-marker]  
+  (if (= human-marker "x")
+    (let [player-1 (->HumanPlayer "x")  
+           player-2 (->AiPlayer "o")]
+      [player-1 player-2])
+    (let [player-2 (->HumanPlayer "o")  
+           player-1 (->AiPlayer "x")] 
+      (switch-markers place-holder marker-1 marker-2)
+      [player-1 player-2])))
+
+(defn game-intializer [display board]
+  (println "Select your marker x or o ")
+  (let [human-marker (read-line)]
+    (let[players (set-markers human-marker)]
+        (game-runner board display (players 0) (players 1)))))
+
 (defn -main []
-
-(def terminal (->TerminalDisplay))
-(def human (->HumanPlayer "x"))
-(def ai (->AiPlayer "o"))
-
-(let [emptyboard (create-empty-board board-dimensions)]
-   (game-runner emptyboard terminal human  ai  )))
+  (let [terminal (->TerminalDisplay)
+        board (create-empty-board 3)]
+    (game-intializer terminal board)))
 

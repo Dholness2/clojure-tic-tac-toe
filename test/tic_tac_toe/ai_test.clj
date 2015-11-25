@@ -3,7 +3,7 @@
             [tic-tac-toe.ai :refer :all]
   	        [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
-(deftest swtich-marker-test 
+  (deftest swtich-marker-test 
   (let [players (atom {:player-marker "x" :ai-marker "o"})] 
     (testing "deafual swaps marker associations(:player x :ai o) for tic tac toe game "
       (is (= {:player-marker "o", :ai-marker "x"}    (switch-markers players "x" "o"))))))
