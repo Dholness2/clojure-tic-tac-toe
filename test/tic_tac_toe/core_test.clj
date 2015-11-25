@@ -4,24 +4,26 @@
             [tic-tac-toe.board :refer :all]
             [tic-tac-toe.game :refer :all]
             [tic-tac-toe.ai :refer :all]
+            [tic-tac-toe.input :refer :all]
             [tic-tac-toe.display.terminal :refer :all]
             [tic-tac-toe.human :refer :all]
             [tic-tac-toe.protocol.player :refer :all]
+            [tic-tac-toe.protocol.input :refer :all]
             [tic-tac-toe.protocol.display :refer :all]))
 
 (deftest game-iterattion-test 
    (let [ board-winner [["_" "o" "o" ]["x" "_" "_" ]["_" "_" "_" ]]
           terminal (->TerminalDisplay)
-          human (->HumanPlayer "x")  
+          human (->HumanPlayer "x" (->ConsoleInput))  
           ai (->AiPlayer "o")]
-   (test "this test confirms the game folloes the correct game interation sequences")
+   (test "this test confirms the game follows the correct game interation sequences")
       (is (= (str (with-out-str(clear-terminal)) 
                   (with-out-str(display-index board-winner)) 
-                  "_oo\nx__\n___\nwhat is your next move\n"
+                  "_oo\nx__\n___\nwhat is your next move ?\n"
                   (with-out-str(clear-terminal)) 
                   (with-out-str(display-index board-winner)) 
                   "_oo\nx_x\n___\n" 
-                  (with-out-str(clear-terminal))
+                   (with-out-str(clear-terminal))
                    (with-out-str(display-index board-winner)) 
                   "ooo\nx_x\n___\n"
                   "Game Winner: o\n")  
@@ -30,45 +32,43 @@
 (deftest set-markers-test
   (let [ board-empty [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
           terminal (->TerminalDisplay)
-          human (->HumanPlayer "x")  
+          human (->HumanPlayer "x" (->ConsoleInput))  
           ai (->AiPlayer "o")
-          marker-selection "x"]  
-      (test "game allows you to swtich player order")
-      (is (= [#tic_tac_toe.human.HumanPlayer{:marker "x"} #tic_tac_toe.ai.AiPlayer{:marker "o"}] (set-markers marker-selection)))))
+          marker-selection "x"
+         input (->ConsoleInput)]  
+   (test "game allows you to swtich player markers")
+     (is (=[#tic_tac_toe.human.HumanPlayer{:marker "x", :input-protocol #tic_tac_toe.input.ConsoleInput{}} #tic_tac_toe.ai.AiPlayer{:marker "o"}] (set-markers marker-selection input)))))
 
 (deftest game-flow
-  (let [human (->HumanPlayer "x")
+  (let [human (->HumanPlayer "x" (->ConsoleInput))
         ai (->AiPlayer "o")
         terminal (->TerminalDisplay)
-        board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-    (test "this checks the game flow for a win state for x")
-      (is (= (str 
-              (with-out-str(clear-terminal)) 
-              (with-out-str(display-index board)) 
-              "___\n___\n___\n"
-              "what is your next move\n"
-             (with-out-str(clear-terminal)) 
-             (with-out-str(display-index board))
-              "x__\n___\n___\n"
-             (with-out-str(clear-terminal)) 
-             (with-out-str(display-index board))
-              "xo_\n___\n___\n"
-              "what is your next move\n"
-             (with-out-str(clear-terminal)) 
-             (with-out-str(display-index board))
-              "xox\n___\n___\n"
-              (with-out-str(clear-terminal)) 
-              (with-out-str(display-index board))
-              "xox\n_o_\n___\n"
-              "what is your next move\n"
-              (with-out-str(clear-terminal)) 
-              (with-out-str(display-index board))
-              "xox\nxo_\n___\n"
-              (with-out-str(clear-terminal)) 
-              (with-out-str(display-index board))
-              "xox\nxo_\n_o_\n"
-              "Game Winner: o\n")
-             (with-out-str (with-in-str "1\n3\n4\n" (game-runner board terminal human ai)))))))
+        iteration-one [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
+        iteration-two [["x" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
+        iteration-three [["x" "_" "_" ]["_" "o" "_" ]["_" "_" "_" ]]
+        iteration-four [["x" "_" "x" ]["_" "o" "_" ]["_" "_" "_" ]]
+        iteration-five [["x" "o" "x" ]["_" "o" "_" ]["_" "_" "_" ]]
+        iteration-six [["x" "o" "x" ]["x" "o" "_" ]["_" "_" "_" ]]
+        iteration-seven [["x" "o" "x" ]["x" "o" "_" ]["_" "o" "_" ]]]
+    (test "this checks the game flow for a win state for o")
+      (is (= (str (with-out-str(display-state terminal iteration-one)) 
+                (with-out-str (with-in-str "1" (next-move human iteration-one)))
+                (with-out-str(display-state terminal iteration-two)) 
+                (with-out-str(display-state terminal iteration-three)) 
+                (with-out-str (with-in-str "3" (next-move human iteration-three)))
+                (with-out-str(display-state terminal iteration-four)) 
+                (with-out-str(display-state terminal iteration-five)) 
+                (with-out-str (with-in-str "4" (next-move human iteration-five)))
+                (with-out-str(display-state terminal iteration-six)) 
+                (with-out-str(display-state terminal iteration-seven))
+                (with-out-str(display-winner terminal [["x" "o" "x" ]["x" "o" "_" ]["_" "o" "_" ]])))
+                (with-out-str (with-in-str "1\n3\n4\n" (game-runner iteration-one terminal human ai)))))))
+
+
+
+
+
+
 
 
 
