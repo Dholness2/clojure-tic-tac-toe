@@ -46,8 +46,9 @@
 (declare minimax)
 
 (defn score [board maximizing open-positions player]
-  (map (fn [board] (last (minimax board false))) (board-states open-positions board player)))
-
+  (if maximizing
+    (map (fn [board] (last (minimax board false))) (board-states open-positions board player))
+    (map (fn [board] (last (minimax board true))) (board-states open-positions board player))))
 (defn get-best-score-for [board maximizing]
   (let [open-positions (possible-moves board)]
     (if maximizing
@@ -55,16 +56,18 @@
       (best-score-index (score board maximizing open-positions (@place-holder :player-marker)) maximizing))))
     
 (defn minimax [board maximizing]
-  (if (or (winner? board) (= 1 (game-depth board)))
+  (if (winner? board)
      (let [score (score-game board)
            score-index 0 ]
        [score-index score])
     (get-best-score-for board maximizing)))
 
 (defn ai-move [board]
-  (let [open-positions (possible-moves board)
-        move-score (minimax board true)]
-   (matrix-convrt (open-positions (first move-score)) 3)))
+  (if (= 0 (game-depth board))
+    [0 0]
+    (let [open-positions (possible-moves board)
+          move-score (minimax board true)]
+     (matrix-convrt (open-positions (first move-score)) 3))))
 
 (defrecord AiPlayer[marker]
   PlayerProtocol
