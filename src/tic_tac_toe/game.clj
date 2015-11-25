@@ -1,10 +1,9 @@
-(ns tic-tac-toe.game
+       (ns tic-tac-toe.game
   (:require [tic-tac-toe.board :refer [get-diagnoals check-equality empty-space empty-spaces board-size]]
      [clojure.core.matrix :refer [transpose]]))
 
-(def player1-marker "x")
-(def player2-marker "o")
-(def board-dimensions 3)
+ 
+  (def board-dimensions 3)
 
 (defn row-check
   ([board]

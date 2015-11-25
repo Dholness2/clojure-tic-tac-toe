@@ -1,9 +1,12 @@
 (ns tic-tac-toe.ai-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.ai :refer :all]
-  	        [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move]]
-            [tic-tac-toe.game :refer  [game-depth  player1-marker player2-marker winner?]]
-            [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
+  	        [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
+
+  (deftest swtich-marker-test 
+  (let [players (atom {:player-marker "x" :ai-marker "o"})] 
+    (testing "deafual swaps marker associations(:player x :ai o) for tic tac toe game "
+      (is (= {:player-marker "o", :ai-marker "x"}    (switch-markers players "x" "o"))))))
 
 (deftest game-state-score-draw-depth-zero
   (let [board-empty  [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
@@ -71,23 +74,92 @@
 (deftest possible-board-state
   (testing "return a posible board state based on input"
    (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
-    (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 player1-marker board))))))
+    (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 (@place-holder :player-marker) board))))))
 
 (deftest minimax-test
  (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
   (testing "return best score and its index based on the board state"
     (is (= [0 4] (minimax board true ))))))
 
- (deftest ai-best-move
+ (deftest ai-best-move-win-one
   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
    (testing "returns the best move location"
       (is (= [0 2] (ai-move board))))))
+
+ (deftest ai-best-move-block-horizontial
+  (let [board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]]]
+   (testing "returns the best move location"
+      (is (= [1 1] (ai-move board))))))
+
+ (deftest ai-best-move-block-horizontial
+  (let [board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]]
+   (testing "returns the best move location"
+      (is (= [0 1] (ai-move board))))))
+
+ (deftest ai-best-move-block-horizontial
+  (let [board  [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]]
+   (testing "returns the best move location"
+      (is (= [2 1] (ai-move board))))))
+ 
+ (deftest ai-best-move-block-diagonal
+  (let [board  [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]]]
+   (testing "returns the best move location"
+      (is (= [2 2] (ai-move board))))))
+
+ (deftest ai-best-move-block-diagonal
+  (let [board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]]]
+   (testing "returns the best move location"
+      (is (= [2 0] (ai-move board))))))
+
+ (deftest ai-best-move-block-verticle 
+  (let [board  [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]]]
+   (testing "returns the best move location"
+      (is (= [2 2] (ai-move board))))))   
 
 (deftest ai-record
   (let [player  (->AiPlayer "o")
         board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "creates defrecord of player protocol"
       (is (= [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] (next-move player board))))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
