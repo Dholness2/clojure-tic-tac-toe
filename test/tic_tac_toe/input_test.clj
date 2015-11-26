@@ -41,4 +41,7 @@
     (testing "creates defrecord of input protocol"
       (is (= [0 0] (with-out-str-value (with-in-str "1" (get-move load board))))))))
 
-
+(deftest input-marker
+  (let [load (->ConsoleInput)]
+    (testing "gets the users marker selection"
+      (is (= "x" (with-out-str-value (with-in-str "x" (get-marker load))))))))

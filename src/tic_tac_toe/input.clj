@@ -17,7 +17,7 @@
       (do (println "invalid selection")
       	   user-marker))))
 
-(defn user-input-move [board ]
+(defn user-input-move [board]
  (let [input (read-string (prompt-terminal "what is your next move ?"))]
     (if (= true (valid-selection input board))
       (matrix-convrt input board-dimensions)
@@ -26,4 +26,5 @@
 
 (defrecord ConsoleInput []
   InputProtocol
- (get-move [input board] (user-input-move board)))
+  (get-move [input board] (user-input-move board))
+  (get-marker [input] (user-marker)))
