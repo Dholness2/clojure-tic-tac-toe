@@ -20,13 +20,13 @@
         (print-winner current-board)))
     (print-winner board)))
 
-(defn set-markers [human-marker input]  
+(defn set-markers [human-marker input]
   (if (= human-marker "x")
-    (let [player-1 (->HumanPlayer "x" input)  
+    (let [player-1 (->HumanPlayer "x" input)
            player-2 (->AiPlayer "o")]
       [player-1 player-2])
-    (let [player-2 (->HumanPlayer "o" input)  
-           player-1 (->AiPlayer "x")] 
+    (let [player-2 (->HumanPlayer "o" input)
+           player-1 (->AiPlayer "x")]
       (switch-markers place-holder marker-1 marker-2)
       [player-1 player-2])))
 

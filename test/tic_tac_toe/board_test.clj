@@ -2,10 +2,10 @@
   (:require [clojure.test :refer :all]
             [tic-tac-toe.board :refer :all]))
 
-(deftest board-create  
+(deftest board-create
   (testing "Create new board based on user input"
 		(is ( =  [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (create-empty-board 3 )))))
-		
+
 (deftest board-size-test
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
 	  (testing "returns the size of the board "
@@ -21,7 +21,7 @@
 	  (testing "creates a new vector with updated representation of the board"
 	    (is ( = [["x" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (move [0 0] "x" board))))))
 
-(deftest valid-move-zero 
+(deftest valid-move-zero
   (testing "test to mke sure user input is within game move option[0-8]")
  	  (is (= false (validmove? 0))))
 
@@ -77,11 +77,11 @@
   (testing "takes the users move and converts to nested vector location ")
     (is (= [0 0] (matrix-convrt 1 3))))
 
-(deftest determine-equality 
+(deftest determine-equality
   (testing "checks for matches"
     (is (= true (check-equality ["x" "x" "x"] )))))
 
-(deftest get-nested-elements 
+(deftest get-nested-elements
   (testing "gets nested elements in board"
     (is (= '("y" "y" "y")(get-location [["y" "x" "x"] ["y" "y" "y"] ["y" "x" "y"]] [0 1 2 ] )))))
 
@@ -89,8 +89,7 @@
   (let [board [["x" "_" "_" ]["_" "x" "_" ]["_" "_" "x" ]]
     		rowsize 3]
     (testing "gets diagonal positions"
-  	  (is (= (get-diagnoals board 3)))))) 
+  	  (is (= (get-diagnoals board 3))))))
 
 
 
- 	

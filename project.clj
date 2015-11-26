@@ -9,4 +9,4 @@
   :target-path "target/%s"
   :aliases {"autotest" ["with-profile" "test" "auto" "test"]}
   :profiles {:test {:plugins [[lein-auto "0.1.2"]]}
-  			 :uberjar {:aot :all}})
+             :uberjar {:aot :all}})

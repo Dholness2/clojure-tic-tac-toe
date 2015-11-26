@@ -3,8 +3,8 @@
             [tic-tac-toe.ai :refer :all]
   	        [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
-  (deftest swtich-marker-test 
-  (let [players (atom {:player-marker "x" :ai-marker "o"})] 
+  (deftest swtich-marker-test
+  (let [players (atom {:player-marker "x" :ai-marker "o"})]
     (testing "deafual swaps marker associations(:player x :ai o) for tic tac toe game "
       (is (= {:player-marker "o", :ai-marker "x"}    (switch-markers players "x" "o"))))))
 
@@ -100,7 +100,7 @@
   (let [board  [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]]
    (testing "returns the best move location"
       (is (= [2 1] (ai-move board))))))
- 
+
  (deftest ai-best-move-block-diagonal
   (let [board  [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]]]
    (testing "returns the best move location"
@@ -111,10 +111,10 @@
    (testing "returns the best move location"
       (is (= [2 0] (ai-move board))))))
 
- (deftest ai-best-move-block-verticle 
+ (deftest ai-best-move-block-verticle
   (let [board  [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]]]
    (testing "returns the best move location"
-      (is (= [2 2] (ai-move board))))))   
+      (is (= [2 2] (ai-move board))))))
 
 (deftest ai-record
   (let [player  (->AiPlayer "o")

@@ -17,7 +17,7 @@
       (is (= true (valid-selection input board))))))
 
 (deftest user-marker-test
-  (testing " gets the users marker and confirms is an o or x"
+  (testing "gets the users marker and confirms is an o or x"
 	(is (= "x" (with-out-str-value (with-in-str "x" (user-marker)))))))
 
 (deftest console-get-input
@@ -31,14 +31,14 @@
 
 (deftest input-record
   (let [load (->ConsoleInput)
-  		board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]						
-    (testing "creats defreacord of input protocol" 
+  		board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+    (testing "creates defrecord of input protocol"
       (is (= 1 (with-out-str-value (with-in-str "1" (get-move load board ))))))))
 
 (deftest input-record
   (let [load (->ConsoleInput)
-  	     board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]	
-    (testing "creats defreacord of input protocol" 
+  	     board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+    (testing "creates defrecord of input protocol"
       (is (= [0 0] (with-out-str-value (with-in-str "1" (get-move load board))))))))
 
 

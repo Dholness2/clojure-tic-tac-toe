@@ -13,7 +13,7 @@
 
 (defn switch-markers [place-holder marker-1 marker-2]
  (swap! place-holder assoc (first(keys @place-holder)) marker-2 (last(keys @place-holder)) marker-1))
- 
+
 (defn score-game [board]
   (let [winner (winner? board)]
 	  (cond
@@ -21,7 +21,7 @@
 	   (= (@place-holder :player-marker) winner) (- (game-depth board) 10)
      :else 0)))
 
-(defn possible-moves 
+(defn possible-moves
   ([board]
     (possible-moves board 0 []))
   ([board iteration moves]
@@ -54,7 +54,7 @@
     (if maximizing
       (best-score-index (score board maximizing open-positions (@place-holder :ai-marker)) maximizing)
       (best-score-index (score board maximizing open-positions (@place-holder :player-marker)) maximizing))))
-    
+
 (defn minimax [board maximizing]
   (if (winner? board)
      (let [score (score-game board)
