@@ -5,13 +5,20 @@
 
 (defn prompt-terminal [question]
    (println question)
-   (read-string(read-line)))
+   (read-line))
 
 (defn valid-selection [input board]
   (and (number? input) (validmove? input) (moveopen? board input)))
 
+(defn user-marker []
+  (let [selection  (prompt-terminal "Select your marker x or o ?")]
+    (if  (or (= selection "o") (= selection "x"))
+      selection
+      (do (println "invalid selection")
+      	   user-marker))))
+
 (defn user-input-move [board ]
- (let [input (prompt-terminal "what is your next move ?")]
+ (let [input (read-string (prompt-terminal "what is your next move ?"))]
     (if (= true (valid-selection input board))
       (matrix-convrt input board-dimensions)
       (do (println "invalid selection")

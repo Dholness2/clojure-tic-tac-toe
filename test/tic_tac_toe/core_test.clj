@@ -12,22 +12,18 @@
             [tic-tac-toe.protocol.display :refer :all]))
 
 (deftest game-iterattion-test 
-   (let [ board-winner [["_" "o" "o" ]["x" "_" "_" ]["_" "_" "_" ]]
+   (let [ iteration-one [["_" "o" "o" ]["x" "_" "_" ]["_" "_" "_" ]]
+          iteration-two [["_" "o" "o" ]["x" "_" "x" ]["_" "_" "_" ]]
+          iteration-three [["o" "o" "o" ]["x" "_" "x" ]["_" "_" "_" ]]
           terminal (->TerminalDisplay)
           human (->HumanPlayer "x" (->ConsoleInput))  
           ai (->AiPlayer "o")]
    (test "this test confirms the game follows the correct game interation sequences")
-      (is (= (str (with-out-str(clear-terminal)) 
-                  (with-out-str(display-index board-winner)) 
-                  "_oo\nx__\n___\nwhat is your next move ?\n"
-                  (with-out-str(clear-terminal)) 
-                  (with-out-str(display-index board-winner)) 
-                  "_oo\nx_x\n___\n" 
-                   (with-out-str(clear-terminal))
-                   (with-out-str(display-index board-winner)) 
-                  "ooo\nx_x\n___\n"
-                  "Game Winner: o\n")  
-            (with-out-str (with-in-str "6" (game-runner board-winner terminal human ai)))))))
+      (is (= (str (with-out-str(display-state terminal iteration-one)) 
+                  "what is your next move ?\n"
+                  (with-out-str(display-state terminal iteration-two))
+                  (with-out-str(display-state terminal iteration-three)) 
+                  (with-out-str(display-winner terminal iteration-three)))) (with-out-str (with-in-str "6" (game-runner iteration-one terminal human ai))))))
 
 (deftest set-markers-test
   (let [ board-empty [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
@@ -61,8 +57,7 @@
                 (with-out-str (with-in-str "4" (next-move human iteration-five)))
                 (with-out-str(display-state terminal iteration-six)) 
                 (with-out-str(display-state terminal iteration-seven))
-                (with-out-str(display-winner terminal [["x" "o" "x" ]["x" "o" "_" ]["_" "o" "_" ]])))
-                (with-out-str (with-in-str "1\n3\n4\n" (game-runner iteration-one terminal human ai)))))))
+                (with-out-str(display-winner terminal iteration-seven))) (with-out-str (with-in-str "1\n3\n4\n" (game-runner iteration-one terminal human ai)))))))
 
 
 

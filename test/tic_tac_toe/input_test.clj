@@ -16,6 +16,10 @@
     (testing "user input is valid choice"
       (is (= true (valid-selection input board))))))
 
+(deftest user-marker-test
+  (testing " gets the users marker and confirms is an o or x"
+	(is (= "x" (with-out-str-value (with-in-str "x" (user-marker)))))))
+
 (deftest console-get-input
     (testing "gets user input from console"
    	  (is (= 1  (with-out-str-value (with-in-str "1" (prompt-terminal "next move")))))))
