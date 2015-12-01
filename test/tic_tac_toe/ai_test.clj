@@ -59,7 +59,7 @@
    (is (= 0 (score-game game))))))
 
 (deftest game-possible-moves
-  (let [game  [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "y"]]]
+  (let [game  { :board [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "y"]] :ai-marker "o" :player-marker "x"}]
   (testing "returns a vector of possible moves"
     (is (= [ 2 3 4  6 7 8] (possible-moves game  0 []))))))
 
