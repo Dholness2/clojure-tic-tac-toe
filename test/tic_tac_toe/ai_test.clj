@@ -9,118 +9,118 @@
       (is (= {:player-marker "o", :ai-marker "x"}    (switch-markers players "x" "o"))))))
 
 (deftest game-state-score-draw-depth-zero
-  (let [board-empty  [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
+  (let [game   { :board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of zero"
-   (is (= 0 (score-game board-empty))))))
+   (is (= 0 (score-game game))))))
 
 (deftest game-state-score-draw-depth-nine
-  (let [board [["x" "o" "x"] ["x" "o" "o"] ["o" "x" "x"]]]
+  (let [ game { :board [["x" "o" "x"] ["x" "o" "o"] ["o" "x" "x"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of nine"
-   (is (= 0 (score-game board))))))
+   (is (= 0 (score-game game))))))
 
 (deftest game-state-score-depth-one
-  (let [board  [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
+  (let [ game { :board [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of one"
-   (is (= 0 (score-game board))))))
+   (is (= 0 (score-game game))))))
 
 (deftest game-state-score-depth-two
-  (let [board  [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "_"]]]
+  (let [game { :board [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of two"
-   (is (= 0 (score-game board))))))
+   (is (= 0 (score-game game))))))
 
 (deftest game-state-score-depth-three
-  (let [board  [["x" "_" "x"] ["_" "o" "_"] ["_" "_" "_"]]]
+  (let [game { :board [["x" "_" "x"] ["_" "o" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"} ]
     (testing "scores the current game state of the board at a game depth of three"
-   (is (= 0 (score-game board))))))
+   (is (= 0 (score-game game))))))
 
 (deftest game-state-score-depth-four
-  (let [board  [["x" "x" "_"] ["o" "_" "o"] ["_" "_" "_"]]]
+  (let [game { :board [["x" "x" "_"] ["o" "_" "o"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of four"
-   (is (= 0 (score-game board))))))
+   (is (= 0 (score-game game))))))
 
 (deftest game-state-score-max-depth-five
-  (let [board [["o" "o" "o"] ["x" "_" "x"] ["_" "_" "_"]]]
+  (let [game { :board [["o" "o" "o"] ["x" "_" "x"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of five"
-   (is (= 5 (score-game board))))))
+   (is (= 5 (score-game game))))))
 
 (deftest game-state-score-min-depth-six
-  (let [board [["x" "_" "x"] ["o" "_" "o"] ["o" "_" "x"]]]
+  (let [game { :board [["x" "_" "x"] ["o" "_" "o"] ["o" "_" "x"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of six"
-   (is (= 0 (score-game board))))))
+   (is (= 0 (score-game game))))))
 
 (deftest game-state-score-max-depth-seven
-  (let [board [["o" "x" "o"] ["x" "o" "x"] ["x" "_" "o"]]]
+  (let [game { :board [["o" "x" "o"] ["x" "o" "x"] ["x" "_" "o"]]:ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of seven"
-   (is (= 2 (score-game board))))))
+   (is (= 2 (score-game game))))))
 
 (deftest game-state-score-depth-eight
-  (let [board [["x" "o" "x"] ["o" "_" "o"] ["x" "o" "x"]]]
+  (let [game { :board[["x" "o" "x"] ["o" "_" "o"] ["x" "o" "x"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of eight"
-   (is (= 0 (score-game board))))))
+   (is (= 0 (score-game game))))))
 
 (deftest game-possible-moves
-  (let [board  [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "y"]]]
+  (let [game  [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "y"]]]
   (testing "returns a vector of possible moves"
-    (is (= [ 2 3 4  6 7 8] (possible-moves board  0 []))))))
+    (is (= [ 2 3 4  6 7 8] (possible-moves game  0 []))))))
 
-(deftest best-move-possible-max
-  (testing "returns the  index and score of the best maximizing move"
-    (is (=[8 10] (best-score-index [2 3 4 5 6 7 8 9 10] true )))))
+; (deftest best-move-possible-max
+;   (testing "returns the  index and score of the best maximizing move"
+;     (is (=[8 10] (best-score-index [2 3 4 5 6 7 8 9 10] true )))))
 
-(deftest best-move-possible-mini
-  (testing "returns the score and index of the best minimizing move"
-    (is (= [0 2] (best-score-index  [2 3 4 5 6 7 8 9 10] false )))))
+; (deftest best-move-possible-mini
+;   (testing "returns the score and index of the best minimizing move"
+;     (is (= [0 2] (best-score-index  [2 3 4 5 6 7 8 9 10] false )))))
 
-(deftest possible-board-state
-  (testing "return a posible board state based on input"
-   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
-    (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 (@place-holder :player-marker) board))))))
+; (deftest possible-board-state
+;   (testing "return a posible board state based on input"
+;    (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
+;     (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 (@place-holder :player-marker) board))))))
 
-(deftest minimax-test
- (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
-  (testing "return best score and its index based on the board state"
-    (is (= [0 4] (minimax board true ))))))
+; (deftest minimax-test
+;  (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
+;   (testing "return best score and its index based on the board state"
+;     (is (= [0 4] (minimax board true ))))))
 
- (deftest ai-best-move-win-one
-  (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
-   (testing "returns the best move location"
-      (is (= [0 2] (ai-move board))))))
+;  (deftest ai-best-move-win-one
+;   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
+;    (testing "returns the best move location"
+;       (is (= [0 2] (ai-move board))))))
 
- (deftest ai-best-move-block-horizontial
-  (let [board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]]]
-   (testing "returns the best move location"
-      (is (= [1 1] (ai-move board))))))
+;  (deftest ai-best-move-block-horizontial
+;   (let [board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]]]
+;    (testing "returns the best move location"
+;       (is (= [1 1] (ai-move board))))))
 
- (deftest ai-best-move-block-horizontial
-  (let [board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]]
-   (testing "returns the best move location"
-      (is (= [0 1] (ai-move board))))))
+;  (deftest ai-best-move-block-horizontial
+;   (let [board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]]
+;    (testing "returns the best move location"
+;       (is (= [0 1] (ai-move board))))))
 
- (deftest ai-best-move-block-horizontial
-  (let [board  [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]]
-   (testing "returns the best move location"
-      (is (= [2 1] (ai-move board))))))
+;  (deftest ai-best-move-block-horizontial
+;   (let [board  [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]]
+;    (testing "returns the best move location"
+;       (is (= [2 1] (ai-move board))))))
 
- (deftest ai-best-move-block-diagonal
-  (let [board  [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]]]
-   (testing "returns the best move location"
-      (is (= [2 2] (ai-move board))))))
+;  (deftest ai-best-move-block-diagonal
+;   (let [board  [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]]]
+;    (testing "returns the best move location"
+;       (is (= [2 2] (ai-move board))))))
 
- (deftest ai-best-move-block-diagonal
-  (let [board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]]]
-   (testing "returns the best move location"
-      (is (= [2 0] (ai-move board))))))
+;  (deftest ai-best-move-block-diagonal
+;   (let [board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]]]
+;    (testing "returns the best move location"
+;       (is (= [2 0] (ai-move board))))))
 
- (deftest ai-best-move-block-verticle
-  (let [board  [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]]]
-   (testing "returns the best move location"
-      (is (= [2 2] (ai-move board))))))
+;  (deftest ai-best-move-block-verticle
+;   (let [board  [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]]]
+;    (testing "returns the best move location"
+;       (is (= [2 2] (ai-move board))))))
 
-(deftest ai-record
-  (let [player  (->AiPlayer "o")
-        board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-    (testing "creates defrecord of player protocol"
-      (is (= [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] (next-move player board))))))
+; (deftest ai-record
+;   (let [player  (->AiPlayer "o")
+;         board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+;     (testing "creates defrecord of player protocol"
+;       (is (= [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] (next-move player board))))))
 
 
 
