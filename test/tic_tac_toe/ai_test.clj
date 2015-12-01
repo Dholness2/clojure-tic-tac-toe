@@ -3,11 +3,6 @@
             [tic-tac-toe.ai :refer :all]
   	        [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
-  (deftest swtich-marker-test
-  (let [players (atom {:player-marker "x" :ai-marker "o"})]
-    (testing "deafual swaps marker associations(:player x :ai o) for tic tac toe game "
-      (is (= {:player-marker "o", :ai-marker "x"}    (switch-markers players "x" "o"))))))
-
 (deftest game-state-score-draw-depth-zero
   (let [game   { :board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of zero"
@@ -63,64 +58,71 @@
   (testing "returns a vector of possible moves"
     (is (= [ 2 3 4  6 7 8] (possible-moves game  0 []))))))
 
-; (deftest best-move-possible-max
-;   (testing "returns the  index and score of the best maximizing move"
-;     (is (=[8 10] (best-score-index [2 3 4 5 6 7 8 9 10] true )))))
+(deftest best-move-possible-max
+  (testing "returns the  index and score of the best maximizing move"
+    (is (=[8 10] (best-score-index [2 3 4 5 6 7 8 9 10] true )))))
 
-; (deftest best-move-possible-mini
-;   (testing "returns the score and index of the best minimizing move"
-;     (is (= [0 2] (best-score-index  [2 3 4 5 6 7 8 9 10] false )))))
+(deftest best-move-possible-mini
+  (testing "returns the score and index of the best minimizing move"
+    (is (= [0 2] (best-score-index  [2 3 4 5 6 7 8 9 10] false )))))
 
-; (deftest possible-board-state
-;   (testing "return a posible board state based on input"
-;    (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
-;     (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 (@place-holder :player-marker) board))))))
+(deftest possible-board-state
+  (testing "return a posible board state based on input"
+   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]
+          marker "x"]
+    (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 marker board))))))
 
-; (deftest minimax-test
-;  (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
-;   (testing "return best score and its index based on the board state"
-;     (is (= [0 4] (minimax board true ))))))
+(deftest possible-game-state
+  (testing "returns board states based on input"
+   (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
+     (is (= '({:board [["o" "o" "o"] ["x" "_" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"} {:board [["o" "o" "_"] ["x" "o" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"} {:board [["o" "o" "_"] ["x" "_" "x"] ["o" "x" "_"]], :ai-marker "o", :player-marker "x"} {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "o"]], :ai-marker "o", :player-marker "x"})
+            (game-states [3 5 7 9] game "o"))))))
 
-;  (deftest ai-best-move-win-one
-;   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]]
-;    (testing "returns the best move location"
-;       (is (= [0 2] (ai-move board))))))
+(deftest minimax-test
+ (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
+    (testing "return best score and its index based on the board state"
+   (is (= [0 4] (minimax game true))))))
 
-;  (deftest ai-best-move-block-horizontial
-;   (let [board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]]]
-;    (testing "returns the best move location"
-;       (is (= [1 1] (ai-move board))))))
+ (deftest ai-best-move-win-one
+  (let [game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
+   (testing "returns the best move location"
+      (is (= [0 2] (ai-move game))))))
 
-;  (deftest ai-best-move-block-horizontial
-;   (let [board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]]
-;    (testing "returns the best move location"
-;       (is (= [0 1] (ai-move board))))))
+ (deftest ai-best-move-block-horizontial
+  (let [game { :board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]] :ai-marker "o" :player-marker "x"}]
+   (testing "returns the best move location"
+      (is (= [1 1] (ai-move game))))))
 
-;  (deftest ai-best-move-block-horizontial
-;   (let [board  [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]]
-;    (testing "returns the best move location"
-;       (is (= [2 1] (ai-move board))))))
+ (deftest ai-best-move-block-horizontial
+  (let [game {:board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]  :ai-marker "o" :player-marker "x"}]
+   (testing "returns the best move location"
+      (is (= [0 1] (ai-move game))))))
 
-;  (deftest ai-best-move-block-diagonal
-;   (let [board  [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]]]
-;    (testing "returns the best move location"
-;       (is (= [2 2] (ai-move board))))))
+ (deftest ai-best-move-block-horizontial
+  (let [game { :board [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]  :ai-marker "o" :player-marker "x"}]
+   (testing "returns the best move location"
+      (is (= [2 1] (ai-move game))))))
 
-;  (deftest ai-best-move-block-diagonal
-;   (let [board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]]]
-;    (testing "returns the best move location"
-;       (is (= [2 0] (ai-move board))))))
+ (deftest ai-best-move-block-diagonal
+  (let [game { :board [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+   (testing "returns the best move location"
+      (is (= [2 2] (ai-move game))))))
 
-;  (deftest ai-best-move-block-verticle
-;   (let [board  [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]]]
-;    (testing "returns the best move location"
-;       (is (= [2 2] (ai-move board))))))
+ (deftest ai-best-move-block-diagonal
+  (let [game { :board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+   (testing "returns the best move location"
+      (is (= [2 0] (ai-move game))))))
 
-; (deftest ai-record
-;   (let [player  (->AiPlayer "o")
-;         board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-;     (testing "creates defrecord of player protocol"
-;       (is (= [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] (next-move player board))))))
+ (deftest ai-best-move-block-verticle
+  (let [game { :board [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+   (testing "returns the best move location"
+      (is (= [2 2] (ai-move game))))))
+
+(deftest ai-record
+  (let [player  (->AiPlayer "o")
+        game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}]
+    (testing "creates defrecord of player protocol"
+      (is (= [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] (next-move player game))))))
 
 
 
