@@ -21,14 +21,17 @@
 	   (= (@place-holder :player-marker) winner) (- (game-depth board) 10)
      :else 0)))
 
+(defn space-available? [board position]
+  (= empty-space (nth (flatten board) position)))
+
 (defn possible-moves
-  ([board]
-    (possible-moves board 0 []))
-  ([board iteration moves]
-     (if (< iteration (board-size board))
-      (do (if (= empty-space (nth (flatten board) iteration))
-             (possible-moves board  (+ 1 iteration) (conj moves (+ 1 iteration)))
-             (possible-moves board  (+ 1 iteration) moves)))
+  ([game]
+    (possible-moves game 0 []))
+  ([game iteration moves]
+    (if (< iteration (board-size (game :board)))
+      (if (space-available? (game :board) iteration)
+        (possible-moves game  (+ 1 iteration) (conj moves (+ 1 iteration)))
+        (possible-moves game  (+ 1 iteration) moves))
        moves)))
 
 (defn best-score-index[scores  maximizing]
@@ -41,7 +44,7 @@
   (move (matrix-convrt location 3) marker current-board))
 
 (defn board-states [open-positions board marker]
-  (map (fn [move] (possible-board move marker board )) open-positions))
+  (map (fn [move] (possible-board move marker board)) open-positions))
 
 (declare minimax)
 
