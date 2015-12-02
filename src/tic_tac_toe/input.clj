@@ -1,7 +1,7 @@
 (ns tic-tac-toe.input
-(:require [tic-tac-toe.protocol.input :refer :all]
-	      [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move]]
-          [tic-tac-toe.game :refer [board-dimensions]]))
+  (:require [tic-tac-toe.protocol.input :refer :all]
+	          [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move]]
+            [tic-tac-toe.game :refer [board-dimensions]]))
 
 (defn prompt-terminal [question]
    (println question)

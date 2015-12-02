@@ -1,7 +1,7 @@
 (ns tic-tac-toe.ai
   (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move]]
             [tic-tac-toe.game :refer  [game-depth winner?]]
-             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
+            [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
 
 (defn score-game [game]
   (let [winner (winner? (game :board))]

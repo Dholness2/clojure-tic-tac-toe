@@ -1,5 +1,5 @@
 (ns tic-tac-toe.board
-(:require [clojure.core.matrix :refer [transpose]]))
+  (:require [clojure.core.matrix :refer [transpose]]))
 
 (def empty-space "_")
 
