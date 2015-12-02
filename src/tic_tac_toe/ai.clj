@@ -6,9 +6,9 @@
 (defn score-game [game]
   (let [winner (winner? (game :board))]
 	  (cond
-	   (= (game :ai-marker) winner) (- 10 (game-depth (game :board)))
-	   (= (game :player-marker) winner) (- (game-depth (game :board)) 10)
-     :else 0)))
+	    (= (game :ai-marker) winner) (- 10 (game-depth (game :board)))
+	    (= (game :player-marker) winner) (- (game-depth (game :board)) 10)
+      :else 0)))
 
 (defn space-available? [board position]
   (= empty-space (nth (flatten board) position)))
@@ -21,7 +21,7 @@
       (if (space-available? (game :board) iteration)
         (possible-moves game  (+ 1 iteration) (conj moves (+ 1 iteration)))
         (possible-moves game  (+ 1 iteration) moves))
-       moves)))
+    moves)))
 
 (defn best-score-index[scores  maximizing]
   (let [scores (vec scores)]
@@ -33,7 +33,7 @@
   (move (matrix-convrt location 3) marker current-board))
 
 (defn game-states [open-positions game marker]
-  (map (fn [move]  { :board (possible-board move marker (game :board))   :ai-marker (game :ai-marker) :player-marker (game :player-marker)}) open-positions))
+  (map (fn [move]  {:board (possible-board move marker (game :board)) :ai-marker (game :ai-marker) :player-marker (game :player-marker)}) open-positions))
 
 (declare minimax)
 
@@ -52,7 +52,7 @@
   (if (winner? (game :board))
     (let [score (score-game game)
           score-index 0]
-         [score-index score])
+      [score-index score])
     (get-best-score-for game maximizing)))
 
 (defn ai-move [game]
@@ -60,11 +60,11 @@
     [0 0]
     (let [open-positions (possible-moves game)
           move-score (minimax game true)]
-     (matrix-convrt (open-positions (first move-score)) 3))))
+      (matrix-convrt (open-positions (first move-score)) 3))))
 
 (defrecord AiPlayer[marker]
   PlayerProtocol
-  (next-move [player game] (if-not (winner? (game :board)) (move (ai-move game) marker (game :board)))))
+  (next-move [player game] (if-not (winner? (game :board)) (assoc game :board (move (ai-move game) marker (game :board))))))
 
 
 
