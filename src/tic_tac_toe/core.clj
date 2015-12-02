@@ -10,6 +10,10 @@
            [tic-tac-toe.protocol.input :refer :all]
            [tic-tac-toe.protocol.display :refer [display-state display-winner]]))
 
+(def marker-one "x")
+(def marker-two "o")
+
+
 (defn game-runner [game display player1 player2]
   (display-state display (:board game))
   (if-not (winner? (:board game))
@@ -21,9 +25,9 @@
     (print-winner(:board game))))
 
 (defn opposite-marker [marker]
-  (if (= "x" marker)
-    "o"
-    "x"))
+  (if (= marker-one marker)
+    marker-two
+    marker-one))
 
 (defn set-markers [human-marker input]
   (if (= human-marker "x")
