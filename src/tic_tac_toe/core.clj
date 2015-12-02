@@ -13,7 +13,6 @@
 (def marker-one "x")
 (def marker-two "o")
 
-
 (defn game-runner [game display player1 player2]
   (display-state display (:board game))
   (if-not (winner? (:board game))
@@ -39,11 +38,10 @@
       [player-1 player-2])))
 
 (defn game-intializer [display input board]
-  (println "Select your marker x or o ")
-  (let [selection (read-line)]
-    (let[players (set-markers selection input)
-         game {:board board :ai-marker (opposite-marker selection) :player-marker selection}]
-      (game-runner game display (players 0) (players 1)))))
+  (let [marker-selection (get-marker input)
+        players (set-markers marker-selection input)
+        game {:board board :ai-marker (opposite-marker marker-selection) :player-marker marker-selection}]
+    (game-runner game display (players 0) (players 1))))
 
 (defn -main []
   (let [terminal (->TerminalDisplay)

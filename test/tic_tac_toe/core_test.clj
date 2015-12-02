@@ -66,7 +66,7 @@
         iteration-six { :board[["x" "o" "x" ]["x" "o" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
         iteration-seven { :board[["x" "o" "x" ]["x" "o" "_" ]["_" "o" "_" ]]  :ai-marker "o"  :player-marker "x"}]
     (test "this checks the game flow for a win state for o")
-      (is (= (str "Select your marker x or o \n"
+      (is (= (str "Select your marker x or o ?\n"
                   (with-out-str (display-state terminal (iteration-one :board)))
                   (with-out-str (with-in-str "1" (next-move human iteration-one)))
                   (with-out-str (display-state terminal (iteration-two :board)))
