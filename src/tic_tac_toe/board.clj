@@ -33,7 +33,7 @@
   (map (fn [location] (get-in board [location location])) locations))
 
 (defn get-diagnoals [board rowsize]
-  (let[diagonal-indexs-top  (vec(take rowsize (iterate inc 0)))
- 	     diagonal-indexs-bottom	(vec(take rowsize (iterate  dec (- rowsize 1))))]
-    [(get-location board diagonal-indexs-top)  (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
+  (let [diagonal-indexs-top (vec(take rowsize (iterate inc 0)))
+ 	      diagonal-indexs-bottom (vec(take rowsize (iterate dec (- rowsize 1))))]
+    [(get-location board diagonal-indexs-top) (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
 
