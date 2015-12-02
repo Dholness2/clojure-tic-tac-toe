@@ -11,14 +11,14 @@
            [tic-tac-toe.protocol.display :refer [display-state display-winner]]))
 
 (defn game-runner [game display player1 player2]
-  (display-state display (game :board))
-  (if-not (winner? (game :board))
+  (display-state display (:board game))
+  (if-not (winner? (:board game))
     (let [current-state (next-move player1 game)]
-      (display-state display (current-state :board))
-      (if-not (winner? (current-state :board))
+      (display-state display (:board current-state))
+      (if-not (winner? (:board current-state))
         (game-runner (next-move player2 current-state) display player1 player2)
-        (print-winner (current-state :board))))
-    (print-winner(game :board))))
+        (print-winner (:board current-state))))
+    (print-winner(:board game))))
 
 (defn opposite-marker [marker]
   (if (= "x" marker)
