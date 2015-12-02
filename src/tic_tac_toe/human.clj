@@ -1,6 +1,6 @@
 (ns tic-tac-toe.human
   (:require [tic-tac-toe.board :refer [move]]
-            [tic-tac-toe.input :refer :all]
+            [tic-tac-toe.input.console :refer :all]
             [tic-tac-toe.protocol.input :refer :all]
             [tic-tac-toe.protocol.player :refer :all]))
 

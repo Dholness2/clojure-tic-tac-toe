@@ -5,7 +5,7 @@
            [tic-tac-toe.ai :refer [->AiPlayer ]]
            [tic-tac-toe.display.terminal :refer [->TerminalDisplay print-winner]]
            [tic-tac-toe.human :refer :all]
-           [tic-tac-toe.input :refer :all]
+           [tic-tac-toe.input.console :refer :all]
            [tic-tac-toe.protocol.player :refer :all]
            [tic-tac-toe.protocol.input :refer :all]
            [tic-tac-toe.protocol.display :refer [display-state display-winner]]))
@@ -48,4 +48,3 @@
         input (->ConsoleInput)
         board (create-empty-board 3)]
     (game-intializer terminal input board)))
-

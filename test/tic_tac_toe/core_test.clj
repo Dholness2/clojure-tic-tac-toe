@@ -4,7 +4,7 @@
             [tic-tac-toe.board :refer :all]
             [tic-tac-toe.game :refer :all]
             [tic-tac-toe.ai :refer :all]
-            [tic-tac-toe.input :refer :all]
+            [tic-tac-toe.input.console :refer :all]
             [tic-tac-toe.display.terminal :refer :all]
             [tic-tac-toe.human :refer :all]
             [tic-tac-toe.protocol.player :refer :all]
@@ -50,7 +50,8 @@
           marker-selection "x"
          input (->ConsoleInput)]
    (test "game allows you to swtich player markers")
-     (is (=[#tic_tac_toe.human.HumanPlayer{:marker "x", :input-protocol #tic_tac_toe.input.ConsoleInput{}} #tic_tac_toe.ai.AiPlayer{:marker "o"}] (set-markers marker-selection input)))))
+     (is (= [#tic_tac_toe.human.HumanPlayer{:marker "x", :input-protocol #tic_tac_toe.input.console.ConsoleInput{}} #tic_tac_toe.ai.AiPlayer{:marker "o"}] (set-markers marker-selection input)))))
+
 
 (deftest game-flow
   (let [human (->HumanPlayer "x" (->ConsoleInput))
@@ -78,15 +79,3 @@
                   (with-out-str (display-state terminal (iteration-six :board)))
                   (with-out-str (display-state terminal (iteration-seven :board)))
                   (with-out-str (display-winner terminal (iteration-seven :board)))) (with-out-str (with-in-str "x\n1\n3\n4\n" (game-intializer  terminal input board)))))))
-
-
-
-
-
-
-
-
-
-
-
-

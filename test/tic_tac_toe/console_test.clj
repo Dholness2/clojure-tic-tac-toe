@@ -1,6 +1,6 @@
-(ns tic-tac-toe.input-test
+(ns tic-tac-toe.console-test
   (:require [clojure.test :refer :all]
-            [tic-tac-toe.input :refer :all]
+            [tic-tac-toe.input.console :refer :all]
             [tic-tac-toe.protocol.input :refer :all]))
 
 (defmacro with-out-str-value

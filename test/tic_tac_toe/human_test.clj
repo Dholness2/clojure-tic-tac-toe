@@ -1,7 +1,7 @@
 (ns tic-tac-toe.human-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.input :refer :all]
+            [tic-tac-toe.input.console :refer :all]
             [tic-tac-toe.human :refer :all]
             [tic-tac-toe.protocol.player :refer :all]
             [tic-tac-toe.protocol.input :refer :all]))

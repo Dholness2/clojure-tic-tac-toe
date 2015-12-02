@@ -1,4 +1,4 @@
-(ns tic-tac-toe.input
+(ns tic-tac-toe.input.console
   (:require [tic-tac-toe.protocol.input :refer :all]
 	          [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move]]
             [tic-tac-toe.game :refer [board-dimensions]]))
