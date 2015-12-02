@@ -118,6 +118,12 @@
    (testing "returns the best move location"
       (is (= [2 2] (ai-move game))))))
 
+(deftest ai-gamemove
+  (let [player  (->AiPlayer "o")
+        game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}]
+    (testing "returns a game set with updated board with ai's move"
+      (is (=(game-move game player))))))
+
 (deftest ai-record
   (let [player  (->AiPlayer "o")
         game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}]

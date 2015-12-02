@@ -62,9 +62,13 @@
           move-score (minimax game true)]
       (matrix-convrt (open-positions (first move-score)) 3))))
 
+(defn game-move [game marker]
+  (if-not (winner? (:board game))
+    (assoc game :board (move (ai-move game) marker (:board game)))))
+
 (defrecord AiPlayer[marker]
   PlayerProtocol
-  (next-move [player game] (if-not (winner? (:board game)) (assoc game :board (move (ai-move game) marker (:board game))))))
+  (next-move [player game] (game-move game marker)))
 
 
 
