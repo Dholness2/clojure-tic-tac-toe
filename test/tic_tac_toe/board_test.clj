@@ -3,8 +3,14 @@
             [tic-tac-toe.board :refer :all]))
 
 (deftest board-create
-  (testing "Create new board based on user input"
-		(is ( =  [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (create-empty-board 3 )))))
+  (let [board-size 3]
+    (testing "Create new board based on user input"
+		  (is (= [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (create-empty-board board-size))))))
+
+(deftest board-dimension
+  (let [board [["_" "_" "_" "_" ]["_" "_" "_" "_" ]["_" "_" "_" "_"]["_" "_" "_" "_"]]]
+    (testing "returns the diemension of the board")
+      (is (= 4 (board-diemensions board)))))
 
 (deftest board-size-test
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]

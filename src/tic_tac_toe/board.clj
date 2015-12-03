@@ -6,6 +6,9 @@
 (defn create-empty-board [diemension]
   (vec (take diemension (repeat (vec (take diemension (repeat empty-space)))))))
 
+(defn board-diemensions [board]
+  (count board))
+
 (defn board-size [board]
   (* (count board) (count (first board))))
 
