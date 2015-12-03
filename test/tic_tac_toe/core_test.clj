@@ -1,6 +1,6 @@
 (ns tic-tac-toe.core-test
   (:require [clojure.test :refer :all]
-            [tic-tac-toe.core :refer [game-runner set-markers opposite-marker game-intializer]]
+            [tic-tac-toe.core :refer [game-runner set-players opposite-marker game-intializer]]
             [tic-tac-toe.board :refer :all]
             [tic-tac-toe.game :refer :all]
             [tic-tac-toe.ai :refer :all]
@@ -42,15 +42,13 @@
 
 ; (let [latest-diplayed-board (get @latest-diplayed-state 0)])
 
-(deftest set-markers-test
-  (let [ board-empty [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
-          terminal (->TerminalDisplay)
-          human (->HumanPlayer "x" (->ConsoleInput))
-          ai (->AiPlayer "o")
-          marker-selection "x"
-         input (->ConsoleInput)]
-   (test "game allows you to swtich player markers")
-     (is (= [#tic_tac_toe.human.HumanPlayer{:marker "x", :input-protocol #tic_tac_toe.input.console.ConsoleInput{}} #tic_tac_toe.ai.AiPlayer{:marker "o"}] (set-markers marker-selection input)))))
+(deftest set-players-test
+  (let [human (->HumanPlayer "x" (->ConsoleInput))
+        ai (->AiPlayer "o")
+        marker-selection "x"
+        input (->ConsoleInput)]
+   (test "assigns player-1 and player-2 to respecive protocols ")
+     (is (= [#tic_tac_toe.human.HumanPlayer{:marker "x", :input-protocol #tic_tac_toe.input.console.ConsoleInput{}} #tic_tac_toe.ai.AiPlayer{:marker "o"}] (set-players :computer-vs-human marker-selection input)))))
 
 
 (deftest game-flow
