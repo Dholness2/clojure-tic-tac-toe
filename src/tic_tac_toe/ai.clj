@@ -16,11 +16,11 @@
 (defn possible-moves
   ([game]
     (possible-moves game 0 []))
-  ([game iteration moves]
-    (if (< iteration (board-size (:board game)))
-      (if (space-available? (game :board) iteration)
-        (possible-moves game  (+ 1 iteration) (conj moves (+ 1 iteration)))
-        (possible-moves game  (+ 1 iteration) moves))
+  ([game move-index moves]
+    (if (< move-index (board-size (:board game)))
+      (if (space-available? (game :board) move-index)
+        (possible-moves game  (+ 1 move-index) (conj moves (+ 1 move-index)))
+        (possible-moves game  (+ 1 move-index) moves))
     moves)))
 
 (defn best-score-index[scores  maximizing]
@@ -39,7 +39,7 @@
 
 (defn score [game maximizing open-positions player]
   (if maximizing
-    (map (fn [game] (last (minimax game false))) (game-states open-positions game  player))
+    (map (fn [game] (last (minimax game false))) (game-states open-positions game player))
     (map (fn [game] (last (minimax game true))) (game-states open-positions game player))))
 
 (defn get-best-score-for [game maximizing]

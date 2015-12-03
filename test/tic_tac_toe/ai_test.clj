@@ -73,10 +73,13 @@
     (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 marker board))))))
 
 (deftest possible-game-state
-  (testing "returns board states based on input"
-   (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
-     (is (= '({:board [["o" "o" "o"] ["x" "_" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"} {:board [["o" "o" "_"] ["x" "o" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"} {:board [["o" "o" "_"] ["x" "_" "x"] ["o" "x" "_"]], :ai-marker "o", :player-marker "x"} {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "o"]], :ai-marker "o", :player-marker "x"})
-            (game-states [3 5 7 9] game "o"))))))
+  (testing "returns possible board states based on available moves"
+   (let [current-player "o"
+         available-moves [3 5]
+         game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+         possible-game-states '({:board [["o" "o" "o"] ["x" "_" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"}
+                                {:board [["o" "o" "_"] ["x" "o" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"})]
+      (is (= possible-game-states (game-states available-moves game current-player))))))
 
 (deftest minimax-test
  (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
