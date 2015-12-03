@@ -37,9 +37,9 @@
 ;           player-1 (->AiPlayer "x")]
 ;       [player-1 player-2])))
 
-(defmulti set-players (fn [player-type marker input] player-type))
+(defmulti set-players (fn [game-type marker input] game-type))
 
-(defmethod set-players :computer-vs-human [player-type marker input ]
+(defmethod set-players :computer-vs-human [game-type-type marker input ]
   (if (= marker "x")
     (let [player-1 (->HumanPlayer "x" input)
           player-2 (->AiPlayer "o")]
@@ -48,9 +48,9 @@
           player-1 (->AiPlayer "x")]
       [player-1 player-2])))
 
-(defn game-intializer [display input board]
+(defn game-intializer [display input board game-type]
   (let [marker-selection (get-marker input)
-        players (set-players :computer-vs-human marker-selection input)
+        players (set-players game-type marker-selection input)
         game {:board board :ai-marker (opposite-marker marker-selection) :player-marker marker-selection}]
     (game-runner game display (players 0) (players 1))))
 

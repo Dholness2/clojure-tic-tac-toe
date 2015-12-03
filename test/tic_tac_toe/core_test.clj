@@ -57,6 +57,7 @@
         terminal (->TerminalDisplay)
         input (->ConsoleInput)
         board (create-empty-board 3)
+        game-type :computer-vs-human
         iteration-one { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
         iteration-two { :board[["x" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
         iteration-three { :board [["x" "_" "_" ]["_" "o" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
@@ -76,4 +77,4 @@
                   (with-out-str (with-in-str "4" (next-move human iteration-five)))
                   (with-out-str (display-state terminal (iteration-six :board)))
                   (with-out-str (display-state terminal (iteration-seven :board)))
-                  (with-out-str (display-winner terminal (iteration-seven :board)))) (with-out-str (with-in-str "x\n1\n3\n4\n" (game-intializer  terminal input board)))))))
+                  (with-out-str (display-winner terminal (iteration-seven :board)))) (with-out-str (with-in-str "x\n1\n3\n4\n" (game-intializer  terminal input board game-type)))))))
