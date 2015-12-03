@@ -90,6 +90,3 @@
     		rowsize 3]
     (testing "gets diagonal positions"
   	  (is (= (get-diagnoals board 3))))))
-
-
-

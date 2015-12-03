@@ -69,17 +69,3 @@
 (defrecord AiPlayer[marker]
   PlayerProtocol
   (next-move [player game] (game-move game marker)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-

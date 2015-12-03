@@ -28,4 +28,3 @@
         game {:board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o"  :player-marker "x"}]
     (testing "creates defrecord of player protocol"
       (is (= ( assoc game :board [["_" "_" "_"] ["x" "_" "_"] ["_" "_" "_"]]) (with-out-str-value (with-in-str "4" (next-move player game))))))))
-
