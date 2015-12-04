@@ -28,34 +28,27 @@
     marker-two
     marker-one))
 
-; (defn set-players [human-marker input]
-;   (if (= human-marker "x")
-;     (let [player-1 (->player-protocol-one "x" input)
-;           player-2 (->AiPlayer "o")]
-;       [player-1 player-2])
-;     (let [player-2 (->HumanPlayer "o" input)
-;           player-1 (->AiPlayer "x")]
-;       [player-1 player-2])))
+(defmulti create-game (fn [game-type input display board] game-type))
 
-(defmulti set-players (fn [game-type marker input] game-type))
+(defmethod create-game :computer-vs-human [game-type-type input display board ]
+  (let [marker-selection (get-marker input)]
+    (if (= marker-selection "x")
+      (let [player-1 (->HumanPlayer "x" input)
+            player-2 (->AiPlayer "o")
+            game {:board board :ai-marker (opposite-marker marker-selection) :player-marker marker-selection}]
+        (game-runner game display player-1 player-2))
+      (let [player-2 (->HumanPlayer "o" input)
+            player-1 (->AiPlayer "x")
+            game {:board board :ai-marker (opposite-marker marker-selection) :player-marker marker-selection}]
+        (game-runner game display player-1 player-2)))))
 
-(defmethod set-players :computer-vs-human [game-type-type marker input ]
-  (if (= marker "x")
-    (let [player-1 (->HumanPlayer "x" input)
-          player-2 (->AiPlayer "o")]
-      [player-1 player-2])
-    (let [player-2 (->HumanPlayer "o" input)
-          player-1 (->AiPlayer "x")]
-      [player-1 player-2])))
-
-(defn game-intializer [display input board game-type]
-  (let [marker-selection (get-marker input)
-        players (set-players game-type marker-selection input)
-        game {:board board :ai-marker (opposite-marker marker-selection) :player-marker marker-selection}]
-    (game-runner game display (players 0) (players 1))))
+(defn game-intializer [display input]
+  (let [game-type :computer-vs-human
+        board-diemnson (get-board-size input)
+        board (create-empty-board board-diemnson)]
+    (create-game game-type input display board)))
 
 (defn -main []
   (let [terminal (->TerminalDisplay)
-        input (->ConsoleInput)
-        board (create-empty-board 3)]
-    (game-intializer terminal input board)))
+        input (->ConsoleInput)]
+    (game-intializer terminal input)))

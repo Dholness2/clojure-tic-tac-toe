@@ -2,4 +2,5 @@
 
 (defprotocol InputProtocol
   (get-move [input board])
-  (get-marker [input]))
+  (get-marker [input])
+  (get-board-size [input]))

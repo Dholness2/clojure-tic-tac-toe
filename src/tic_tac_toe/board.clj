@@ -20,8 +20,8 @@
 (defn move [location player board]
   (assoc-in board location player))
 
-(defn validmove? [move]
-  (and (<= move 9) (>=  move 1)))
+(defn validmove? [move board-size]
+  (and (<= move board-size) (>=  move 1)))
 
 (defn moveopen? [board move]
   (= "_" ((vec (flatten board)) (- move 1))))

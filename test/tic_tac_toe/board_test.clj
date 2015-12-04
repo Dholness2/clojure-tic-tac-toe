@@ -28,52 +28,40 @@
 	    (is ( = [["x" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (move [0 0] "x" board))))))
 
 (deftest valid-move-zero
-  (testing "test to mke sure user input is within game move option[0-8]")
- 	  (is (= false (validmove? 0))))
+  (let [board-size 9
+        move 0]
+    (testing "test to mke sure user input is within game move option[1-9]")
+ 	    (is (= false (validmove? move board-size)))))
 
-(deftest valid-move-one
-  (testing "test to mke sure user input is within game move option[0-8]")
- 	  (is (= true (validmove? 1))))
-
-(deftest valid-move-two
-  (testing "test to mke sure user input is within game move option[0-8]")
-    (is (= true (validmove? 2))))
-
-(deftest valid-move-three
-  (testing "test to mke sure user input is within game move option[0-8]")
- 	  (is (= true (validmove? 3))))
-
-(deftest valid-move-four
-  (testing "test to mke sure user input is within game move option[0-8]")
- 	  (is (= true (validmove? 4))))
+(deftest valid-move-ten
+  (let [board-size 9
+         move  10]
+    (testing "test to mke sure user input is within game move option[1-9]")
+      (is (= false (validmove? move board-size)))))
 
 (deftest valid-move-five
-  (testing "test to mke sure user input is within game move option[0-8]")
- 	  (is (= true (validmove? 5))))
+  (let [board-size 9
+         move  5]
+    (testing "test to mke sure user input is within game move option[1-9]")
+      (is (= true (validmove? move board-size)))))
 
-(deftest valid-move-six
-  (testing "test to mke sure user input is within game move option[0-8]")
- 	  (is (= true (validmove? 6))))
+(deftest valid-move-zero-larger-board
+  (let [board-size 16
+        move 0]
+    (testing "test to mke sure user input is within game move option[1-16]")
+      (is (= false (validmove? move board-size)))))
 
-(deftest valid-move-seven
-  (testing "test to mke sure user input is within game move option[0-8]")
-    (is (= true (validmove? 7))))
+(deftest valid-move-twenty-larger-board
+  (let [board-size 16
+         move  20]
+    (testing "test to mke sure user input is within game move option[1-16]")
+      (is (= false (validmove? move board-size)))))
 
-(deftest valid-move-eight
-  (testing "test to mke sure user input is within game move option[0-8]")
-    (is (= true (validmove? 8))))
-
-(deftest valid-move-eight
-  (testing "test to mke sure user input is within game move option[0-8]")
-    (is (= true (validmove? 9))))
-
-(deftest invalid-move-less-than-zero
-  (testing "test to mke sure user input is within game move option[0-8]")
-    (is (= false (validmove? -1))))
-
-(deftest invalid-move-greater-than-eight
-  (testing "test to mke sure user input is within game move option[0-8]")
-    (is (= false (validmove? 20))))
+(deftest valid-move-fithteen-larger-board
+  (let [board-size 16
+         move  15]
+    (testing "test to mke sure user input is within game move option[1-16]")
+      (is (= true (validmove? move board-size)))))
 
 (deftest open-move
   (testing "checks to see if move is taken")
