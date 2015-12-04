@@ -29,19 +29,23 @@
     (testing "gets user input from console"
    	  (is (= [0 0]  (with-out-str-value (with-in-str "1" (user-input-move board))))))))
 
-(deftest input-record
-  (let [load (->ConsoleInput)
-  		board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-    (testing "creates defrecord of input protocol"
-      (is (= 1 (with-out-str-value (with-in-str "1" (get-move load board ))))))))
+(deftest test-diemension
+  (testing "return conslole supplied selection of board diemension")
+    (is ( = 4 (with-out-str-value (with-in-str "4" (get-board-diemension))))))
 
-(deftest input-record
-  (let [load (->ConsoleInput)
+(deftest ConsoleInput-get-move
+  (let [input (->ConsoleInput)
   	     board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-    (testing "creates defrecord of input protocol"
-      (is (= [0 0] (with-out-str-value (with-in-str "1" (get-move load board))))))))
+    (testing "test if #get-move returns user move selection based on provided input"
+      (is (= [0 0] (with-out-str-value (with-in-str "1" (get-move input board))))))))
 
-(deftest input-marker
-  (let [load (->ConsoleInput)]
-    (testing "gets the users marker selection"
-      (is (= "x" (with-out-str-value (with-in-str "x" (get-marker load))))))))
+(deftest ConsoleInput-get-marker
+  (let [input (->ConsoleInput)]
+    (testing "test #get-marker function returns sleceted marker x or o"
+      (is (= "x" (with-out-str-value (with-in-str "x" (get-marker input))))))))
+
+(deftest ConsoleInput-get-board-size
+  (let [input (->ConsoleInput)]
+    (testing "test #get-board-size function returns size"
+      (is (= 7 (with-out-str-value (with-in-str "7" (get-board-size input))))))))
+

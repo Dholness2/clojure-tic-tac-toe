@@ -1,14 +1,13 @@
 (ns tic-tac-toe.input.console
   (:require [tic-tac-toe.protocol.input :refer :all]
-	          [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move]]
-            [tic-tac-toe.game :refer [board-dimensions]]))
+	          [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move board-diemensions board-size]]))
 
 (defn prompt-terminal [question]
    (println question)
    (read-line))
 
 (defn valid-selection [input board]
-  (and (number? input) (validmove? input) (moveopen? board input)))
+  (and (number? input) (validmove? input (board-size board)) (moveopen? board input)))
 
 (defn user-marker []
   (let [selection  (prompt-terminal "Select your marker x or o ?")]
@@ -17,14 +16,22 @@
       (do (println "invalid selection")
       	   user-marker))))
 
+(defn get-board-diemension []
+  (let [selection (read-string(prompt-terminal "What size board do you want? x by x (provide one number for x)"))]
+    (if (number? selection)
+      selection
+      (do (println "invalid selection")
+         get-board-diemension))))
+
 (defn user-input-move [board]
  (let [input (read-string (prompt-terminal "what is your next move ?"))]
-    (if (= true (valid-selection input board))
-      (matrix-convrt input board-dimensions)
+    (if (valid-selection input board)
+      (matrix-convrt input (board-diemensions board))
       (do (println "invalid selection")
-      	   (user-input-move board board-dimensions)))))
+      	   (user-input-move board)))))
 
 (defrecord ConsoleInput []
   InputProtocol
   (get-move [input board] (user-input-move board))
-  (get-marker [input] (user-marker)))
+  (get-marker [input] (user-marker))
+  (get-board-size [input] (get-board-diemension)))

@@ -11,67 +11,53 @@
             [tic-tac-toe.protocol.input :refer :all]
             [tic-tac-toe.protocol.display :refer :all]))
 
-; (defn latest-diplayed-state (atom []))
+(def latest-displayed-state (atom {:states [] :winner nil}))
+(def console-inputs (atom {:marker nil  :board-size 0 :moves [ ] }))
 
-; (defrecord DummyDisplay []
-;   DisplayProtocol
-;   (display-state [display board]
-;     (assoc @latest-diplayed-state board))
-;   (display-winner [display board]))
+(defrecord DummyDisplay []
+  DisplayProtocol
+  (display-state [display board] (swap! latest-displayed-state assoc :states board))
+  (display-winner [display board] (swap! latest-displayed-state assoc :winner (winner? board))))
 
-; (deftest game-iterattion-test
-;    (let [ iteration-one { :board [["_" "o" "o" ]["x" "_" "_" ]["_" "_" "_" ]] :ai-marker "o"  :player-marker "x"}
-;           iteration-two [["_" "o" "o" ]["x" "_" "x" ]["_" "_" "_" ]]
-;           iteration-three [["o" "o" "o" ]["x" "_" "x" ]["_" "_" "_" ]]
-;           terminal (->TerminalDisplay)
-;           human (->HumanPlayer "x" (->ConsoleInput))
-;           ai (->AiPlayer "o")]
-;    (test "this test confirms the game follows the correct game interation sequences")
-;       (is (= (str (with-out-str (display-state terminal iteration-one))
-;                   "what is your next move ?\n"
-;                   (with-out-str (display-state terminal iteration-two))
-;                   (with-out-str (display-state terminal iteration-three))
-;                   (with-out-str (display-winner terminal iteration-three))))
-;       (with-out-str
-;         (with-in-str "6" (game-runner iteration-one terminal human ai))))))
+(defrecord DummyInput []
+  InputProtocol
+  (get-move [input board] (swap! console-inputs assoc :moves 2))
+  (get-marker [input] (swap! console-inputs assoc :marker ))
+  (get-board-size [input] (swap! console-inputs assoc :board-size 2)))
 
-; (deftest set-game-markers
-;   (test "returns the avilable marker based on input")
-;    (is (=  "x" (opposite-marker "o"))))
+(defmethod create-game :dummy-game [game-type-type input display board ]
+   [game-type-type input display board ])
+
+(deftest game-iterattion-test
+   (let [starting-state { :board [["_" "o" "o" ]["x" "_" "_" ]["_" "_" "_" ]] :ai-marker "o"  :player-marker "x"}
+         closing-state [["o" "o" "o" ]["x" "_" "x" ]["_" "_" "_" ]]
+         terminal (->DummyDisplay)
+          human (->HumanPlayer "x" (->ConsoleInput))
+          ai (->AiPlayer "o")]
+     (test "this test confirms the game follows the correct game interation sequences")
+     (with-in-str "6" (game-runner starting-state terminal human ai))
+     (is (= (:states @latest-displayed-state)  closing-state))))
+
+(deftest game-iterattion-test
+   (let [starting-state { :board [["_" "o" "o" ]["x" "_" "_" ]["_" "_" "_" ]] :ai-marker "o"  :player-marker "x"}
+          closing-state [["o" "o" "o" ]["x" "_" "x" ]["_" "_" "_" ]]
+          terminal (->DummyDisplay)
+          human (->HumanPlayer "x" (->ConsoleInput))
+          ai (->AiPlayer "o")]
+     (test "this test confirms the game follows the correct game interation sequences")
+     (with-in-str "6" (game-runner starting-state terminal human ai))
+     (is (= (:winner @latest-displayed-state) (winner? closing-state)))))
+
+(deftest set-game-markers
+  (test "returns the avilable marker based on input")
+  (is (= "x" (opposite-marker "o"))))
+
+(deftest game-intializer-test
+   (let [display (->DummyDisplay)
+        input (->DummyInput)
+        game-type :dummy-game]
+     (test "game intializes with correct arguments")
+     (is (= [ ] (game-intializer DummyDisplay DummyInput game-type)))))
 
 
-; (let [latest-diplayed-board (get @latest-diplayed-state 0)])
 
-; (deftest create-game-test
-;   (let [display (->TerminalDisplay)
-;         input (->ConsoleInput)]
-;    (test "assigns player-1 and player-2 to respecive protocols ")
-;      (is (=   [] (create-game :computer-vs-human input display)))))
-
-; (deftest game-flow
-;   (let [human (->HumanPlayer "x" (->ConsoleInput))
-;         ai (->AiPlayer "o")
-;         terminal (->TerminalDisplay)
-;         input (->ConsoleInput)
-;         board (create-empty-board 3)
-;         game-type :computer-vs-human
-;         iteration-one { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
-;         iteration-two { :board[["x" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
-;         iteration-three { :board [["x" "_" "_" ]["_" "o" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
-;         iteration-four { :board [["x" "_" "x" ]["_" "o" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
-;         iteration-five { :board[["x" "o" "x" ]["_" "o" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
-;         iteration-six { :board[["x" "o" "x" ]["x" "o" "_" ]["_" "_" "_" ]]  :ai-marker "o"  :player-marker "x"}
-;         iteration-seven { :board[["x" "o" "x" ]["x" "o" "_" ]["_" "o" "_" ]]  :ai-marker "o"  :player-marker "x"}]
-;     (test "this checks the game flow for a win state for o")
-;       (is (= (str "Select your marker x or o ?\n"
-;                   (with-out-str (display-state terminal (iteration-one :board)))
-;                   (with-out-str (with-in-str "1" (next-move human iteration-one)))
-;                   (with-out-str (display-state terminal (iteration-two :board)))
-;                   (with-out-str (display-state terminal (iteration-three :board)))
-;                   (with-out-str (with-in-str "3" (next-move human iteration-three)))
-;                   (with-out-str (display-state terminal (iteration-four :board)))
-;                   (with-out-str (display-state terminal (iteration-five :board)))
-;                   (with-out-str (with-in-str "4" (next-move human iteration-five)))
-;                   (with-out-str (display-state terminal (iteration-six :board)))
-;                   (with-out-str (display-state terminal (iteration-seven :board)))
-;                   (with-out-str (display-winner terminal (iteration-seven :board)))) (with-out-str (with-in-str "x\n1\n3\n4\n" (game-intializer  terminal input board game-type)))))))
