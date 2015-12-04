@@ -1,7 +1,8 @@
 (ns tic-tac-toe.ai
-  (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move]]
+  (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move board-diemensions]]
             [tic-tac-toe.game :refer  [game-depth winner?]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
+
 
 (defn score-game [game]
   (let [winner (winner? (game :board))]
@@ -23,7 +24,7 @@
         (possible-moves game  (+ 1 move-index) moves))
     moves)))
 
-(defn best-score-index[scores  maximizing]
+(defn best-score-index[scores maximizing]
   (let [scores (vec scores)]
     (if maximizing
 	    [(.indexOf scores (apply max scores)) (apply max scores)]
@@ -39,8 +40,8 @@
 
 (defn score [game maximizing open-positions player]
   (if maximizing
-    (map (fn [game] (last (minimax game false))) (game-states open-positions game player))
-    (map (fn [game] (last (minimax game true))) (game-states open-positions game player))))
+    (map (fn [game] (last (minimax game false (+ depth 1)))) (game-states open-positions game player))
+    (map (fn [game] (last (minimax game true (+ depth 1)))) (game-states open-positions game player))))
 
 (defn get-best-score-for [game maximizing]
   (let [open-positions (possible-moves game)]
