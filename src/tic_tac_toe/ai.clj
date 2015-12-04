@@ -61,11 +61,12 @@
   (or (= 0 (game-depth (:board game))) (= 1 (game-depth (:board game)))))
 
 (defn ai-move [game]
-  (if (= 0 (game-depth (:board game)))
-    [0 0]
-    (let [open-positions (possible-moves game)
-          move-score (minimax game true)]
-      (matrix-convrt (open-positions (first move-score)) 3))))
+  (if (move-state-default? game)
+    (matrix-convrt (first (possible-moves game)) (board-diemensions (:board game)))
+  (let [open-positions (possible-moves game)
+        move-score (minimax game true 0)
+        board-diemension (board-diemensions (:board game))]
+    (matrix-convrt (open-positions (first move-score)) board-diemension))))
 
 (defn game-move [game marker]
   (if-not (winner? (:board game))
