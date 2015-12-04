@@ -3,6 +3,7 @@
             [tic-tac-toe.ai :refer :all]
   	        [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
+
 (deftest game-state-score-draw-depth-zero
   (let [game   { :board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of zero"

@@ -42,14 +42,13 @@
             game {:board board :ai-marker (opposite-marker marker-selection) :player-marker marker-selection}]
         (game-runner game display player-1 player-2)))))
 
-(defn game-intializer [display input game-type]
-  (let [game game-type
+(defn game-intializer [display input]
+  (let [game-type :computer-vs-human
         board-diemnson (get-board-size input)
         board (create-empty-board board-diemnson)]
-    (create-game game input display board)))
+    (create-game game-type input display board)))
 
 (defn -main []
   (let [terminal (->TerminalDisplay)
-        input (->ConsoleInput)
-        game-type :computer-vs-human]
-    (game-intializer terminal input game-type)))
+        input (->ConsoleInput)]
+    (game-intializer terminal input)))

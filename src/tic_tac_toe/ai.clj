@@ -3,6 +3,7 @@
             [tic-tac-toe.game :refer  [game-depth winner?]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
 
+
 (defn score-game [game]
   (let [winner (winner? (game :board))]
     (cond
@@ -51,7 +52,7 @@
 
 (def minimax
   (memoize (fn [game maximizing depth]
-  (if (or (winner? (:board game)) (= 9 depth))
+  (if (or (winner? (:board game)) (= 8 depth))
     (let [score (score-game game)
           score-index 0]
       [score-index score])
