@@ -38,13 +38,10 @@
 
 (declare minimax)
 
-(defn get-score-for-gamestate [game maximizing depth]
-  (last (minimax game (not maximizing) (+ depth 1))))
-
 (defn score [game maximizing open-positions player depth]
-  (map
-    #(get-score-for-gamestate % maximizing depth)
-    (game-states open-positions game player)))
+  (if maximizing
+    (map (fn [game] (last (minimax game false (+ depth 1)))) (game-states open-positions game player))
+    (map (fn [game] (last (minimax game true (+ depth 1)))) (game-states open-positions game player))))
 
 (defn get-best-score-for [game maximizing depth]
   (let [open-positions (possible-moves game)]
@@ -54,10 +51,10 @@
 
 (def minimax
   (memoize (fn [game maximizing depth]
-    (if (or (winner? (:board game)) (= 4 depth))
-      (let [score (score-game game)
+  (if (or (winner? (:board game)) (= 9 depth))
+    (let [score (score-game game)
           score-index 0]
-       [score-index score])
+      [score-index score])
     (get-best-score-for game maximizing depth)))))
 
 (defn move-state-default? [game]

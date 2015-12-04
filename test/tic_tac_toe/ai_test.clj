@@ -85,7 +85,7 @@
  (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
         depth 0]
     (testing "return best score and its index based on the board state"
-      (is (= [0 4] (minimax game true  depth))))))
+   (is (= [0 4] (minimax game true  depth))))))
 
 (deftest ai-move-deafult-check
   (let [game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}]

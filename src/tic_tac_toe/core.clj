@@ -53,4 +53,3 @@
         input (->ConsoleInput)
         game-type :computer-vs-human]
     (game-intializer terminal input game-type)))
-

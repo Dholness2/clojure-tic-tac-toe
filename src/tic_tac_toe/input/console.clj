@@ -20,7 +20,8 @@
   (let [selection (read-string(prompt-terminal "What size board do you want? x by x (provide one number for x)"))]
     (if (number? selection)
       selection
-      (get-board-diemension))))
+      (do (println "invalid selection")
+         get-board-diemension))))
 
 (defn user-input-move [board]
  (let [input (read-string (prompt-terminal "what is your next move ?"))]
@@ -29,13 +30,8 @@
       (do (println "invalid selection")
       	   (user-input-move board)))))
 
-(defn assign-board []
-  (try
-    (get-board-diemension)
-     (catch Exception e (assign-board))))
-
 (defrecord ConsoleInput []
   InputProtocol
   (get-move [input board] (user-input-move board))
   (get-marker [input] (user-marker))
-  (get-board-size [input] (assign-board)))
+  (get-board-size [input] (get-board-diemension)))
