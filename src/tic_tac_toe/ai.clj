@@ -31,30 +31,34 @@
       [(.indexOf scores (apply min scores)) (apply min scores)])))
 
 (defn possible-board [location marker current-board ]
-  (move (matrix-convrt location 3) marker current-board))
+  (move (matrix-convrt location (board-diemensions current-board)) marker current-board))
 
 (defn game-states [open-positions game marker]
   (map (fn [move]  {:board (possible-board move marker (:board game)) :ai-marker (:ai-marker game) :player-marker (:player-marker game)}) open-positions))
 
 (declare minimax)
 
-(defn score [game maximizing open-positions player]
+(defn score [game maximizing open-positions player depth]
   (if maximizing
     (map (fn [game] (last (minimax game false (+ depth 1)))) (game-states open-positions game player))
     (map (fn [game] (last (minimax game true (+ depth 1)))) (game-states open-positions game player))))
 
-(defn get-best-score-for [game maximizing]
+(defn get-best-score-for [game maximizing depth]
   (let [open-positions (possible-moves game)]
     (if maximizing
-      (best-score-index (score game maximizing open-positions (:ai-marker game)) maximizing)
-      (best-score-index (score game maximizing open-positions (:player-marker game)) maximizing))))
+      (best-score-index (score game maximizing open-positions (:ai-marker game) depth) maximizing)
+      (best-score-index (score game maximizing open-positions (:player-marker game) depth) maximizing))))
 
-(defn minimax [game maximizing]
-  (if (winner? (:board game))
-    (let [score (score-game game)
+(def minimax
+  (memoize (fn [game maximizing depth]
+    (if (or (winner? (:board game)) (= 9 depth))
+      (let [score (score-game game)
           score-index 0]
-      [score-index score])
-    (get-best-score-for game maximizing)))
+       [score-index score])
+    (get-best-score-for game maximizing depth)))))
+
+(defn move-state-default? [game]
+  (or (= 0 (game-depth (:board game))) (= 1 (game-depth (:board game)))))
 
 (defn ai-move [game]
   (if (= 0 (game-depth (:board game)))
