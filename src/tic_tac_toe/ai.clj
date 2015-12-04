@@ -1,7 +1,8 @@
-3(ns tic-tac-toe.ai
+(ns tic-tac-toe.ai
   (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move board-diemensions]]
             [tic-tac-toe.game :refer  [game-depth winner?]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
+
 
 (defn score-game [game]
   (let [winner (winner? (game :board))]
@@ -50,10 +51,10 @@
 
 (def minimax
   (memoize (fn [game maximizing depth]
-  (if (or (winner? (:board game)) (= 9 depth))
-    (let [score (score-game game)
+    (if (or (winner? (:board game)) (= 9 depth))
+      (let [score (score-game game)
           score-index 0]
-      [score-index score])
+       [score-index score])
     (get-best-score-for game maximizing depth)))))
 
 (defn move-state-default? [game]
