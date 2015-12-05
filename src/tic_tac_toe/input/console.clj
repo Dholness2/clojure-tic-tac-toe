@@ -32,7 +32,7 @@
 (defn assign-board []
   (try
     (get-board-diemension)
-     (catch Exception e (get-board-diemension))))
+     (catch Exception e (assign-board))))
 
 (defrecord ConsoleInput []
   InputProtocol

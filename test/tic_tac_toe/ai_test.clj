@@ -82,11 +82,16 @@
       (is (= possible-game-states (game-states available-moves game current-player))))))
 
 (deftest minimax-test
- (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
+ (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+        depth 0]
     (testing "return best score and its index based on the board state"
-   (is (= [0 4] (minimax game true))))))
+      (is (= [0 4] (minimax game true  depth))))))
 
- (deftest ai-best-move-win-one
+(deftest ai-move-deafult-check
+  (let [game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}]
+    (is (= true (move-state-default? game)))))
+
+(deftest ai-best-move-win-one
   (let [game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
    (testing "returns the best move location"
       (is (= [0 2] (ai-move game))))))
@@ -120,6 +125,12 @@
   (let [game { :board [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
    (testing "returns the best move location"
       (is (= [2 2] (ai-move game))))))
+
+(deftest ai-deafult-move
+  (let [player  (->AiPlayer "o")
+        game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}]
+    (testing "returns true for game depth <=1"
+      (is (=(game-move game player))))))
 
 (deftest ai-gamemove
   (let [player  (->AiPlayer "o")
