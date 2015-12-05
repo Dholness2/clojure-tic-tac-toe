@@ -3,7 +3,6 @@
             [tic-tac-toe.board :refer :all]
             [tic-tac-toe.game :refer :all]))
 
-
 (deftest board-row-check
   (testing "check for winner from row"
     (is (=  "x" (row-check [["x" "x" "x"] ["y" "x" "Y"] ["Y" "x" "y"] ])))))
