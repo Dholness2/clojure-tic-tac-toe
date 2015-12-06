@@ -24,6 +24,11 @@
     (testing "gets user input from console"
    	  (is (= 1  (with-out-str-value (with-in-str "1" (prompt-terminal "next move")))))))
 
+
+
+
+
+
 (deftest console-get-input
 	(let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "gets user input from console"
@@ -60,7 +65,7 @@
 (deftest ConsoleInput-assign-board-size
   (let [input (->ConsoleInput)]
     (testing "returns only valid board sizes"
-      (is (= 3 (with-in-str "x\n3" (get-board-size input))))))))
+      (is (= 3 (with-in-str "x\n3" (get-board-size input)))))))3
 
 (deftest ConsoleInput-get-board-size3
   (let [input (->ConsoleInput)]
