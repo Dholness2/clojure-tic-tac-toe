@@ -1,9 +1,10 @@
 (ns tic-tac-toe.input.console
   (:require [tic-tac-toe.protocol.input :refer :all]
-	          [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move board-diemensions board-size]]))
+	          [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move board-diemensions board-size]]
+           [tic-tac-toe.display.terminal :refer [print-message]]))
 
 (defn prompt-terminal [question]
-   (println question)
+   (print-message question)
   (let [response  (read-line)]
     (if (clojure.string/blank? response)
       (prompt-terminal question)
@@ -16,7 +17,7 @@
   (let [selection  (prompt-terminal "Select your marker x or o ?")]
     (if  (or (= 0 (compare selection "o")) (= 0 (compare selection "x")))
       selection
-      (do (println "invalid selection")
+      (do (print-message "invalid selection")
       	   (user-marker)))))
 
 (defn get-board-diemension []
@@ -29,7 +30,7 @@
  (let [input (read-string (prompt-terminal "what is your next move ?"))]
     (if (valid-selection input board)
       (matrix-convrt input (board-diemensions board))
-      (do (println "invalid selection")
+      (do (print-message "invalid selection")
       	   (user-input-move board)))))
 
 

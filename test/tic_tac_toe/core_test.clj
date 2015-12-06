@@ -57,7 +57,7 @@
         input (->DummyInput)
         game-type :dummy-game]
      (test "game intializes with correct arguments")
-      (is (=  "test"  (game-intializer display  input  game-type)))))
+      (is (= nil     (with-in-str "3" (game-intializer display  input  game-type))))))
 
 
 
