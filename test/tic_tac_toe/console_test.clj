@@ -40,7 +40,7 @@
       (is (= [0 0] (with-out-str-value (with-in-str "1" (get-move input board))))))))
 
 (deftest ConsoleInput-get-marker
-  (let [input (->ConsoleInput)]
+ (let [input (->ConsoleInput)]
     (testing "test #get-marker function returns sleceted marker x or o"
       (is (= "x" (with-out-str-value (with-in-str "x" (get-marker input))))))))
 
@@ -48,4 +48,24 @@
   (let [input (->ConsoleInput)]
     (testing "test #get-board-size function returns size"
       (is (= 7 (with-out-str-value (with-in-str "7" (get-board-size input))))))))
+
+  (let [input (->ConsoleInput)](with-out-str-value
+    (testing "test #get-marker function returns sleceted marker x or o"
+      (is (= "x" (with-out-str-value (with-in-str "x" (get-marker input))))))))
+
+(deftest test-assign-board
+  (testing "returns only valid board sizes")
+    (is ( = 4 (with-out-str-value (with-in-str "x\n4" (assign-board))))))
+
+(deftest ConsoleInput-assign-board-size
+  (let [input (->ConsoleInput)]
+    (testing "returns only valid board sizes"
+      (is (= 3 (with-in-str "x\n3" (get-board-size input))))))))
+
+(deftest ConsoleInput-get-board-size3
+  (let [input (->ConsoleInput)]
+    (testing "test #get-board-size function returns size"
+      (is (= 7 (with-out-str-value (with-in-str "7" (get-board-size input))))))))
+
+
 

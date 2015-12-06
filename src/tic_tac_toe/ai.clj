@@ -6,9 +6,9 @@
 
 (defn score-game [game]
   (let [winner (winner? (game :board))]
-	  (cond
-	    (= (:ai-marker game) winner) (- 10 (game-depth (:board game)))
-	    (= (:player-marker game) winner) (- (game-depth (:board game)) 10)
+    (cond
+      (= (:ai-marker game) winner) (- 17 (game-depth (:board game)))
+      (= (:player-marker game) winner) (- (game-depth (:board game)) 17)
       :else 0)))
 
 (defn space-available? [board position]
@@ -19,15 +19,16 @@
     (possible-moves game 0 []))
   ([game move-index moves]
     (if (< move-index (board-size (:board game)))
-      (if (space-available? (game :board) move-index)
-        (possible-moves game  (+ 1 move-index) (conj moves (+ 1 move-index)))
-        (possible-moves game  (+ 1 move-index) moves))
+      (let [next-move-index (+ 1 move-index)]
+        (if (space-available? (:board game) move-index)
+          (possible-moves game next-move-index (conj moves next-move-index))
+          (possible-moves game next-move-index moves)))
     moves)))
 
 (defn best-score-index[scores maximizing]
   (let [scores (vec scores)]
     (if maximizing
-	    [(.indexOf scores (apply max scores)) (apply max scores)]
+      [(.indexOf scores (apply max scores)) (apply max scores)]
       [(.indexOf scores (apply min scores)) (apply min scores)])))
 
 (defn possible-board [location marker current-board ]
@@ -38,10 +39,14 @@
 
 (declare minimax)
 
+
+(defn get-score-for-gamestate [game maximizing depth]
+  (last (minimax game (not maximizing) (+ depth 1))))
+
 (defn score [game maximizing open-positions player depth]
-  (if maximizing
-    (map (fn [game] (last (minimax game false (+ depth 1)))) (game-states open-positions game player))
-    (map (fn [game] (last (minimax game true (+ depth 1)))) (game-states open-positions game player))))
+  (map
+    #(get-score-for-gamestate % maximizing depth)
+    (game-states open-positions game player)))
 
 (defn get-best-score-for [game maximizing depth]
   (let [open-positions (possible-moves game)]
@@ -51,7 +56,7 @@
 
 (def minimax
   (memoize (fn [game maximizing depth]
-    (if (or (winner? (:board game)) (= 9 depth))
+    (if (or (winner? (:board game)) (= 4 depth))
       (let [score (score-game game)
           score-index 0]
        [score-index score])
