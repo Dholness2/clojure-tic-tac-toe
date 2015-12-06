@@ -6,6 +6,10 @@
   (testing "clears terminal"
     (is (= (with-out-str (println "\033[2J")) (with-out-str(clear-terminal))))))
 
+(deftest print-test
+  (testing "prints message out to terminal")
+  (is (= (with-out-str (println "test")) (with-out-str (print-message "hello")))))
+
 (deftest view-show
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "dispays the board"
@@ -24,11 +28,11 @@
 (deftest display-record
   (let [display (->TerminalDisplay)
         board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-   (testing "creats defreacord of display protocol" 
+   (testing "creats defreacord of display protocol"
     (is (= "\033[2J\nGame Index\n123\n456\n789\n___\n___\n___\n" (with-out-str (display-state display board)))))))
 
 (deftest display-record
   (let [display (->TerminalDisplay)
         board [["x" "x" "x" ]["_" "_" "_" ]["_" "_" "_" ]]]
-   (testing "creats defreacord of display protocol" 
+   (testing "creats defreacord of display protocol"
     (is (= "Game Winner: x\n" (with-out-str (display-winner display board)))))))

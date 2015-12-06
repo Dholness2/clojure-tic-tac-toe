@@ -1,88 +1,82 @@
 (ns tic-tac-toe.ai
-  (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move]]
+  (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move board-diemensions]]
             [tic-tac-toe.game :refer  [game-depth winner?]]
-             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
+            [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
 
-(def marker-1 "x")
-(def marker-2 "o")
-(def place-holder (atom {:player-marker marker-1 :ai-marker marker-2}))
 
-(def max-score 1)
-(def min-score -1)
-(def draw-score 0)
+(defn score-game [game]
+  (let [winner (winner? (game :board))]
+    (cond
+      (= (:ai-marker game) winner) (- 17 (game-depth (:board game)))
+      (= (:player-marker game) winner) (- (game-depth (:board game)) 17)
+      :else 0)))
 
-(defn switch-markers [place-holder marker-1 marker-2]
- (swap! place-holder assoc (first(keys @place-holder)) marker-2 (last(keys @place-holder)) marker-1))
- 
-(defn score-game [board]
-  (let [winner (winner? board)]
-	  (cond
-	   (= (@place-holder :ai-marker) winner ) (- 10 (game-depth board))
-	   (= (@place-holder :player-marker) winner) (- (game-depth board) 10)
-     :else 0)))
+(defn space-available? [board position]
+  (= empty-space (nth (flatten board) position)))
 
-(defn possible-moves 
-  ([board]
-    (possible-moves board 0 []))
-  ([board iteration moves]
-     (if (< iteration (board-size board))
-      (do (if (= empty-space (nth (flatten board) iteration))
-             (possible-moves board  (+ 1 iteration) (conj moves (+ 1 iteration)))
-             (possible-moves board  (+ 1 iteration) moves)))
-       moves)))
+(defn possible-moves
+  ([game]
+    (possible-moves game 0 []))
+  ([game move-index moves]
+    (if (< move-index (board-size (:board game)))
+      (let [next-move-index (+ 1 move-index)]
+        (if (space-available? (:board game) move-index)
+          (possible-moves game next-move-index (conj moves next-move-index))
+          (possible-moves game next-move-index moves)))
+    moves)))
 
-(defn best-score-index[scores  maximizing]
+(defn best-score-index[scores maximizing]
   (let [scores (vec scores)]
     (if maximizing
-	    [(.indexOf scores (apply max scores)) (apply max scores)]
+      [(.indexOf scores (apply max scores)) (apply max scores)]
       [(.indexOf scores (apply min scores)) (apply min scores)])))
 
 (defn possible-board [location marker current-board ]
-  (move (matrix-convrt location 3) marker current-board))
+  (move (matrix-convrt location (board-diemensions current-board)) marker current-board))
 
-(defn board-states [open-positions board marker]
-  (map (fn [move] (possible-board move marker board )) open-positions))
+(defn game-states [open-positions game marker]
+  (map (fn [move]  {:board (possible-board move marker (:board game)) :ai-marker (:ai-marker game) :player-marker (:player-marker game)}) open-positions))
 
 (declare minimax)
 
-(defn score [board maximizing open-positions player]
-  (if maximizing
-    (map (fn [board] (last (minimax board false))) (board-states open-positions board player))
-    (map (fn [board] (last (minimax board true))) (board-states open-positions board player))))
-(defn get-best-score-for [board maximizing]
-  (let [open-positions (possible-moves board)]
-    (if maximizing
-      (best-score-index (score board maximizing open-positions (@place-holder :ai-marker)) maximizing)
-      (best-score-index (score board maximizing open-positions (@place-holder :player-marker)) maximizing))))
-    
-(defn minimax [board maximizing]
-  (if (winner? board)
-     (let [score (score-game board)
-           score-index 0 ]
-       [score-index score])
-    (get-best-score-for board maximizing)))
 
-(defn ai-move [board]
-  (if (= 0 (game-depth board))
-    [0 0]
-    (let [open-positions (possible-moves board)
-          move-score (minimax board true)]
-     (matrix-convrt (open-positions (first move-score)) 3))))
+(defn get-score-for-gamestate [game maximizing depth]
+  (last (minimax game (not maximizing) (+ depth 1))))
+
+(defn score [game maximizing open-positions player depth]
+  (map
+    #(get-score-for-gamestate % maximizing depth)
+    (game-states open-positions game player)))
+
+(defn get-best-score-for [game maximizing depth]
+  (let [open-positions (possible-moves game)]
+    (if maximizing
+      (best-score-index (score game maximizing open-positions (:ai-marker game) depth) maximizing)
+      (best-score-index (score game maximizing open-positions (:player-marker game) depth) maximizing))))
+
+(def minimax
+  (memoize (fn [game maximizing depth]
+    (if (or (winner? (:board game)) (= 4 depth))
+      (let [score (score-game game)
+          score-index 0]
+       [score-index score])
+    (get-best-score-for game maximizing depth)))))
+
+(defn move-state-default? [game]
+  (or (= 0 (game-depth (:board game))) (= 1 (game-depth (:board game)))))
+
+(defn ai-move [game]
+  (if (move-state-default? game)
+    (matrix-convrt (first (possible-moves game)) (board-diemensions (:board game)))
+  (let [open-positions (possible-moves game)
+        move-score (minimax game true 0)
+        board-diemension (board-diemensions (:board game))]
+    (matrix-convrt (open-positions (first move-score)) board-diemension))))
+
+(defn game-move [game marker]
+  (if-not (winner? (:board game))
+    (assoc game :board (move (ai-move game) marker (:board game)))))
 
 (defrecord AiPlayer[marker]
   PlayerProtocol
-  (next-move [player board] (if-not (winner? board) (move (ai-move board) marker board))))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  (next-move [player game] (game-move game marker)))

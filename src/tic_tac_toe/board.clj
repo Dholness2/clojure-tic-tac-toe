@@ -1,10 +1,13 @@
 (ns tic-tac-toe.board
-(:require [clojure.core.matrix :refer [transpose]]))
+  (:require [clojure.core.matrix :refer [transpose]]))
 
 (def empty-space "_")
 
 (defn create-empty-board [diemension]
   (vec (take diemension (repeat (vec (take diemension (repeat empty-space)))))))
+
+(defn board-diemensions [board]
+  (count board))
 
 (defn board-size [board]
   (* (count board) (count (first board))))
@@ -17,8 +20,8 @@
 (defn move [location player board]
   (assoc-in board location player))
 
-(defn validmove? [move]
-  (and (<= move 9) (>=  move 1)))
+(defn validmove? [move board-size]
+  (and (<= move board-size) (>=  move 1)))
 
 (defn moveopen? [board move]
   (= "_" ((vec (flatten board)) (- move 1))))
@@ -33,7 +36,6 @@
   (map (fn [location] (get-in board [location location])) locations))
 
 (defn get-diagnoals [board rowsize]
-  (let[diagonal-indexs-top  (vec(take rowsize (iterate inc 0)))
- 	     diagonal-indexs-bottom	(vec(take rowsize (iterate  dec (- rowsize 1))))]
-      [(get-location board diagonal-indexs-top)  (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
-
+  (let [diagonal-indexs-top (vec(take rowsize (iterate inc 0)))
+ 	      diagonal-indexs-bottom (vec(take rowsize (iterate dec (- rowsize 1))))]
+    [(get-location board diagonal-indexs-top) (get-location (vec (reverse board)) diagonal-indexs-bottom)]))

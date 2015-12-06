@@ -1,7 +1,7 @@
 (ns tic-tac-toe.human-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.input :refer :all]
+            [tic-tac-toe.input.console :refer :all]
             [tic-tac-toe.human :refer :all]
             [tic-tac-toe.protocol.player :refer :all]
             [tic-tac-toe.protocol.input :refer :all]))
@@ -25,7 +25,6 @@
 
 (deftest human-record
   (let [player  (->HumanPlayer "x" (->ConsoleInput))
-        board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+        game {:board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o"  :player-marker "x"}]
     (testing "creates defrecord of player protocol"
-      (is (= [["_" "_" "_"] ["x" "_" "_"] ["_" "_" "_"]] (with-out-str-value (with-in-str "4" (next-move player board))))))))
-
+      (is (= ( assoc game :board [["_" "_" "_"] ["x" "_" "_"] ["_" "_" "_"]]) (with-out-str-value (with-in-str "4" (next-move player game))))))))
