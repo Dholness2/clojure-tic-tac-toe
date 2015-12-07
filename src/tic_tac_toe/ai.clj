@@ -3,6 +3,9 @@
             [tic-tac-toe.game :refer  [game-depth winner?]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
 
+(def moves-ahead 4)
+(def move-depth 0)
+(def draw-score 0)
 
 (defn scoring-base [game]
   (+ 1 (board-size (:board game))))
@@ -12,7 +15,7 @@
     (cond
       (= (:ai-marker game) winner) (- (scoring-base game) (game-depth (:board game)))
       (= (:player-marker game) winner) (- (game-depth (:board game)) (scoring-base game))
-      :else 0)))
+      :else draw-score)))
 
 (defn space-available? [board position]
   (= empty-space (nth (flatten board) position)))
@@ -58,15 +61,15 @@
 
 (def minimax
   (memoize (fn [game maximizing depth]
-    (if (or (winner? (:board game)) (= 4 depth))
+    (if (or (winner? (:board game)) (= moves-ahead depth))
       (let [score (score-game game)
-          score-index 0]
+            score-index 0]
        [score-index score])
     (get-best-score-for game maximizing depth)))))
 
 (defn ai-move [game]
  (let [open-positions (possible-moves game)
-        move-score (minimax game true 0)
+        move-score (minimax game true move-depth)
         board-diemension (board-diemensions (:board game))]
     (matrix-convrt (open-positions (first move-score)) board-diemension)))
 
