@@ -57,7 +57,7 @@
         input (->DummyInput)
         game-type :dummy-game]
      (test "game intializes with correct arguments")
-     (is (=  "test"  (game-intializer display  input  game-type)))))
+     (is (= [ ] (game-intializer DummyDisplay DummyInput game-type)))))
 
 
 

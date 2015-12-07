@@ -3,11 +3,15 @@
             [tic-tac-toe.game :refer  [game-depth winner?]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
 
+
+(defn scoring-base [game]
+  (+ 1 (board-size (:board game))))
+
 (defn score-game [game]
   (let [winner (winner? (game :board))]
     (cond
-      (= (:ai-marker game) winner) (- 17 (game-depth (:board game)))
-      (= (:player-marker game) winner) (- (game-depth (:board game)) 17)
+      (= (:ai-marker game) winner) (- (scoring-base game) (game-depth (:board game)))
+      (= (:player-marker game) winner) (- (game-depth (:board game)) (scoring-base game))
       :else 0)))
 
 (defn space-available? [board position]
@@ -54,7 +58,7 @@
 
 (def minimax
   (memoize (fn [game maximizing depth]
-    (if (or (winner? (:board game)) (= 4 depth))
+    (if (or (winner? (:board game)) (= 9 depth))
       (let [score (score-game game)
           score-index 0]
        [score-index score])
