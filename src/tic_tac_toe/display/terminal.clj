@@ -6,6 +6,9 @@
 (defn clear-terminal[]
   (println "\033[2J"))
 
+(defn print-message [message]
+  (println message))
+
 (defn display-index [board]
   (let [game-index (partition (count board) (range 1 (+ 1 (board-size board))))]
     (println "Game Index")

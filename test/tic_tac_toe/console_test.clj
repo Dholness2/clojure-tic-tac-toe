@@ -49,3 +49,13 @@
     (testing "test #get-board-size function returns size"
       (is (= 7 (with-out-str-value (with-in-str "7" (get-board-size input))))))))
 
+(deftest ConsoleInput-assign-board-size
+    (let [input (->ConsoleInput)]
+      (testing "returns only valid board sizes"
+        (is (= 3 (with-out-str-value (with-in-str "x\n3" (get-board-size input))))))))
+
+
+
+
+
+

@@ -6,6 +6,10 @@
   (testing "clears terminal"
     (is (= (with-out-str (println "\033[2J")) (with-out-str(clear-terminal))))))
 
+(deftest print-test
+  (testing "prints message out to terminal")
+  (is (= (with-out-str (println "hello")) (with-out-str (print-message "hello")))))
+
 (deftest view-show
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "dispays the board"
