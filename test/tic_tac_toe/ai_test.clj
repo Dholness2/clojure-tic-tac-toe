@@ -8,7 +8,6 @@
     (testing "returns scoring base value of board- size + 1 "
     (is (=  10 (scoring-base game))))))
 
-
 (deftest game-value-test-four-by-four
   (let [game {:board [["_" "_" "_" "_"] ["_" "_" "_" "_"] ["_" "_" "_" "_"] ["_" "_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "returns scoring base value of board- size + 1 "
