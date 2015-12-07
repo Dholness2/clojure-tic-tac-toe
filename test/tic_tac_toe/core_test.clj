@@ -12,7 +12,6 @@
             [tic-tac-toe.protocol.display :refer :all]))
 
 (def latest-displayed-state (atom {:states [] :winner nil}))
-(def console-inputs (atom {:marker nil  :board-size 0 :moves [ ] }))
 
 (defrecord DummyDisplay []
   DisplayProtocol
@@ -21,12 +20,12 @@
 
 (defrecord DummyInput []
   InputProtocol
-  (get-move [input board] (swap! console-inputs assoc :moves 2))
-  (get-marker [input] (swap! console-inputs assoc :marker ))
-  (get-board-size [input] (swap! console-inputs assoc :board-size 2)))
+  (get-move [input board] )
+  (get-marker [input] )
+  (get-board-size [input]  3 ))
 
 (defmethod create-game :dummy-game [game-type-type input display board ]
-   [game-type-type input display board ])
+    [game-type-type input display board ])
 
 (deftest game-iterattion-test
    (let [starting-state { :board [["_" "o" "o" ]["x" "_" "_" ]["_" "_" "_" ]] :ai-marker "o"  :player-marker "x"}
@@ -54,7 +53,11 @@
 
 (deftest game-intializer-test
    (let [display (->DummyDisplay)
-        input (->DummyInput)
-        game-type :dummy-game]
+         input (->DummyInput)
+         game-type :dummy-game
+         dummy-game (create-game game-type input display (create-empty-board 3))]
      (test "game intializes with correct arguments")
-     (is (= [ ] (game-intializer DummyDisplay DummyInput game-type)))))
+     (is (= dummy-game (game-intializer display input game-type)))))
+
+
+
