@@ -14,7 +14,7 @@
 
 (defn empty-spaces [board]
   (if ((frequencies (flatten board)) empty-space)
-     ((frequencies (flatten board)) empty-space)
+      ((frequencies (flatten board)) empty-space)
       0))
 
 (defn move [location player board]
