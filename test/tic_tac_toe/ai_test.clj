@@ -3,6 +3,15 @@
             [tic-tac-toe.ai :refer :all]
   	        [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
+(deftest game-value-test-three-by-three
+  (let [game {:board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+    (testing "returns scoring base value of board- size + 1 "
+    (is (=  10 (scoring-base game))))))
+
+(deftest game-value-test-four-by-four
+  (let [game {:board [["_" "_" "_" "_"] ["_" "_" "_" "_"] ["_" "_" "_" "_"] ["_" "_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+    (testing "returns scoring base value of board- size + 1 "
+    (is (=  17 (scoring-base game))))))
 
 (deftest game-state-score-draw-depth-zero
   (let [game   { :board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]

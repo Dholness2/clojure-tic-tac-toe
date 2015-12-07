@@ -52,22 +52,17 @@
 
 (def minimax
   (memoize (fn [game maximizing depth]
-  (if (or (winner? (:board game)) (= 8 depth))
-    (let [score (score-game game)
+    (if (or (winner? (:board game)) (= 4 depth))
+      (let [score (score-game game)
           score-index 0]
       [score-index score])
     (get-best-score-for game maximizing depth)))))
 
-(defn move-state-default? [game]
-  (or (= 0 (game-depth (:board game))) (= 1 (game-depth (:board game)))))
-
 (defn ai-move [game]
-  (if (move-state-default? game)
-    (matrix-convrt (first (possible-moves game)) (board-diemensions (:board game)))
-  (let [open-positions (possible-moves game)
+ (let [open-positions (possible-moves game)
         move-score (minimax game true 0)
         board-diemension (board-diemensions (:board game))]
-    (matrix-convrt (open-positions (first move-score)) board-diemension))))
+    (matrix-convrt (open-positions (first move-score)) board-diemension)))
 
 (defn game-move [game marker]
   (if-not (winner? (:board game))
