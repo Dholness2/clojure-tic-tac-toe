@@ -9,4 +9,4 @@
 
 (defrecord HumanPlayer[marker input-protocol]
   PlayerProtocol
-    (next-move [player game] (assoc game :board (human-move (game :board) marker input-protocol))))
+  (next-move [player game] (assoc game :board (human-move (game :board) marker input-protocol))))
