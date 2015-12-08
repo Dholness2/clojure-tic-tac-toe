@@ -32,13 +32,13 @@
 
 (defmethod create-game :computer-vs-human [game-type-type input display board ]
   (let [marker-selection (get-marker input)]
-    (if (= marker-selection "x")
-      (let [player-1 (->HumanPlayer "x" input)
-            player-2 (->AiPlayer "o")
+    (if (= marker-selection marker-one)
+      (let [player-1 (->HumanPlayer marker-one input)
+            player-2 (->AiPlayer marker-two)
             game {:board board :ai-marker (opposite-marker marker-selection) :player-marker marker-selection}]
         (game-runner game display player-1 player-2))
-      (let [player-2 (->HumanPlayer "o" input)
-            player-1 (->AiPlayer "x")
+      (let [player-2 (->HumanPlayer marker-two input)
+            player-1 (->AiPlayer marker-one)
             game {:board board :ai-marker (opposite-marker marker-selection) :player-marker marker-selection}]
         (game-runner game display player-1 player-2)))))
 
