@@ -3,10 +3,13 @@
 	          [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move board-diemensions board-size]]
             [tic-tac-toe.display.terminal :refer [print-message]]))
 
+(defn invalid-input?[input]
+  (or (clojure.string/blank? input) (= nil (re-matches #"\w+" input))))
+
 (defn prompt-terminal [question]
    (print-message question)
    (let [response  (read-line)]
-     (if (or (clojure.string/blank? response) (= nil (re-matches #"\w+" response)))
+     (if (invalid-input? response)
        (prompt-terminal question)
         response)))
 
@@ -15,10 +18,10 @@
 
 (defn user-marker []
   (let [selection  (prompt-terminal "Select your marker x or o ?")]
-    (if  (or (= 0 (compare selection "o")) (= 0 (compare selection "x")))
+    (if (or (= selection "o") (= selection "x"))
       selection
       (do (print-message "invalid selection")
-           (user-marker)))))
+        (user-marker)))))
 
 (defn get-board-diemension []
   (let [selection (read-string(prompt-terminal "What size board do you want? x by x (provide one number for x)"))]
