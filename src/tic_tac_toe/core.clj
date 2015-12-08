@@ -1,13 +1,13 @@
 (ns tic-tac-toe.core
   (:gen-class)
-  (require [tic-tac-toe.board :refer :all]
-           [tic-tac-toe.game :refer :all]
+  (require [tic-tac-toe.board :refer [create-empty-board]]
+           [tic-tac-toe.game :refer [winner?]]
            [tic-tac-toe.ai :refer [->AiPlayer ]]
            [tic-tac-toe.display.terminal :refer [->TerminalDisplay print-winner]]
-           [tic-tac-toe.human :refer :all]
-           [tic-tac-toe.input.console :refer :all]
-           [tic-tac-toe.protocol.player :refer :all]
-           [tic-tac-toe.protocol.input :refer :all]
+           [tic-tac-toe.human :refer [->HumanPlayer]]
+           [tic-tac-toe.input.console :refer [->ConsoleInput]]
+           [tic-tac-toe.protocol.player :refer [next-move]]
+           [tic-tac-toe.protocol.input :refer [get-move get-marker get-board-size]]
            [tic-tac-toe.protocol.display :refer [display-state display-winner]]))
 
 (def marker-one "x")
