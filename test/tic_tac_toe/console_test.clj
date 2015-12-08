@@ -10,6 +10,18 @@
        (let [v# ~@body]
          v#))))
 
+(deftest check-input-test
+  (testing "for valid input"
+    (is (= false (invalid-input? "4")))))
+
+(deftest check-input-test-invalid
+  (testing "for invalid input"
+    (is (= true (invalid-input? "")))))
+
+(deftest check-input-test-invalid
+  (testing "for invalid input"
+    (is (= true(invalid-input? "#$#$")))))
+
 (deftest check-validation-move
 	(let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
   		  input 3]
