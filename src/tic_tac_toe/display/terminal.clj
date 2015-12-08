@@ -1,6 +1,6 @@
 (ns tic-tac-toe.display.terminal
-  (:require [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.game :refer :all]
+  (:require [tic-tac-toe.board :refer [board-size]]
+            [tic-tac-toe.game :refer [winner?]]
             [tic-tac-toe.protocol.display :refer [DisplayProtocol]]))
 
 (defn clear-terminal[]
