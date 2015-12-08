@@ -30,46 +30,46 @@
 (deftest valid-move-zero
   (let [board-size 9
         move 0]
-    (testing "test to mke sure user input is within game move option[1-9]")
- 	    (is (= false (validmove? move board-size)))))
+    (testing "test to mke sure user input is within game move option[1-9]"
+ 	    (is (= false (validmove? move board-size))))))
 
 (deftest valid-move-ten
   (let [board-size 9
          move  10]
-    (testing "test to mke sure user input is within game move option[1-9]")
-      (is (= false (validmove? move board-size)))))
+    (testing "test to mke sure user input is within game move option[1-9]"
+      (is (= false (validmove? move board-size))))))
 
 (deftest valid-move-five
   (let [board-size 9
          move  5]
-    (testing "test to mke sure user input is within game move option[1-9]")
-      (is (= true (validmove? move board-size)))))
+    (testing "test to mke sure user input is within game move option[1-9]"
+      (is (= true (validmove? move board-size))))))
 
 (deftest valid-move-zero-larger-board
   (let [board-size 16
         move 0]
-    (testing "test to mke sure user input is within game move option[1-16]")
-      (is (= false (validmove? move board-size)))))
+    (testing "test to mke sure user input is within game move option[1-16]"
+      (is (= false (validmove? move board-size))))))
 
 (deftest valid-move-twenty-larger-board
   (let [board-size 16
          move  20]
-    (testing "test to mke sure user input is within game move option[1-16]")
-      (is (= false (validmove? move board-size)))))
+    (testing "test to mke sure user input is within game move option[1-16]"
+      (is (= false (validmove? move board-size))))))
 
 (deftest valid-move-fithteen-larger-board
   (let [board-size 16
          move  15]
-    (testing "test to mke sure user input is within game move option[1-16]")
-      (is (= true (validmove? move board-size)))))
+    (testing "test to mke sure user input is within game move option[1-16]"
+      (is (= true (validmove? move board-size))))))
 
 (deftest open-move
-  (testing "checks to see if move is taken")
-    (is (= false (moveopen? [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] 1))))
+  (testing "checks to see if move is taken"
+    (is (= false (moveopen? [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] 1)))))
 
 (deftest matrix-convrt-test
-  (testing "takes the users move and converts to nested vector location ")
-    (is (= [0 0] (matrix-convrt 1 3))))
+  (testing "takes the users move and converts to nested vector location "
+    (is (= [0 0] (matrix-convrt 1 3)))))
 
 (deftest determine-equality
   (testing "checks for matches"
