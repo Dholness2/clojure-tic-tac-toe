@@ -65,13 +65,12 @@
      (with-in-str "6" (game-runner starting-state terminal human ai))
      (is (= (:winner @latest-displayed-state) (winner? closing-state)))))
 
-; (deftest game-intializer-test
-;    (let [display (->DummyDisplay)
-;          input (->DummyInput)
-;          game-type :dummy-game
-;          dummy-game (create-game game-type input display (create-empty-board 3))]
-;      (test "game intializes with correct arguments")
-;      (is (= dummy-game (game-intializer display input game-type)))))
+(deftest game-intializer-test
+   (let [display (->DummyDisplay)
+         input (->DummyInput)
+         game-type :dummy-game]
+     (test "game intializes with correct arguments")
+     (is (=  (with-out-str(with-in-str "3\n3\n9\n8\n"(game-intializer display input game-type)))))))
 
 
 
