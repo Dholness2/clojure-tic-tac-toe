@@ -17,13 +17,13 @@
 (defn game-runner [game display]
   (let [game-state (first game)
         players    (last game )]
-    (display-state display (:board game-state)
+    (display-state display (:board game-state))
     (if-not (winner? (:board game-state))
-      (let [current-state (next-move (first players) (game-state))]
+      (let [current-state (next-move (first players) game-state)]
         (display-state display (:board current-state))
         (if-not (winner? (:board current-state))
           (game-runner [current-state (rotate players 0 1)] display)
-          (display-winner display  (:board current-state)))))))
+          (display-winner display  (:board current-state)))))))3
 
 (defmulti create-game (fn [game-type input board ] game-type))
 
