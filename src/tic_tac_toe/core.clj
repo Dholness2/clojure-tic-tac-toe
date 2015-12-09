@@ -15,13 +15,15 @@
 (def marker-two "o")
 
 (defn game-runner [game display]
-  (display-state display (:board (first game)))
-  (if-not (winner? (:board (first game)))
-    (let [current-state (next-move (first (last game)) (first game))]
-      (display-state display (:board current-state))
-      (if-not (winner? (:board current-state))
-        (game-runner [current-state (rotate (last game) 0 1)] display)
-        (display-winner display  (:board current-state))))))
+  (let [game-state (first game)
+        players    (last game )]
+    (display-state display (:board game-state)
+    (if-not (winner? (:board game-state))
+      (let [current-state (next-move (first players) (game-state))]
+        (display-state display (:board current-state))
+        (if-not (winner? (:board current-state))
+          (game-runner [current-state (rotate players 0 1)] display)
+          (display-winner display  (:board current-state)))))))
 
 (defmulti create-game (fn [game-type input board ] game-type))
 
