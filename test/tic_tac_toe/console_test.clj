@@ -43,11 +43,16 @@
 
 (deftest test-diemension
   (testing "return conslole supplied selection of board diemension")
-    (is ( = 4 (with-out-str-value (with-in-str "4" (get-board-diemension))))))
+    (is ( = 4 (with-out-str-value (with-in-str "4"(get-board-diemension))))))
+
+(deftest get-game-type-test
+  (let [games [":computer-vs-human"  ":human-vs-computer"]]
+  (testing "prompts the user to selecta specfic game type and returns its number index")
+  ( is ( = 1  (with-out-str-value (with-in-str "1" (get-game-selection games)))))))
 
 (deftest ConsoleInput-get-move
   (let [input (->ConsoleInput)
-  	     board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+        board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "test if #get-move returns user move selection based on provided input"
       (is (= [0 0] (with-out-str-value (with-in-str "1" (get-move input board))))))))
 
@@ -65,8 +70,6 @@
     (let [input (->ConsoleInput)]
       (testing "returns only valid board sizes"
         (is (= 3 (with-out-str-value (with-in-str "x\n3" (get-board-size input))))))))
-
-
 
 
 
