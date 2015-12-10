@@ -3,6 +3,8 @@
 	          [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move board-diemensions board-size]]
             [tic-tac-toe.display.terminal :refer [print-message]]))
 
+(def dimensions-limits #{3 4})
+
 (defn invalid-input?[input]
   (or (clojure.string/blank? input) (= nil (re-matches #"\w+" input))))
 
@@ -25,7 +27,7 @@
 
 (defn get-board-diemension []
   (let [selection (read-string(prompt-terminal "What size board do you want? x by x (provide one number for x)"))]
-    (if (and (number? selection) (or (= selection 3) (= selection 4)))
+    (if (and (number? selection) (contains? dimensions-limits selection))
       selection
       (do (println "invalid selection")
          get-board-diemension))))
@@ -41,7 +43,7 @@
   (apply str (map #(str (name %) "\n") games)))
 
 (defn get-game-selection [games]
-  (let [selection (read-string (prompt-terminal (str "select Game type" (game-key-to-strings games))))]
+  (let [selection (read-string (prompt-terminal (str "select Game type\n" (game-key-to-strings games))))]
     (if (and (number? selection) (<= selection (count games)) (>= selection 0))
       (dec selection)
       (get-game-selection games))))
