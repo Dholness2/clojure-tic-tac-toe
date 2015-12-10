@@ -48,7 +48,7 @@
 (deftest get-game-type-test
   (let [games [":computer-vs-human"  ":human-vs-computer"]]
   (testing "prompts the user to selecta specfic game type and returns its number index")
-  ( is ( = 1  (with-out-str-value (with-in-str "1" (get-game-selection games)))))))
+  ( is ( = 0  (with-out-str-value (with-in-str "1" (get-game-selection games)))))))
 
 (deftest ConsoleInput-get-move
   (let [input (->ConsoleInput)
@@ -64,7 +64,7 @@
 (deftest ConsoleInput-get-board-size
   (let [input (->ConsoleInput)]
     (testing "test #get-board-size function returns size"
-      (is (= 7 (with-out-str-value (with-in-str "7" (get-board-size input))))))))
+      (is (= 4 (with-out-str-value (with-in-str "4" (get-board-size input))))))))
 
 (deftest ConsoleInput-assign-board-size
     (let [input (->ConsoleInput)]
