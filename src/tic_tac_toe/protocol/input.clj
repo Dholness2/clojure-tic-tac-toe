@@ -3,4 +3,5 @@
 (defprotocol InputProtocol
   (get-move [input board])
   (get-marker [input])
-  (get-board-size [input]))
+  (get-board-size [input])
+  (get-game-type [input games] ))

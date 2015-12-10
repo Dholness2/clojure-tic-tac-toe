@@ -8,11 +8,12 @@
            [tic-tac-toe.human :refer [->HumanPlayer]]
            [tic-tac-toe.input.console :refer [->ConsoleInput]]
            [tic-tac-toe.protocol.player :refer [next-move]]
-           [tic-tac-toe.protocol.input :refer [get-move get-marker get-board-size]]
+           [tic-tac-toe.protocol.input :refer [get-move get-marker get-board-size get-game-type]]
            [tic-tac-toe.protocol.display :refer [display-state display-winner]]))
 
 (def marker-one "x")
 (def marker-two "o")
+(def games [:human-vs-computer :computer-vs-human])
 
 (defn game-runner [game display]
   (let [game-state (first game)
@@ -39,8 +40,8 @@
         game-state {:board board :ai-marker marker-one :player-marker marker-two}]
     [game-state [player-1 player-2]]))
 
-(defn game-intializer [display input game-type]
-  (let [play-type game-type
+(defn game-intializer [display input]
+  (let [play-type (games (get-game-type input games))
         board-diemnson (get-board-size input)
         board (create-empty-board board-diemnson)
         game (create-game play-type input  board)]
