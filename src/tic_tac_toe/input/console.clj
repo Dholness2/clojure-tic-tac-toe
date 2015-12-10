@@ -40,7 +40,7 @@
       	  (user-input-move board)))))
 
 (defn game-key-to-strings [games]
-  (apply str (map #(str (name %) "\n") games)))
+  (apply str (map #(str (inc (.indexOf games %)) "." (name %) "\n") games)))
 
 (defn get-game-selection [games]
   (let [selection (read-string (prompt-terminal (str "select Game type\n" (game-key-to-strings games))))]
