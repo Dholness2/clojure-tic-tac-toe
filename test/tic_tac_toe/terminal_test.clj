@@ -10,15 +10,53 @@
   (testing "prints message out to terminal")
   (is (= (with-out-str (println "hello")) (with-out-str (print-message "hello")))))
 
-(deftest view-show
+(deftest empty-position-test
+  (testing "returns true or false for empty positons")
+  (is (=  true (empty-position "_"))))
+
+(deftest empty-position-test-x
+  (testing "returns true or false for empty positons")
+  (is (=  false (empty-position "x"))))
+
+(deftest empty-position-test-o
+  (testing "returns true or false for empty positons")
+  (is (=  false (empty-position "o"))))
+
+(deftest add-column-test-small-right-test
+  (let[small-right-column "  |"
+     element "_"
+     position 2]
+  (testing " appends small right column element if element positon  is less than 9 ")
+  (is (= (str 3 small-right-column) (add-column position element)))))
+
+(deftest add-column-test-large-right-test
+  (let[large-right-column " |"
+     element "_"
+     position 9]
+  (testing " appends small right column element if element positon  is less than 9, if not then large ")
+  (is (= (str 10 large-right-column) (add-column position element)))))
+
+(deftest first-row-test
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+    (testing "return the first row"
+      (is (= ["_" "_" "_"] (get-first-row  board))))))
+
+(deftest index-board-test
+  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
+         indx 0]
+    (testing "replaces board empty spaces with move index"
+      (is (= '(("1  |" "2  |" "3  |") ("4  |" "5  |" "6  |") ("7  |" "8  |" "9  |")) (index-board board))))))
+
+(deftest display-board-test
+  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
+         indx 0]
     (testing "dispays the board"
-      (is (= "___\n___\n___\n" (with-out-str (display-board board )))))))
+      (is (= "| _ _ _\n| _ _ _\n| _ _ _\n" (with-out-str (display-board board indx)))))))
 
 (deftest displays-game-interation
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "dispays iteraton"
-	  (is (= ( str "\033[2J\n" "Game Index\n123\n456\n789\n" "___\n___\n___\n") (with-out-str (display-iteration board )))))))
+	  (is (= ( str "\033[2J" "\n| 1  | 2  | 3  |\n| 4  | 5  | 6  |\n| 7  | 8  | 9  |\n") (with-out-str (display-iteration board )))))))
 
 (deftest print-winner-test
   (let [board [["x" "x" "x" ]["o" "_" "o" ]["_" "_" "_" ]]]
@@ -29,7 +67,7 @@
   (let [display (->TerminalDisplay)
         board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
    (testing "creats defreacord of display protocol"
-    (is (= "\033[2J\nGame Index\n123\n456\n789\n___\n___\n___\n" (with-out-str (display-state display board)))))))
+    (is (= "\033[2J" "\n| 1  | 2  | 3  |\n| 4  | 5  | 6  |\n| 7  | 8  | 9  |\n" (with-out-str (display-state display board)))))))
 
 (deftest display-record
   (let [display (->TerminalDisplay)
