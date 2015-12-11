@@ -20,9 +20,9 @@
 
 (defrecord DummyInput []
   InputProtocol
-  (get-move [input board] )
-  (get-marker [input] )
-  (get-board-size [input]  3 ))
+  (get-move [input board]  )
+  (get-board-size [input]  3)
+  (get-game-type [input games] :computer-vs-human ))
 
 (defmethod create-game :dummy-game [game-type input board ]
     [game-type input  board ])
@@ -65,9 +65,9 @@
 
 (deftest game-intializer-test
    (let [display (->DummyDisplay)
-         input (->DummyInput)
-         game-type :dummy-game]
+         input (->DummyInput)]
      (test "game initialize  with correct arguments")
-     (is (=  (with-out-str(with-in-str "3\n3\n9\n8\n"(game-intializer display input game-type)))))))
+     (with-out-str (with-in-str "2\n3\n3\n9\n8\n"(game-intializer display input)))
+     (is (= latest-displayed-state " " ))))
 
 

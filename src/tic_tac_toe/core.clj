@@ -8,7 +8,7 @@
            [tic-tac-toe.human :refer [->HumanPlayer]]
            [tic-tac-toe.input.console :refer [->ConsoleInput]]
            [tic-tac-toe.protocol.player :refer [next-move]]
-           [tic-tac-toe.protocol.input :refer [get-move get-marker get-board-size get-game-type]]
+           [tic-tac-toe.protocol.input :refer [get-move get-board-size get-game-type]]
            [tic-tac-toe.protocol.display :refer [display-state display-winner]]))
 
 (def marker-one "x")

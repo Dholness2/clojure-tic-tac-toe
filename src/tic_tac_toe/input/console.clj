@@ -18,13 +18,6 @@
 (defn valid-selection [input board]
   (and (number? input) (validmove? input (board-size board)) (moveopen? board input)))
 
-(defn user-marker []
-  (let [selection  (prompt-terminal "Select your marker x or o ?")]
-    (if (or (= selection "o") (= selection "x"))
-      selection
-      (do (print-message "invalid selection")
-        (user-marker)))))
-
 (defn get-board-diemension []
   (let [selection (read-string(prompt-terminal "What size board do you want? x by x (provide one number for x)"))]
     (if (and (number? selection) (contains? dimensions-limits selection))
@@ -51,7 +44,6 @@
 (defrecord ConsoleInput []
   InputProtocol
   (get-move [input board] (user-input-move board))
-  (get-marker [input] (user-marker))
   (get-board-size [input] (get-board-diemension))
   (get-game-type [input games] (get-game-selection games)))
 
