@@ -193,3 +193,12 @@
         game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}]
     (testing "creates defrecord of player protocol"
       (is (= (assoc game :board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) (next-move player game))))))
+
+
+
+
+
+
+
+
+

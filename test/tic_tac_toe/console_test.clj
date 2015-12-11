@@ -28,10 +28,6 @@
     (testing "user input is valid choice"
       (is (= true (valid-selection input board))))))
 
-(deftest user-marker-test
-  (testing "gets the users marker and confirms is an o or x"
-	(is (= "x" (with-out-str-value (with-in-str "x" (user-marker)))))))
-
 (deftest console-get-input
     (testing "gets user input from console"
    	  (is (= 1  (with-out-str-value (with-in-str "1" (prompt-terminal "next move")))))))
@@ -56,10 +52,11 @@
     (testing "test if #get-move returns user move selection based on provided input"
       (is (= [0 0] (with-out-str-value (with-in-str "1" (get-move input board))))))))
 
-(deftest ConsoleInput-get-marker
-  (let [input (->ConsoleInput)]
-    (testing "test #get-marker function returns sleceted marker x or o"
-      (is (= "x" (with-out-str-value (with-in-str "x" (get-marker input))))))))
+(deftest ConsoleInput-get-game-type-test
+  (let [input (->ConsoleInput)
+        games [":computer-vs-human"  ":human-vs-computer"]]
+    (testing "test if the protocol gets selected game type and returns the selected games index"
+      (is (= 0 (with-out-str-value (with-in-str "1" (get-game-type input games))))))))
 
 (deftest ConsoleInput-get-board-size
   (let [input (->ConsoleInput)]
