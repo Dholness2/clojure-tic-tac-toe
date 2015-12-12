@@ -42,8 +42,8 @@
 
 (defn game-intializer [display input]
   (let [play-type (games (get-game-type input games))
-        board-diemnson (get-board-size input)
-        board (create-empty-board board-diemnson)
+        board-dimension (get-board-size input)
+        board (create-empty-board board-dimension)
         game (create-game play-type input  board)]
         (game-runner game display)))
 

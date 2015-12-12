@@ -1,6 +1,7 @@
 (ns tic-tac-toe.ai-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.ai :refer :all]
+            [tic-tac-toe.game :refer [winner?]]
   	        [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
 (deftest game-value-test-three-by-three
@@ -194,11 +195,17 @@
     (testing "creates defrecord of player protocol"
       (is (= (assoc game :board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) (next-move player game))))))
 
+(defn win-or-draw? [player-marker winner-state]
+  (or (= player-marker winner-state) (= player-marker "its a draw")))
 
+(defn playout-possible-gamestates [gamestate]
+  (let [next-game-state (game-move gamestate (:ai-marker gamestate))
+        next-possible-moves (  ])
+  )
 
-
-
-
-
-
-
+(deftest ai-move-win-state-test
+  (let [ai-marker "x"
+        new-game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "x" :player-marker "o"}]
+   (test "ai never loses"
+    (let [winners (map #(winner? %) (playout-possible-gamestates new-game))]
+      (is (= true (every? #(win-or-draw? ai-marker %) winners)))))))

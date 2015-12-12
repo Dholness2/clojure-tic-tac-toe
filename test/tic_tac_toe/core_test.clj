@@ -11,12 +11,12 @@
             [tic-tac-toe.protocol.input :refer :all]
             [tic-tac-toe.protocol.display :refer :all]))
 
-(def latest-displayed-state (atom {:states [] :winner nil}))
+(def last-displayed-state (atom {:states [] :winner nil}))
 
 (defrecord DummyDisplay []
   DisplayProtocol
-  (display-state [display board] (swap! latest-displayed-state assoc :states board))
-  (display-winner [display board] (swap! latest-displayed-state assoc :winner (winner? board))))
+  (display-state [display board] (swap! last-displayed-state assoc :states board))
+  (display-winner [display board] (swap! last-displayed-state assoc :winner (winner? board))))
 
 (defrecord DummyInput []
   InputProtocol
@@ -26,6 +26,15 @@
 
 (defmethod create-game :dummy-game [game-type input board ]
     [game-type input  board ])
+
+(deftest gamme-runner-test
+  (let [display (->DummyDisplay)
+        input (->DummyInput)
+        board (create-empty-board 3)
+        game (create-game :computer-vs-human input board)]
+    (with-out-str (with-in-str "3\n9\n8\n"(game-runner game display)))
+    (test "test game runner iterations")
+    (is(= (@last-displayed-state :winner) "o"))))
 
 (deftest human-vs-computer-test
   (let [input (->ConsoleInput)
@@ -45,12 +54,11 @@
     (test " returns a starting game state and players within a map")
       (is (= [player-1 player-2] (last test-game)))))
 
-
 (deftest game-intializer-test
    (let [display (->DummyDisplay)
          input (->DummyInput)]
      (test "game initialize  with correct arguments")
      (with-out-str (with-in-str "3\n3\n9\n8\n"(game-intializer display input)))
-     (is (= (@latest-displayed-state :winner) "o"))))
+     (is (= (@last-displayed-state :winner) "o"))))
 
 
