@@ -17,52 +17,52 @@
 (deftest game-state-score-draw-depth-zero
   (let [game   { :board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of zero"
-      (is (= 0 (score-game game))))))
+      (is (= 0 (score-game game 0))))))
 
 (deftest game-state-score-draw-depth-nine
   (let [ game { :board [["x" "o" "x"] ["x" "o" "o"] ["o" "x" "x"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of nine"
-      (is (= 0 (score-game game))))))
+      (is (= 0 (score-game game 9))))))
 
 (deftest game-state-score-depth-one
   (let [ game { :board [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of one"
-      (is (= 0 (score-game game))))))
+      (is (= 0 (score-game game 1))))))
 
 (deftest game-state-score-depth-two
   (let [game { :board [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of two"
-      (is (= 0 (score-game game))))))
+      (is (= 0 (score-game game 2))))))
 
 (deftest game-state-score-depth-three
   (let [game { :board [["x" "_" "x"] ["_" "o" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"} ]
     (testing "scores the current game state of the board at a game depth of three"
-      (is (= 0 (score-game game))))))
+      (is (= 0 (score-game game 3))))))
 
 (deftest game-state-score-depth-four
   (let [game { :board [["x" "x" "_"] ["o" "_" "o"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of four"
-      (is (= 0 (score-game game))))))
+      (is (= 0 (score-game game 4))))))
 
 (deftest game-state-score-max-depth-five
   (let [game { :board [["o" "o" "o"] ["x" "_" "x"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of five"
-      (is (= 5 (score-game game))))))
+      (is (= 5 (score-game game 5))))))
 
 (deftest game-state-score-min-depth-six
   (let [game { :board [["x" "_" "x"] ["o" "_" "o"] ["o" "_" "x"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of six"
-      (is (= 0 (score-game game))))))
+      (is (= 0 (score-game game 6))))))
 
 (deftest game-state-score-max-depth-seven
   (let [game { :board [["o" "x" "o"] ["x" "o" "x"] ["x" "_" "o"]]:ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of seven"
-      (is (= 2 (score-game game))))))
+      (is (= 3 (score-game game 7))))))
 
 (deftest game-state-score-depth-eight
   (let [game { :board[["x" "o" "x"] ["o" "_" "o"] ["x" "o" "x"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of eight"
-      (is (= 0 (score-game game))))))
+      (is (= 0 (score-game game 8))))))
 
 (deftest space-available-test
   (let [board  [["_" "x" "o"] ["x" "x" "o"] ["o" "x" "o"]]
@@ -109,7 +109,7 @@
     (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
           depth 0]
-      (is(= -4 (get-score-for-gamestate game maximizing depth))))))
+      (is(= -8 (get-score-for-gamestate game maximizing depth))))))
 
 (deftest score-test
   (testing "return the scores for the prodvided positions"
@@ -127,20 +127,20 @@
           open-positions [3 5 6 8]
           player "o"
           depth 0]
-      (is(= '(4 2 0 -4) (score game maximizing open-positions player depth))))))
+      (is(= '(9 7 0 -8) (score game maximizing open-positions player depth))))))
 
 (deftest best-score-test
   (testing "return the best score  and its index for a specfic game state"
     (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
           depth 0]
-      (is(= [0 4] (get-best-score-for game maximizing depth))))))
+      (is(= [0 9] (get-best-score-for game maximizing depth))))))
 
 (deftest minimax-test
  (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
         depth 0]
     (testing "return best score and its index based on the board state"
-      (is (= [0 4] (minimax game true  depth))))))
+      (is (= [0 9] (minimax game true  depth))))))
 
 (deftest ai-best-move-win-one
   (let [game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
@@ -214,7 +214,7 @@
 
 (deftest ai-move-win-state-test
   (let [ai-marker "x"
-        new-game { :board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "x" :player-marker "o"}
+        new-game { :board [["_" "_" "_""_"] ["_" "_" "_""_"] ["_" "_" "_""_"]] :ai-marker "x" :player-marker "o"}
         gamestates (flatten (check-every-possible-gamestate new-game))]
    (testing "ai never loses"
   (is (= true (every? true? gamestates))))))
