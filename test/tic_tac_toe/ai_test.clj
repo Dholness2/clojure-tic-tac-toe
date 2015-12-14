@@ -198,14 +198,23 @@
 (defn win-or-draw? [player-marker winner-state]
   (or (= player-marker winner-state) (= player-marker "its a draw")))
 
-(defn playout-possible-gamestates [gamestate]
-  (let [next-game-state (game-move gamestate (:ai-marker gamestate))
-        next-possible-moves (  ])
-  )
+(declare check-every-possible-gamestate)
+
+(defn check-gamestate [gamestate]
+  (let [winner-state (winner? (:board gamestate))]
+    (if (nil? winner-state)
+      (check-every-possible-gamestate gamestate)
+      (win-or-draw? (:ai-marker gamestate) winner-state))))
+
+(defn check-every-possible-gamestate [gamestate]
+   (let [ai-choice (game-move gamestate (:ai-marker gamestate))]
+     (if (or (= (:ai-marker ai-choice) (winner? (:board ai-choice))) (= "its a draw" (winner? (:board ai-choice))) (nil? (winner? (:board ai-choice))))
+       (let [possible-games (game-states (possible-moves ai-choice) ai-choice (:player-marker ai-choice))]
+         (map check-gamestate possible-games)))))
 
 (deftest ai-move-win-state-test
   (let [ai-marker "x"
-        new-game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "x" :player-marker "o"}]
-   (test "ai never loses"
-    (let [winners (map #(winner? %) (playout-possible-gamestates new-game))]
-      (is (= true (every? #(win-or-draw? ai-marker %) winners)))))))
+        new-game { :board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "x" :player-marker "o"}
+        gamestates (flatten (check-every-possible-gamestate new-game))]
+   (testing "ai never loses"
+  (is (= true (every? true? gamestates))))))
