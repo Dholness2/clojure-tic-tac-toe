@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [tic-tac-toe.ai :refer :all]
             [tic-tac-toe.game :refer [winner?]]
+            [tic-tac-toe.display.terminal :refer [->TerminalDisplay print-winner display-board index-board]]
   	        [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
 (deftest game-value-test-three-by-three
@@ -196,7 +197,15 @@
       (is (= (assoc game :board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) (next-move player game))))))
 
 (defn win-or-draw? [player-marker winner-state]
-  (or (= player-marker winner-state) (= player-marker "its a draw")))
+ (or (= player-marker winner-state) (= player-marker "its a draw")))
+
+(defn correct-ai-choice? [game]
+  (let[winner (winner? (:board game))]
+     (cond
+      (= winner (:ai-marker game)) true
+      (= winner "its a draw") true
+      (= winner nil) true
+      :else false )))
 
 (declare check-every-possible-gamestate)
 
@@ -204,17 +213,30 @@
   (let [winner-state (winner? (:board gamestate))]
     (if (nil? winner-state)
       (check-every-possible-gamestate gamestate)
-      (win-or-draw? (:ai-marker gamestate) winner-state))))
+      (if (correct-ai-choice? gamestate)
+          true
+          false))))
 
-(defn check-every-possible-gamestate [gamestate]
+(def check-every-possible-gamestate
+   (memoize ( fn [gamestate]
    (let [ai-choice (game-move gamestate (:ai-marker gamestate))]
-     (if (or (= (:ai-marker ai-choice) (winner? (:board ai-choice))) (= "its a draw" (winner? (:board ai-choice))) (nil? (winner? (:board ai-choice))))
+     (if (= nil (winner? (:board ai-choice)))
        (let [possible-games (game-states (possible-moves ai-choice) ai-choice (:player-marker ai-choice))]
-         (map check-gamestate possible-games)))))
+           (map check-gamestate possible-games))
+       (correct-ai-choice? ai-choice))))))
 
-(deftest ai-move-win-state-test
+(deftest ai-move-win-state-test-3-by-3
   (let [ai-marker "x"
-        new-game { :board [["_" "_" "_""_"] ["_" "_" "_""_"] ["_" "_" "_""_"]] :ai-marker "x" :player-marker "o"}
+        new-game { :board [["_" "_" "_"]["_" "_" "_"]["_" "_" "_"]]  :ai-marker "x" :player-marker "o"}
         gamestates (flatten (check-every-possible-gamestate new-game))]
    (testing "ai never loses"
-  (is (= true (every? true? gamestates))))))
+     (is (= true (every? true? gamestates))))))
+
+(deftest ai-move-win-state-test-4-by-4
+  (let [ai-marker "x"
+        new-game { :board [["_" "_" "_" "_"]["_" "_" "_" "_"]["_" "_" "_" "_"]["_" "_" "_" "_"]]  :ai-marker "x" :player-marker "o"}
+        gamestates (flatten (check-every-possible-gamestate new-game))]
+   (testing "ai never loses"
+     (is (= true (every? true? gamestates))))))
+
+

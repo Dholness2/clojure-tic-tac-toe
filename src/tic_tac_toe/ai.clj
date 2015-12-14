@@ -3,7 +3,7 @@
             [tic-tac-toe.game :refer  [game-depth winner?]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
 
-(def moves-ahead 6)
+(def moves-ahead 5)
 (def move-depth 0)
 (def draw-score 0)
 
