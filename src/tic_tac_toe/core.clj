@@ -24,7 +24,7 @@
         (display-state display (:board current-state))
         (if-not (winner? (:board current-state))
           (game-runner [current-state (rotate players 0 1)] display)
-          (display-winner display  (:board current-state)))))))3
+          (display-winner display  (:board current-state)))))))
 
 (defmulti create-game (fn [game-type input board ] game-type))
 
