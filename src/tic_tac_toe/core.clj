@@ -32,7 +32,7 @@
   (let [player-1 (->HumanPlayer marker-one input)
         player-2 (->AiPlayer marker-two)
         game-state {:board board :ai-marker marker-two :player-marker marker-one}]
-   [game-state [player-1 player-2]]))
+    [game-state [player-1 player-2]]))
 
 (defmethod create-game :computer-vs-human [game-type input board]
   (let [player-1 (->AiPlayer marker-two)
