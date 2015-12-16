@@ -44,10 +44,12 @@
   (let [game-type-selection (games (get-game-type prompter games))
         board-size-selection (get-board-size prompter)
         empty-board (create-empty-board board-size-selection)
-        game (create-game game-type-selection prompter empty-board)]
-        (game-runner game display)))
+        assembled-game (create-game game-type-selection prompter empty-board)]
+    assembled-game))
 
 (defn -main []
   (let [display (->TerminalDisplay)
-        prompter (->ConsoleInput)]
-    (game-intializer display prompter)))
+        prompter (->ConsoleInput)
+        assembled-game (game-intializer display prompter)]
+    (game-runner assembled-game display)))
+
