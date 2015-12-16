@@ -42,6 +42,10 @@
     (testing "replaces board empty spaces with move index"
       (is (= '(("1  |" "2  |" "3  |") ("4  |" "5  |" "6  |") ("7  |" "8  |" "9  |")) (index-board board))))))
 
+(deftest row-print-test
+  (let [row ["x" "o" "x"]]
+    (testing "prints row with correct format"
+      (is (= "| x o x\n" (with-out-str (row-print row)))))))
 (deftest display-board-test
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "dispays the board"

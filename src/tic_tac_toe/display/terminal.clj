@@ -35,11 +35,14 @@
 (defn index-board [board]
   (partition (int (Math/sqrt (board-size board))) (map-indexed add-column (flatten board))))
 
+(defn row-print [row]
+  (println (str left-column (clojure.string/join " " row))))
+
 (defn display-board [board]
   (if (= false (empty? board))
-    (let[row (first  board)]
-      (println (str left-column (clojure.string/join " " row)))
-    (display-board (drop 1 board)))))
+    (let[row (first board)]
+      (row-print row)
+    (display-board (rest board)))))
 
 (defn print-winner [board]
   (println (str "Game Winner: " (winner? board))))
