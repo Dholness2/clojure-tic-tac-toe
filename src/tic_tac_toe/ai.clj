@@ -48,10 +48,23 @@
 (defn get-score-for-gamestate [game maximizing depth]
   (last (minimax game (not maximizing) (+ depth 1))))
 
-(defn score [game maximizing open-positions player depth]
-  (map
-    #(get-score-for-gamestate % maximizing depth)
-    (game-states open-positions game player)))
+(defn score [children depth alpha beta value break  ]
+ (let [children =   (game-states open-positions game player))] 
+  (if maximizing 
+    (while  (= break false)
+      (let [score (max (value  (get-score-for-gamestate  (first children) alpha beta maximizing depth)))
+            alpha  (max alpha score)
+        (if (<= beta alpha)
+           (score (rest children)  depth alpha beta value break)
+           (score (rest children) depth alpha beta value break)))
+      value)
+   (while  (= break false)
+     (let [score (min (value (get-score-for-gamestate (first children) alpha beta maximizing depth)))
+           alpha (min alpha score)
+        (if (<= beta alpha))
+          (score (rest children) depth alpha beta value true)
+          (score (rest children) depth alpha beta vlaue false) )
+        value)))
 
 (defn get-best-score-for [game maximizing depth]
   (let [open-positions (possible-moves game)]
