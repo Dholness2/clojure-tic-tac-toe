@@ -12,15 +12,22 @@
             [tic-tac-toe.protocol.display :refer :all]))
 
 (def last-displayed-state (atom {:states [] :winner nil}))
+(def move-vec-a (atom  [3 9 8]))
+(def move-vec-b (atom  [3 9 8]))
+
+(defn input-move [moves board ]
+  (let [move (first @moves)]
+      (swap! moves (fn [current] (drop 1 current)))
+     (matrix-convrt move (board-diemensions board))))
 
 (defrecord DummyDisplay []
   DisplayProtocol
   (display-state [display board] (swap! last-displayed-state assoc :states board))
   (display-winner [display board] (swap! last-displayed-state assoc :winner (winner? board))))
 
-(defrecord DummyInput []
+(defrecord DummyInput [moves]
   InputProtocol
-  (get-move [input board] (user-input-move board))
+  (get-move [input board] (input-move moves board))
   (get-board-size [input]  3)
   (get-game-type [input games] 1))
 
@@ -29,12 +36,12 @@
 
 (deftest gamme-runner-test
   (let [display (->DummyDisplay)
-        input (->DummyInput)
+        input (->DummyInput move-vec-b)
         board (create-empty-board 3)
         game (create-game :computer-vs-human input board)]
-    (with-out-str (with-in-str "3\n9\n8\n"(game-runner game display)))
+    (with-out-str (game-runner game display)))
     (test "test game runner iterations")
-    (is(= (@last-displayed-state :winner) "o"))))
+    (is(= (@last-displayed-state :winner) "o")))
 
 (deftest human-vs-computer-test
   (let [input (->ConsoleInput)
@@ -43,7 +50,7 @@
         board (create-empty-board 3)
         test-game (create-game :human-vs-computer input board)]
     (test " returns a starting game state and players within a map")
-      (is (= [player-1 player-2] (last test-game)))))
+    (is (= [player-1 player-2] (last test-game)))))
 
 (deftest computer-vs-human-test
   (let [input (->ConsoleInput)
@@ -56,9 +63,9 @@
 
 (deftest game-intializer-test
    (let [display (->DummyDisplay)
-         input (->DummyInput)]
+         input (->DummyInput move-vec-b)]
      (test "game initialize  with correct arguments")
-     (with-out-str (with-in-str "3\n3\n9\n8\n"(game-intializer display input)))
-     (is (= (@last-displayed-state :winner) "o"))))
+    (game-intializer display input)
+     (is(= (@last-displayed-state :winner) "o"))))
 
 

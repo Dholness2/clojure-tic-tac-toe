@@ -1,4 +1,4 @@
-(ns tic-tac-toe.ai-test
+  (ns tic-tac-toe.ai-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.ai :refer :all]
             [tic-tac-toe.game :refer [winner?]]
