@@ -3,7 +3,37 @@
             [tic-tac-toe.ai :refer :all]
             [tic-tac-toe.game :refer [winner?]]
             [tic-tac-toe.display.terminal :refer [->TerminalDisplay print-winner display-board index-board]]
-  	        [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
+            [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
+
+
+(defn win-or-draw? [player-marker winner-state]
+  (or (= player-marker winner-state) (= player-marker "its a draw")))
+
+(defn correct-ai-choice? [game]
+  (let[winner (winner? (:board game))]
+     (cond
+      (= winner (:ai-marker game)) true
+      (= winner "its a draw") true
+      (= winner nil) true
+      :else false )))
+
+(declare check-every-possible-gamestate)
+
+(defn check-gamestate [gamestate]
+  (let [winner-state (winner? (:board gamestate))]
+    (if (nil? winner-state)
+      (check-every-possible-gamestate gamestate)
+      (if (correct-ai-choice? gamestate)
+          true
+          false))))
+
+(def check-every-possible-gamestate
+   (memoize ( fn [gamestate]
+   (let [ai-choice (game-move gamestate (:ai-marker gamestate))]
+     (if (= nil (winner? (:board ai-choice)))
+       (let [possible-games (game-states (possible-moves ai-choice) ai-choice (:player-marker ai-choice))]
+           (map check-gamestate possible-games))
+       (correct-ai-choice? ai-choice))))))
 
 (deftest game-value-test-three-by-three
   (let [game {:board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
@@ -91,50 +121,50 @@
     (is (= [0 2] (best-score-index  [2 3 4 5 6 7 8 9 10] false )))))
 
 (deftest possible-board-state
-  (testing "return a posible board state based on input"
     (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]
           marker "x"]
-      (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 marker board))))))
+      (testing "return a posible board state based on input"
+        (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 marker board))))))
 
 (deftest possible-game-state
-  (testing "returns possible board states based on available moves"
    (let [current-player "o"
          available-moves [3 5]
          game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
          possible-game-states '({:board [["o" "o" "o"] ["x" "_" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"}
                                 {:board [["o" "o" "_"] ["x" "o" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"})]
+    (testing "returns possible board states based on available moves"
       (is (= possible-game-states (game-states available-moves game current-player))))))
 
 (deftest game-state-score-test
-  (testing "return the score for a specfic game state"
-    (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
           depth 0]
+    (testing "return the score for a specfic game state"
       (is(= -8 (get-score-for-gamestate game maximizing depth))))))
 
 (deftest score-test
-  (testing "return the scores for the prodvided positions"
-    (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
           open-positions [3 5 6 8]
           player "o"
           depth 0]
-      (is(= '(4 2 0 -4) (score game maximizing open-positions player depth))))))
+   (testing "return the scores for the prodvided positions"
+     (is(= '(4 2 0 -4) (score game maximizing open-positions player depth))))))
 
 (deftest score-test
-  (testing "returns the scores for the the currnet player's moves"
     (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
           open-positions [3 5 6 8]
           player "o"
           depth 0]
-      (is(= '(9 7 0 -8) (score game maximizing open-positions player depth))))))
+      (testing "returns the scores for the the currnet player's moves"
+        (is(= '(9 7 0 -8) (score game maximizing open-positions player depth))))))
 
 (deftest best-score-test
-  (testing "return the best score  and its index for a specfic game state"
-    (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
           depth 0]
+    (testing "return the best score  and its index for a specfic game state"
       (is(= [0 9] (get-best-score-for game maximizing depth))))))
 
 (deftest minimax-test
@@ -145,33 +175,33 @@
 
 (deftest ai-best-move-win-one
   (let [game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
+    (testing "returns the best move location"
       (is (= [0 2] (ai-move game))))))
 
  (deftest ai-best-move-block-horizontial
-  (let [game { :board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]] :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
-      (is (= [1 1] (ai-move game))))))
+   (let [game { :board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]] :ai-marker "o" :player-marker "x"}]
+     (testing "returns the best move location"
+       (is (= [1 1] (ai-move game))))))
 
  (deftest ai-best-move-block-horizontial
-  (let [game {:board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]  :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
-      (is (= [0 1] (ai-move game))))))
+   (let [game {:board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]  :ai-marker "o" :player-marker "x"}]
+     (testing "returns the best move location"
+       (is (= [0 1] (ai-move game))))))
 
  (deftest ai-best-move-block-horizontial
-  (let [game { :board [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]  :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
-      (is (= [2 1] (ai-move game))))))
+   (let [game { :board [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]  :ai-marker "o" :player-marker "x"}]
+     (testing "returns the best move location"
+       (is (= [2 1] (ai-move game))))))
 
  (deftest ai-best-move-block-diagonal
-  (let [game { :board [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
-      (is (= [2 2] (ai-move game))))))
+   (let [game { :board [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+     (testing "returns the best move location"
+       (is (= [2 2] (ai-move game))))))
 
  (deftest ai-best-move-block-diagonal
-  (let [game { :board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
-      (is (= [2 0] (ai-move game))))))
+   (let [game { :board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+     (testing "returns the best move location"
+       (is (= [2 0] (ai-move game))))))
 
  (deftest ai-best-move-block-verticle
   (let [game { :board [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
@@ -195,35 +225,6 @@
         game { :board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}]
     (testing "creates defrecord of player protocol"
       (is (= (assoc game :board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) (next-move player game))))))
-
-(defn win-or-draw? [player-marker winner-state]
- (or (= player-marker winner-state) (= player-marker "its a draw")))
-
-(defn correct-ai-choice? [game]
-  (let[winner (winner? (:board game))]
-     (cond
-      (= winner (:ai-marker game)) true
-      (= winner "its a draw") true
-      (= winner nil) true
-      :else false )))
-
-(declare check-every-possible-gamestate)
-
-(defn check-gamestate [gamestate]
-  (let [winner-state (winner? (:board gamestate))]
-    (if (nil? winner-state)
-      (check-every-possible-gamestate gamestate)
-      (if (correct-ai-choice? gamestate)
-          true
-          false))))
-
-(def check-every-possible-gamestate
-   (memoize ( fn [gamestate]
-   (let [ai-choice (game-move gamestate (:ai-marker gamestate))]
-     (if (= nil (winner? (:board ai-choice)))
-       (let [possible-games (game-states (possible-moves ai-choice) ai-choice (:player-marker ai-choice))]
-           (map check-gamestate possible-games))
-       (correct-ai-choice? ai-choice))))))
 
 (deftest ai-move-win-state-test-3-by-3
   (let [ai-marker "x"

@@ -5,12 +5,14 @@
 
 (def base-index 0)
 
+(def empty-marker "_")
 (def marker-a "x")
 (def marker-b "o")
 
 (def left-column "| ")
 (def small-right-column " |")
 (def large-right-column "  |")
+(def large-row-index 9)
 
 (defn clear-terminal[]
   (println "\033[2J"))
@@ -18,36 +20,36 @@
 (defn print-message [message]
   (println message))
 
-(defn empty-position [element]
-  (or (= element "_") (not (or (= marker-a element)(= marker-b element)))))
+(defn empty-marker? [marker]
+  (or (= marker empty-marker) (not (or (= marker-a marker)(= marker-b marker)))))
 
-(defn add-column [indx item]
-  (let[position (inc indx)
-       element item]
-    (if (and (empty-position element) (< 9 position))
+(defn add-column [index item]
+  (let[position (inc index)
+       marker item]
+    (if (and (empty-marker? marker) (< large-row-index position))
        (str position small-right-column)
-       (if (empty-position element)
+       (if (empty-marker? marker)
           (str position large-right-column)
-          (str element large-right-column)))))
+          (str marker large-right-column)))))
 
 (defn index-board [board]
   (partition (int (Math/sqrt (board-size board))) (map-indexed add-column (flatten board))))
 
-(defn get-first-row [board]
-  ((vec (take 1 board)) 0))
+(defn row-print [row]
+  (println (str left-column (clojure.string/join " " row))))
 
-(defn display-board [board indx]
+(defn display-board [board]
   (if (= false (empty? board))
-    (let[row (get-first-row board)]
-      (println (str left-column (clojure.string/join " " row)))
-    (display-board (drop 1 board) (inc indx)))))
+    (let[row (first board)]
+      (row-print row)
+    (display-board (rest board)))))
 
 (defn print-winner [board]
   (println (str "Game Winner: " (winner? board))))
 
 (defn display-iteration [board]
   (clear-terminal)
-  (display-board (index-board board) base-index))
+  (display-board (index-board board)))
 
 (defrecord TerminalDisplay []
   DisplayProtocol
