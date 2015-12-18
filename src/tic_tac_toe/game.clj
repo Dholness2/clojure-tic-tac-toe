@@ -33,4 +33,5 @@
     (draw? board ) "its a draw"))
 
 (defn game-depth [board]
-  (- (board-size board) (empty-spaces board)))
+  (-(board-size board) (empty-spaces board)))
+ 
