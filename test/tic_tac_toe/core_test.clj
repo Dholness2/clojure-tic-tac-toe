@@ -33,8 +33,8 @@
         board (create-empty-board 3)
         game (create-game :computer-vs-human input board)]
     (with-out-str (with-in-str "3\n9\n8\n"(game-runner game display)))
-    (test "test game runner iterations")
-    (is(= (@last-displayed-state :winner) "o"))))
+    (test "test game runner iterations"
+      (is(= (@last-displayed-state :winner) "o")))))
 
 (deftest human-vs-computer-test
   (let [input (->ConsoleInput)
@@ -42,8 +42,8 @@
         player-2 (->AiPlayer marker-two)
         board (create-empty-board 3)
         test-game (create-game :human-vs-computer input board)]
-    (test " returns a starting game state and players within a map")
-      (is (= [player-1 player-2] (last test-game)))))
+    (test " returns a starting game state and players within a map"
+      (is (= [player-1 player-2] (last test-game))))))
 
 (deftest computer-vs-human-test
   (let [input (->ConsoleInput)
@@ -51,14 +51,14 @@
         player-2 (->HumanPlayer marker-one input)
         board (create-empty-board 3)
         test-game  (create-game :computer-vs-human input board)]
-    (test " returns a starting game state and players within a map")
-      (is (= [player-1 player-2] (last test-game)))))
+    (test " returns a starting game state and players within a map"
+      (is (= [player-1 player-2] (last test-game))))))
 
 (deftest game-intializer-test
    (let [display (->DummyDisplay)
          input (->DummyInput)]
-     (test "game initialize  with correct arguments")
-     (with-out-str (with-in-str "3\n3\n9\n8\n"(game-intializer display input)))
-     (is (= (@last-displayed-state :winner) "o"))))
+     (test "game initialize  with correct arguments"
+       (with-out-str (with-in-str "3\n3\n9\n8\n"(game-intializer display input)))
+       (is (= (@last-displayed-state :winner) "o")))))
 
 

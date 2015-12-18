@@ -26,7 +26,7 @@
           (game-runner [current-state (rotate players 0 1)] display)
           (display-winner display (:board current-state)))))))
 
-(defmulti create-game (fn [game-type input board ] game-type))
+(defmulti create-game (fn [game-type input board] game-type))
 
 (defmethod create-game :human-vs-computer [game-type input board]
   (let [player-1 (->HumanPlayer marker-one input)
