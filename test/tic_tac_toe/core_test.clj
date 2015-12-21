@@ -1,6 +1,6 @@
 (ns tic-tac-toe.core-test
   (:require [clojure.test :refer :all]
-            [tic-tac-toe.core :refer [game-intializer game-runner create-game marker-one marker-two games]]
+            [tic-tac-toe.core :refer [game-initializer game-runner create-game marker-one marker-two games]]
             [tic-tac-toe.board :refer :all]
             [tic-tac-toe.game :refer :all]
             [tic-tac-toe.ai :refer :all]
@@ -18,7 +18,7 @@
 (defn input-move [moves board]
   (let [move (first @moves)]
     (swap! moves (fn [current] (drop 1 current)))
-    (matrix-convrt move (board-diemensions board))))
+    (matrix-convrt move (board-dimensions board))))
 
 (defrecord DummyDisplay []
   DisplayProtocol
@@ -61,8 +61,8 @@
     (testing " returns a starting game state and players within a map"
       (is (= [player-1 player-2] (last test-game))))))
 
-(deftest game-intializer-test
+(deftest game-initializer-test
    (let [display (->DummyDisplay)
     (testing "game initialize  with correct arguments"
-      (game-intializer display input)
+      (game-initializer display input)
       (is(= (@last-displayed-state :winner) "o")))))

@@ -3,19 +3,17 @@
 
 (def empty-space "_")
 
-(defn create-empty-board [diemension]
-  (vec (take diemension (repeat (vec (take diemension (repeat empty-space)))))))
+(defn create-empty-board [dimension]
+  (vec (take dimension (repeat (vec (take dimension (repeat empty-space)))))))
 
-(defn board-diemensions [board]
+(defn board-dimensions [board]
   (count board))
 
 (defn board-size [board]
   (* (count board) (count (first board))))
 
-(defn empty-spaces [board]
-  (if ((frequencies (flatten board)) empty-space)
-      ((frequencies (flatten board)) empty-space)
-      0))
+(defn empty-space-count [board]
+  (count (filter #(= empty-space %) (flatten board))))
 
 (defn move [location player board]
   (assoc-in board location player))
@@ -37,5 +35,5 @@
 
 (defn get-diagnoals [board rowsize]
   (let [diagonal-indexs-top (vec (take rowsize (iterate inc 0)))
- 	      diagonal-indexs-bottom (vec (take rowsize (iterate dec (- rowsize 1))))]
+       diagonal-indexs-bottom (vec (take rowsize (iterate dec (- rowsize 1))))]
     [(get-location board diagonal-indexs-top) (get-location (vec (reverse board)) diagonal-indexs-bottom)]))

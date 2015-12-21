@@ -1,5 +1,5 @@
 (ns tic-tac-toe.ai
-  (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move board-diemensions]]
+  (:require [tic-tac-toe.board :refer [board-size move matrix-convrt empty-space move board-dimensions]]
             [tic-tac-toe.game :refer [game-depth winner?]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
 
@@ -38,7 +38,7 @@
      [(.indexOf scores (apply min scores)) (apply min scores)])))
 
 (defn possible-board [location marker current-board]
-  (move (matrix-convrt location (board-diemensions current-board)) marker current-board))
+  (move (matrix-convrt location (board-dimensions current-board)) marker current-board))
 
 (defn game-states [open-positions game marker]
   (map (fn [move] {:board (possible-board move marker (:board game)) :ai-marker (:ai-marker game) :player-marker (:player-marker game)}) open-positions))
@@ -84,8 +84,8 @@
 (defn ai-move [game]
  (let [open-positions (possible-moves game)
         move-score (minimax game true 0 -100 100)
-        board-diemension (board-diemensions (:board game))]
-    (matrix-convrt (open-positions (first move-score)) board-diemension)))
+        board-dimension (board-dimensions (:board game))]
+    (matrix-convrt (open-positions (first move-score)) board-dimension)))
 
 (defn game-move [game marker]
   (if-not (winner? (:board game))
