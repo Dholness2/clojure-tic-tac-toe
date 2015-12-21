@@ -135,6 +135,7 @@
     (testing "returns possible board states based on available moves"
       (is (= possible-game-states (game-states available-moves game current-player))))))
 
+<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
 (deftest game-state-score-test
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
@@ -152,32 +153,64 @@
      (is(= '(4 2 0 -4) (score game maximizing open-positions player depth))))))
 
 (deftest score-test
+=======
+(deftest alpha_max-test
+  (testing "returns @alpha if the beta is still less than or equal alpha")
+  ( let [game {:board [[ "o" "o" "o"] ["x" "_" "x"] ["_" "_ "" _"]] :ai-marker "o" :player-marker "x"}]
+    (is (=  9 (alpha_max game (atom -100) (atom 100) 0)))))
+
+(deftest beta-min-test
+  (testing  "returns @beta if the alpha is greater than beta")
+  (let [game {:board [[ "o" "o" "o"] ["x" "_" "x"] ["_" "_ "" _"]] :ai-marker "o" :player-marker "x"}]
+   (is (= 9 (beta_min game (atom -100) (atom 100) 0)))))
+
+(deftest score-test-a
+  (testing "return the scores for the prodvided positions")
     (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
-          open-positions [3 5 6 8]
+          open-positions [3 5  7 9]
           player "o"
           depth 0]
+      (is (= '(4 2 0 -4 ) (score game maximizing player open-positions depth -100  100)))))
+
+(deftest score-test-b
+  (testing "returns the scores for the the currnet player's moves"
+>>>>>>> wip
+    (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+          maximizing false
+          open-positions [3 5 6 8]
+          player "x"
+          depth 0]
+<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
       (testing "returns the scores for the the currnet player's moves"
         (is(= '(9 7 0 -8) (score game maximizing open-positions player depth))))))
+=======
+      (is(= '(9 7 0 -8) (score game maximizing player  open-positions depth -100  100))))))
+>>>>>>> wip
 
 (deftest best-score-test
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
           depth 0]
+<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
     (testing "return the best score  and its index for a specfic game state"
       (is(= [0 9] (get-best-score-for game maximizing depth))))))
+=======
+      (is(= [0 9] (get-best-score-for game maximizing depth -100 100))))))
+>>>>>>> wip
 
 (deftest minimax-test
  (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
         depth 0]
     (testing "return best score and its index based on the board state"
-      (is (= [0 9] (minimax game true  depth))))))
+      (is (= [0 9] (minimax game true depth -100 100))))))
 
 (deftest ai-best-move-win-one
   (let [game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "returns the best move location"
       (is (= [0 2] (ai-move game))))))
 
+<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
  (deftest ai-best-move-block-horizontial
    (let [game { :board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]] :ai-marker "o" :player-marker "x"}]
      (testing "returns the best move location"
@@ -187,16 +220,30 @@
    (let [game {:board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]  :ai-marker "o" :player-marker "x"}]
      (testing "returns the best move location"
        (is (= [0 1] (ai-move game))))))
+=======
+(deftest ai-best-move-block-horizontial
+  (let [game {:board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]  :ai-marker "o" :player-marker "x"}]
+   (testing "returns the best move location"
+      (is (= [0 1] (ai-move game))))))
+>>>>>>> wip
 
  (deftest ai-best-move-block-horizontial
    (let [game { :board [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]  :ai-marker "o" :player-marker "x"}]
      (testing "returns the best move location"
        (is (= [2 1] (ai-move game))))))
 
+<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
  (deftest ai-best-move-block-diagonal
    (let [game { :board [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
      (testing "returns the best move location"
        (is (= [2 2] (ai-move game))))))
+=======
+ (deftest ai-best-move-block-diagonal-b
+  (let [game { :board [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+   (testing "returns the best move location"
+     (prn (score game true "o" [2 4 6 7 8 9] 0 -100 100)))
+      (is (= [2 2] (ai-move game)))))
+>>>>>>> wip
 
  (deftest ai-best-move-block-diagonal
    (let [game { :board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
