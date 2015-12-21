@@ -40,7 +40,7 @@
         game-state {:board board :ai-marker marker-one :player-marker marker-two}]
     [game-state [player-1 player-2]]))
 
-(defn game-intializer [display prompter]
+(defn game-initializer [display prompter]
   (let [game-type-selection (games (get-game-type prompter games))
         board-size-selection (get-board-size prompter)
         empty-board (create-empty-board board-size-selection)
