@@ -28,10 +28,6 @@
     (testing "user input is valid choice"
       (is (= true (valid-selection input board))))))
 
-(deftest user-marker-test
-  (testing "gets the users marker and confirms is an o or x"
-	(is (= "x" (with-out-str-value (with-in-str "x" (user-marker)))))))
-
 (deftest console-get-input
     (testing "gets user input from console"
    	  (is (= 1  (with-out-str-value (with-in-str "1" (prompt-terminal "next move")))))))
@@ -43,30 +39,34 @@
 
 (deftest test-diemension
   (testing "return conslole supplied selection of board diemension")
-    (is ( = 4 (with-out-str-value (with-in-str "4" (get-board-diemension))))))
+    (is ( = 4 (with-out-str-value (with-in-str "4"(get-board-diemension))))))
+
+(deftest get-game-type-test
+  (let [games [":computer-vs-human"  ":human-vs-computer"]]
+  (testing "prompts the user to selecta specfic game type and returns its number index")
+  ( is ( = 0  (with-out-str-value (with-in-str "1" (get-game-selection games)))))))
 
 (deftest ConsoleInput-get-move
   (let [input (->ConsoleInput)
-  	     board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+        board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "test if #get-move returns user move selection based on provided input"
       (is (= [0 0] (with-out-str-value (with-in-str "1" (get-move input board))))))))
 
-(deftest ConsoleInput-get-marker
-  (let [input (->ConsoleInput)]
-    (testing "test #get-marker function returns sleceted marker x or o"
-      (is (= "x" (with-out-str-value (with-in-str "x" (get-marker input))))))))
+(deftest ConsoleInput-get-game-type-test
+  (let [input (->ConsoleInput)
+        games [":computer-vs-human"  ":human-vs-computer"]]
+    (testing "test if the protocol gets selected game type and returns the selected games index"
+      (is (= 0 (with-out-str-value (with-in-str "1" (get-game-type input games))))))))
 
 (deftest ConsoleInput-get-board-size
   (let [input (->ConsoleInput)]
     (testing "test #get-board-size function returns size"
-      (is (= 7 (with-out-str-value (with-in-str "7" (get-board-size input))))))))
+      (is (= 4 (with-out-str-value (with-in-str "4" (get-board-size input))))))))
 
 (deftest ConsoleInput-assign-board-size
     (let [input (->ConsoleInput)]
       (testing "returns only valid board sizes"
         (is (= 3 (with-out-str-value (with-in-str "x\n3" (get-board-size input))))))))
-
-
 
 
 

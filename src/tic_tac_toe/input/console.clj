@@ -3,6 +3,8 @@
 	          [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move board-diemensions board-size]]
             [tic-tac-toe.display.terminal :refer [print-message]]))
 
+(def dimensions-limits #{3 4})
+
 (defn invalid-input?[input]
   (or (clojure.string/blank? input) (= nil (re-matches #"\w+" input))))
 
@@ -16,16 +18,9 @@
 (defn valid-selection [input board]
   (and (number? input) (validmove? input (board-size board)) (moveopen? board input)))
 
-(defn user-marker []
-  (let [selection  (prompt-terminal "Select your marker x or o ?")]
-    (if (or (= selection "o") (= selection "x"))
-      selection
-      (do (print-message "invalid selection")
-        (user-marker)))))
-
 (defn get-board-diemension []
   (let [selection (read-string(prompt-terminal "What size board do you want? x by x (provide one number for x)"))]
-    (if (number? selection)
+    (if (and (number? selection) (contains? dimensions-limits selection))
       selection
       (get-board-diemension))))
 
@@ -34,11 +29,20 @@
     (if (valid-selection input board)
       (matrix-convrt input (board-diemensions board))
       (do (print-message "invalid selection")
-      	   (user-input-move board)))))
+      	  (user-input-move board)))))
+
+(defn game-key-to-strings [games]
+  (apply str (map #(str (inc (.indexOf games %)) "." (name %) "\n") games)))
+
+(defn get-game-selection [games]
+  (let [selection (read-string (prompt-terminal (str "select Game type\n" (game-key-to-strings games))))]
+    (if (and (number? selection) (<= selection (count games)) (>= selection 0))
+      (dec selection)
+      (get-game-selection games))))
 
 (defrecord ConsoleInput []
   InputProtocol
   (get-move [input board] (user-input-move board))
-  (get-marker [input] (user-marker))
-  (get-board-size [input] (get-board-diemension)))
+  (get-board-size [input] (get-board-diemension))
+  (get-game-type [input games] (get-game-selection games)))
 
