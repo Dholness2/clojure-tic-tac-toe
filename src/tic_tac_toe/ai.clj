@@ -3,7 +3,7 @@
             [tic-tac-toe.game :refer [game-depth winner?]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol]]))
 
-(def moves-ahead 9)
+(def moves-ahead 6)
 (def move-depth 0)
 (def draw-score 0)
 
@@ -45,6 +45,7 @@
 
 (declare minimax)
 
+<<<<<<< 1bb8f2a7e77be898e36640a409d83ebe5753542a
 <<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
 (defn get-score-for-gamestate [game maximizing depth]
   (last (minimax game (not maximizing) (+ depth 1))))
@@ -60,21 +61,29 @@
     (let [value (last (minimax game-state false (inc depth) @alpha @beta))]
       (reset! alpha (max value @alpha))
        value)))
+=======
+(defn alpha_max [game-results child]
+  (if (<= (:beta game-results) (:alpha game-results))
+    (assoc game-results :scores (conj (:scores game-results) (:alpha game-results)))
+    (let [new-value (max (:current-value game-results) (last (minimax child false (inc (:depth game-results)) (:alpha game-results) (:beta game-results))))
+         new-alpha (max (:alpha game-results) new-value)]
+      (assoc game-results :current-value new-value :alpha new-alpha :scores (conj (:scores game-results) new-value)))))3
+>>>>>>> removed state from alpha/beta functions and updated arguments
 
-(defn beta_min [game-state alpha beta depth]
-  (if (>= @alpha @beta)
-    @beta
-    (let [value (last (minimax game-state true (inc depth) @alpha @beta))]
-        (reset! beta (min value @beta))
-         value)))
+(defn beta_min [game-results child]
+  (if (<= (:beta game-results) (:alpha game-results))
+    (assoc game-results :scores (conj (:scores game-results) (:beta game-results)))
+    (let [new-value (min (:current-value game-results) (last (minimax child true (inc (:depth game-results)) (:alpha game-results) (:beta game-results))))
+         new-beta (min (:beta game-results) new-value)]
+      (assoc game-results :current-value new-value :beta new-beta :scores (conj (:scores game-results) new-value)))))
 
 (defn score [game maximizing player open-positions depth alpha beta]
-  (let [children (game-states open-positions game player)
-        a (atom alpha)
-        b (atom beta)]
-   (if maximizing 
-      (map #(alpha_max % a  b depth) children))
-      (map #(beta_min %  a  b depth) children)))
+  (let [children (game-states open-positions game player)]
+    (if maximizing
+      (let [value -100]
+        (:scores (reduce alpha_max {:current-value value :alpha alpha :beta beta :depth depth :scores []} children)))
+      (let [value 100]
+        (:scores (reduce beta_min {:current-value value :alpha alpha :beta beta  :depth depth :scores []} children))))))
 
 (defn get-best-score-for [game maximizing depth alpha beta]
 >>>>>>> wip
@@ -84,7 +93,7 @@
       (best-score-index (score game maximizing (:player-marker game) open-positions depth alpha beta) maximizing))))
 (def minimax
   (memoize (fn [game maximizing depth alpha beta]
-    (if (or (winner? (:board game)) (= 9 depth))
+    (if (or (winner? (:board game)) (= moves-ahead depth))
       (let [score (score-game game depth)
             score-index 0]
        [score-index score])
