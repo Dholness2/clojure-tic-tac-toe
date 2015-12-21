@@ -45,30 +45,12 @@
 
 (declare minimax)
 
-<<<<<<< 1bb8f2a7e77be898e36640a409d83ebe5753542a
-<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
-(defn get-score-for-gamestate [game maximizing depth]
-  (last (minimax game (not maximizing) (+ depth 1))))
-
-(defn score [game maximizing open-positions player depth]
-    (map #(get-score-for-gamestate % maximizing depth) (game-states open-positions game player)))
-
-(defn get-best-score-for [game maximizing depth]
-=======
-(defn alpha_max [game-state alpha beta depth] 
-  (if (>= @alpha @beta )
-    @alpha
-    (let [value (last (minimax game-state false (inc depth) @alpha @beta))]
-      (reset! alpha (max value @alpha))
-       value)))
-=======
 (defn alpha_max [game-results child]
   (if (<= (:beta game-results) (:alpha game-results))
     (assoc game-results :scores (conj (:scores game-results) (:alpha game-results)))
     (let [new-value (max (:current-value game-results) (last (minimax child false (inc (:depth game-results)) (:alpha game-results) (:beta game-results))))
          new-alpha (max (:alpha game-results) new-value)]
-      (assoc game-results :current-value new-value :alpha new-alpha :scores (conj (:scores game-results) new-value)))))3
->>>>>>> removed state from alpha/beta functions and updated arguments
+      (assoc game-results :current-value new-value :alpha new-alpha :scores (conj (:scores game-results) new-value)))))
 
 (defn beta_min [game-results child]
   (if (<= (:beta game-results) (:alpha game-results))
@@ -86,11 +68,11 @@
         (:scores (reduce beta_min {:current-value value :alpha alpha :beta beta  :depth depth :scores []} children))))))
 
 (defn get-best-score-for [game maximizing depth alpha beta]
->>>>>>> wip
   (let [open-positions (possible-moves game)]
     (if maximizing
       (best-score-index (score game maximizing (:ai-marker game) open-positions depth alpha beta) maximizing)
       (best-score-index (score game maximizing (:player-marker game) open-positions depth alpha beta) maximizing))))
+
 (def minimax
   (memoize (fn [game maximizing depth alpha beta]
     (if (or (winner? (:board game)) (= moves-ahead depth))
