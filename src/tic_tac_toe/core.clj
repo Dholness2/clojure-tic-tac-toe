@@ -50,6 +50,6 @@
 (defn -main []
   (let [display (->TerminalDisplay)
         prompter (->ConsoleInput)
-        assembled-game (game-intializer display prompter)]
+        assembled-game (game-initializer display prompter)]
     (game-runner assembled-game display)))
 

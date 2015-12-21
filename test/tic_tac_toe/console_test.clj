@@ -23,28 +23,28 @@
     (is (= true(invalid-input? "#$#$")))))
 
 (deftest check-validation-move
-	(let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
-  		  input 3]
+  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
+        input 3]
     (testing "user input is valid choice"
       (is (= true (valid-selection input board))))))
 
 (deftest console-get-input
     (testing "gets user input from console"
-   	  (is (= 1  (with-out-str-value (with-in-str "1" (prompt-terminal "next move")))))))
+      (is (= 1  (with-out-str-value (with-in-str "1" (prompt-terminal "next move")))))))
 
 (deftest console-get-input
-	(let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
     (testing "gets user input from console"
-   	  (is (= [0 0]  (with-out-str-value (with-in-str "1" (user-input-move board))))))))
+      (is (= [0 0]  (with-out-str-value (with-in-str "1" (user-input-move board))))))))
 
 (deftest test-diemension
-  (testing "return conslole supplied selection of board diemension")
-    (is ( = 4 (with-out-str-value (with-in-str "4"(get-board-diemension))))))
+  (testing "return conslole supplied selection of board diemension"
+    (is ( = 4 (with-out-str-value (with-in-str "4"(get-board-dimension)))))))
 
 (deftest get-game-type-test
   (let [games [":computer-vs-human"  ":human-vs-computer"]]
-  (testing "prompts the user to selecta specfic game type and returns its number index")
-  ( is ( = 0  (with-out-str-value (with-in-str "1" (get-game-selection games)))))))
+    (testing "prompts the user to selecta specfic game type and returns its number index"
+      ( is ( = 0  (with-out-str-value (with-in-str "1" (get-game-selection games))))))))
 
 (deftest ConsoleInput-get-move
   (let [input (->ConsoleInput)
@@ -64,10 +64,6 @@
       (is (= 4 (with-out-str-value (with-in-str "4" (get-board-size input))))))))
 
 (deftest ConsoleInput-assign-board-size
-    (let [input (->ConsoleInput)]
-      (testing "returns only valid board sizes"
-        (is (= 3 (with-out-str-value (with-in-str "x\n3" (get-board-size input))))))))
-
-
-
-
+  (let [input (->ConsoleInput)]
+    (testing "returns only valid board sizes"
+      (is (= 3 (with-out-str-value (with-in-str "x\n3" (get-board-size input))))))))
