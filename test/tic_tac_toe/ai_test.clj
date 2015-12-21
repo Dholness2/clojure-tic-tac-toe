@@ -148,49 +148,20 @@
     (is (= [0 2] (best-score-index  [2 3 4 5 6 7 8 9 10] false )))))
 
 (deftest possible-board-state
-<<<<<<< 1bb8f2a7e77be898e36640a409d83ebe5753542a
-    (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]
-          marker "x"]
-      (testing "return a posible board state based on input"
-        (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 marker board))))))
-
-(deftest possible-game-state
-   (let [current-player "o"
-=======
   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]
-          marker "x"]
+      marker "x"]
     (testing "return a posible board state based on input"
       (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 marker board))))))
 
 (deftest possible-game-state
   (let [current-player "o"
->>>>>>> removed state from alpha/beta functions and updated arguments
-         available-moves [3 5]
-         game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-         possible-game-states '({:board [["o" "o" "o"] ["x" "_" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"}
+        available-moves [3 5]
+        game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+        possible-game-states '({:board [["o" "o" "o"] ["x" "_" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"}
                                 {:board [["o" "o" "_"] ["x" "o" "x"] ["_" "x" "_"]], :ai-marker "o", :player-marker "x"})]
     (testing "returns possible board states based on available moves"
       (is (= possible-game-states (game-states available-moves game current-player))))))
 
-<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
-(deftest game-state-score-test
-  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-          maximizing true
-          depth 0]
-    (testing "return the score for a specfic game state"
-      (is(= -8 (get-score-for-gamestate game maximizing depth))))))
-
-(deftest score-test
-  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-          maximizing true
-          open-positions [3 5 6 8]
-          player "o"
-          depth 0]
-   (testing "return the scores for the prodvided positions"
-     (is(= '(4 2 0 -4) (score game maximizing open-positions player depth))))))
-
-(deftest score-test
-=======
 (deftest alpha_max-test
   (let [game {:board [[ "o" "o" "o"] ["x" "_" "x"] ["_" "_ "" _"]] :ai-marker "o" :player-marker "x"}
          game-results {:current-value -100 :alpha -100 :beta 100 :depth 0 :scores []}
@@ -214,45 +185,20 @@
   (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha")
     (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100)))))
 
-<<<<<<< 1bb8f2a7e77be898e36640a409d83ebe5753542a
-(deftest score-test-b
-  (testing "returns the scores for the the currnet player's moves"
->>>>>>> wip
-    (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-=======
 (deftest score-test-min
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "x" :player-marker "o"}
->>>>>>> removed state from alpha/beta functions and updated arguments
           maximizing false
           open-positions [3 5 6 8]
           player "o"
           depth 0]
-<<<<<<< 1bb8f2a7e77be898e36640a409d83ebe5753542a
-<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
-      (testing "returns the scores for the the currnet player's moves"
-        (is(= '(9 7 0 -8) (score game maximizing open-positions player depth))))))
-=======
-      (is(= '(9 7 0 -8) (score game maximizing player  open-positions depth -100  100))))))
->>>>>>> wip
-=======
      (testing "returns the scores for the the currnet player's moves; if the beta is <= alpha score is set to beta"
       (is(=  [-9 -9 -9 -9] (score game maximizing player  open-positions depth -100  100))))))
->>>>>>> removed state from alpha/beta functions and updated arguments
 
 (deftest best-score-test
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
           maximizing true
           depth 0]
-<<<<<<< 1bb8f2a7e77be898e36640a409d83ebe5753542a
-<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
-    (testing "return the best score  and its index for a specfic game state"
-      (is(= [0 9] (get-best-score-for game maximizing depth))))))
-=======
-=======
-      (testing "return the best score  and its index for a specfic game state"
->>>>>>> removed state from alpha/beta functions and updated arguments
-      (is(= [0 9] (get-best-score-for game maximizing depth -100 100))))))
->>>>>>> wip
+      (is(= [0 9] (get-best-score-for game maximizing depth -100 100)))))
 
 (deftest minimax-test
  (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
@@ -265,47 +211,11 @@
     (testing "returns the best move location"
       (is (= [0 2] (ai-move game))))))
 
-<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
- (deftest ai-best-move-block-horizontial
-   (let [game { :board  [["o" "_" "_"] ["x" "_" "x"] ["_" "" "_"]] :ai-marker "o" :player-marker "x"}]
-     (testing "returns the best move location"
-       (is (= [1 1] (ai-move game))))))
-
- (deftest ai-best-move-block-horizontial
-   (let [game {:board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]  :ai-marker "o" :player-marker "x"}]
-     (testing "returns the best move location"
-       (is (= [0 1] (ai-move game))))))
-=======
 (deftest ai-best-move-block-horizontial
   (let [game {:board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]  :ai-marker "o" :player-marker "x"}]
    (testing "returns the best move location"
       (is (= [0 1] (ai-move game))))))
->>>>>>> wip
 
-<<<<<<< 1bb8f2a7e77be898e36640a409d83ebe5753542a
- (deftest ai-best-move-block-horizontial
-   (let [game { :board [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]  :ai-marker "o" :player-marker "x"}]
-     (testing "returns the best move location"
-       (is (= [2 1] (ai-move game))))))
-
-<<<<<<< 49f2aea8e3c70b50941b5d2a591d6c046481beca
- (deftest ai-best-move-block-diagonal
-   (let [game { :board [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-     (testing "returns the best move location"
-       (is (= [2 2] (ai-move game))))))
-=======
- (deftest ai-best-move-block-diagonal-b
-  (let [game { :board [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
-     (prn (score game true "o" [2 4 6 7 8 9] 0 -100 100)))
-      (is (= [2 2] (ai-move game)))))
->>>>>>> wip
-
- (deftest ai-best-move-block-diagonal
-   (let [game { :board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-     (testing "returns the best move location"
-       (is (= [2 0] (ai-move game))))))
-=======
 (deftest ai-best-move-block-horizontial
   (let [game { :board [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]  :ai-marker "o" :player-marker "x"}]
    (testing "returns the best move location"
@@ -320,7 +230,6 @@
   (let [game { :board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
    (testing "returns the best move location"
       (is (= [2 0] (ai-move game))))))
->>>>>>> removed state from alpha/beta functions and updated arguments
 
 (deftest ai-best-move-block-verticle
   (let [game { :board [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
@@ -346,11 +255,7 @@
         game {:board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}
         expected-result {:board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]], :ai-marker "o", :player-marker "x"}]
     (testing "creates defrecord of player protocol"
-<<<<<<< 1bb8f2a7e77be898e36640a409d83ebe5753542a
-      (is (= (assoc game :board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) (next-move player game))))))
-=======
-      (is (= expected-result(assoc game :board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) (next-move player game))))))
->>>>>>> removed state from alpha/beta functions and updated arguments
+     (is (= expected-result(assoc game :board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) (next-move player game))))))
 
 (deftest ai-move-win-state-test-3-by-3
   (let [ai-marker "x"
