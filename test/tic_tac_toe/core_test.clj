@@ -15,10 +15,10 @@
 (def move-vec-a (atom  [3 9 8]))
 (def move-vec-b (atom  [3 9 8]))
 
-(defn input-move [moves board ]
+(defn input-move [moves board]
   (let [move (first @moves)]
-      (swap! moves (fn [current] (drop 1 current)))
-     (matrix-convrt move (board-diemensions board))))
+    (swap! moves (fn [current] (drop 1 current)))
+    (matrix-convrt move (board-diemensions board))))
 
 (defrecord DummyDisplay []
   DisplayProtocol
@@ -28,20 +28,20 @@
 (defrecord DummyInput [moves]
   InputProtocol
   (get-move [input board] (input-move moves board))
-  (get-board-size [input]  3)
+  (get-board-size [input] 3)
   (get-game-type [input games] 1))
 
 (defmethod create-game :dummy-game [game-type input board ]
-    [game-type input  board ])
+  [game-type input board])
 
 (deftest gamme-runner-test
   (let [display (->DummyDisplay)
         input (->DummyInput move-vec-b)
         board (create-empty-board 3)
         game (create-game :computer-vs-human input board)]
-   (with-out-str (game-runner game display)))
-   (testing "test game runner iterations"
-     (is (= (@last-displayed-state :winner) "o"))))
+    (with-out-str (game-runner game display)))
+    (testing "test game runner iterations"
+      (is (= (@last-displayed-state :winner) "o"))))
 
 (deftest human-vs-computer-test
   (let [input (->ConsoleInput)
