@@ -2,7 +2,7 @@
   (:gen-class)
   (require [tic-tac-toe.board :refer [create-empty-board]]
            [clojure.core.matrix :refer [rotate]]
-           [tic-tac-toe.game :refer [winner?]]
+           [tic-tac-toe.game :refer [winner]]
            [tic-tac-toe.ai :refer [->AiPlayer ]]
            [tic-tac-toe.display.terminal :refer [->TerminalDisplay print-winner]]
            [tic-tac-toe.human :refer [->HumanPlayer]]
@@ -19,10 +19,10 @@
   (let [game-state (first game)
         players (last game)]
     (display-state display (:board game-state))
-    (if-not (winner? (:board game-state))
+    (if-not (winner (:board game-state))
       (let [current-state (next-move (first players) game-state)]
         (display-state display (:board current-state))
-        (if-not (winner? (:board current-state))
+        (if-not (winner (:board current-state))
           (game-runner [current-state (rotate players 0 1)] display)
           (display-winner display (:board current-state)))))))
 

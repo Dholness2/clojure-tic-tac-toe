@@ -26,7 +26,7 @@
 (defn draw? [board]
   (not (= empty-space (some #{empty-space} (flatten board)))))
 
-(defn winner? [board]
+(defn winner [board]
   (cond
     (row-check board) (row-check board)
     (column-check board) (column-check board)

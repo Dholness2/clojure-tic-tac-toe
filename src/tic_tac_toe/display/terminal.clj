@@ -1,6 +1,6 @@
 (ns tic-tac-toe.display.terminal
-  (:require [tic-tac-toe.board :refer [board-size]]
-            [tic-tac-toe.game :refer [winner?]]
+  (:require [tic-tac-toe.board :refer [board-size board-dimensions]]
+            [tic-tac-toe.game :refer [winner]]
             [tic-tac-toe.protocol.display :refer [DisplayProtocol]]))
 
 (def base-index 0)
@@ -33,7 +33,7 @@
           (str marker large-right-column)))))
 
 (defn index-board [board]
-  (partition (int (Math/sqrt (board-size board))) (map-indexed add-column (flatten board))))
+  (partition (board-dimensions board) (map-indexed add-column (flatten board))))
 
 (defn row-print [row]
   (println (str left-column (clojure.string/join " " row))))
@@ -45,7 +45,7 @@
     (display-board (rest board)))))
 
 (defn print-winner [board]
-  (println (str "Game Winner: " (winner? board))))
+  (println (str "Game Winner: " (winner board))))
 
 (defn display-iteration [board]
   (clear-terminal)
