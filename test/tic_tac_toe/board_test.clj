@@ -5,22 +5,22 @@
 (deftest board-create
   (let [board-size 3]
     (testing "Create new board based on user input"
-		  (is (= [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (create-empty-board board-size))))))
+      (is (= [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (create-empty-board board-size))))))
 
 (deftest board-dimension
   (let [board [["_" "_" "_" "_" ]["_" "_" "_" "_" ]["_" "_" "_" "_"]["_" "_" "_" "_"]]]
     (testing "returns the diemension of the board")
-      (is (= 4 (board-diemensions board)))))
+      (is (= 4 (board-dimensions board)))))
 
 (deftest board-size-test
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-	  (testing "returns the size of the board "
-	    (is ( = 9 (board-size board))))))
+    (testing "returns the size of the board "
+      (is ( = 9 (board-size board))))))
 
 (deftest board-empty-test
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-	  (testing "returns the size of the board "
-	    (is ( = 9 (empty-spaces board))))))
+   (testing "returns the count of empty spaces in the board "
+      (is ( = 9 (empty-space-count board))))))
 
 (deftest board-move
   (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
@@ -81,6 +81,6 @@
 
 (deftest get-diagnoals-test
   (let [board [["x" "_" "_" ]["_" "x" "_" ]["_" "_" "x" ]]
-    		rowsize 3]
+        rowsize 3]
     (testing "gets diagonal positions"
-  	  (is (= (get-diagnoals board 3))))))
+      (is (= (get-diagnoals board 3))))))
