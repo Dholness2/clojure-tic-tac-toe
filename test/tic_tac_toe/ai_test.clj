@@ -1,18 +1,18 @@
 (ns tic-tac-toe.ai-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.ai :refer :all]
-            [tic-tac-toe.game :refer [winner?]]
+            [tic-tac-toe.game :refer [winner? draw]]
             [tic-tac-toe.display.terminal :refer [->TerminalDisplay print-winner display-board index-board]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
 (defn win-or-draw? [player-marker winner-state]
-  (or (= player-marker winner-state) (= player-marker "its a draw")))
+  (or (= player-marker winner-state) (= player-marker draw)))
 
 (defn correct-ai-choice? [game]
   (let [winner (winner? (:board game))]
     (cond
       (= winner (:ai-marker game)) true
-      (= winner "its a draw") true
+      (= winner draw) true
       (= winner nil) true
       :else false )))
 
@@ -142,26 +142,26 @@
         open-positions [3 5  7 9]
         player "o"
         depth 0]
-  (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha")
-    (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100)))))
+    (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha"
+      (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100))))))
 
 (deftest score-test-max
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-          maximizing true
-          open-positions [3 5  7 9]
-          player "o"
-          depth 0]
-  (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha")
-    (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100)))))
+        maximizing true
+        open-positions [3 5  7 9]
+        player "o"
+        depth 0]
+    (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha"
+      (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100))))))
 
 (deftest score-test-max
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-          maximizing true
-          open-positions [3 5  7 9]
-          player "o"
-          depth 0]
-  (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha")
-    (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100)))))
+        maximizing true
+        open-positions [3 5  7 9]
+        player "o"
+        depth 0]
+    (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha"
+      (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100))))))
 
 (deftest score-test-min
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "x" :player-marker "o"}
@@ -170,17 +170,18 @@
         player "o"
         depth 0]
      (testing "returns the scores for the the currnet player's moves; if the beta is <= alpha score is set to beta"
-      (is(=  [-9 -9 -9 -9] (score game maximizing player  open-positions depth -100  100))))))
+       (is(= [-9 -9 -9 -9] (score game maximizing player  open-positions depth -100  100))))))
 
 (deftest best-score-test
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
         maximizing true
         depth 0]
-      (is(= [0 9] (get-best-score-for game maximizing depth -100 100)))))
+    (testing "returns the best score and its index"
+      (is(= [0 9] (get-best-score-for game maximizing depth -100 100))))))
 
 (deftest minimax-test
- (let [game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-       depth 0]
+  (let [game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+        depth 0]
     (testing "return best score and its index based on the board state"
       (is (= [0 9] (minimax game true depth -100 100))))))
 
@@ -191,27 +192,27 @@
 
 (deftest ai-best-move-block-horizontial
   (let [game {:board  [["x" "_" "x"] ["_" "_" "o"] ["_" "" "_"]]  :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
+    (testing "returns the best move location"
       (is (= [0 1] (ai-move game))))))
 
 (deftest ai-best-move-block-horizontial
   (let [game { :board [["_" "_" "_"] ["_" "_" "o"] ["x" "_" "x"]]  :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
+    (testing "returns the best move location"
       (is (= [2 1] (ai-move game))))))
 
 (deftest ai-best-move-block-diagonal-b
   (let [game { :board [["x" "_" "o"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
-     (is (= [2 2] (ai-move game))))))
+    (testing "returns the best move location"
+      (is (= [2 2] (ai-move game))))))
 
 (deftest ai-best-move-block-diagonal
   (let [game { :board  [["o" "_" "x"] ["_" "x" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
+    (testing "returns the best move location"
       (is (= [2 0] (ai-move game))))))
 
 (deftest ai-best-move-block-verticle
   (let [game { :board [["o" "_" "x"] ["_" "_" "x"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-   (testing "returns the best move location"
+    (testing "returns the best move location"
       (is (= [2 2] (ai-move game))))))
 
 (deftest ai-deafult-move
@@ -233,18 +234,18 @@
         game {:board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o" :player-marker "x"}
         expected-result {:board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]], :ai-marker "o", :player-marker "x"}]
     (testing "creates defrecord of player protocol"
-     (is (= expected-result(assoc game :board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) (next-move player game))))))
+      (is (= expected-result (next-move player game))))))
 
 (deftest ai-move-win-state-test-3-by-3-x
   (let [ai-marker "x"
         new-game { :board [["_" "_" "_"]["_" "_" "_"]["_" "_" "_"]]  :ai-marker "x" :player-marker "o"}
         gamestates (flatten (check-every-possible-gamestate new-game))]
-   (testing "ai never loses"
-     (is (= true (every? true? gamestates))))))
+    (testing "ai never loses"
+      (is (= true (every? true? gamestates))))))
 
 (deftest ai-move-win-state-test-3-by-3-o
   (let [ai-marker "o"
         new-game { :board [["x" "_" "_"]["_" "_" "_"]["_" "_" "_"]]  :ai-marker "o" :player-marker "x"}
         gamestates (flatten (check-every-possible-gamestate new-game))]
-   (testing "ai never loses"
-     (is (= true (every? true? gamestates))))))
+    (testing "ai never loses"
+      (is (= true (every? true? gamestates))))))

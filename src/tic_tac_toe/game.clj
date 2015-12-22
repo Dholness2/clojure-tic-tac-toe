@@ -1,6 +1,7 @@
 (ns tic-tac-toe.game
   (:require [tic-tac-toe.board :refer [get-diagnoals check-equality empty-space empty-space-count board-size board-dimensions]]
             [clojure.core.matrix :refer [transpose]]))
+(def draw "it's a draw")
 
 (defn row-check
   ([board]
@@ -30,7 +31,7 @@
     (row-check board) (row-check board)
     (column-check board) (column-check board)
     (diagonal-check board (board-dimensions board)) (diagonal-check board (board-dimensions board))
-    (draw? board ) "its a draw"))
+    (draw? board ) draw))
 
 (defn game-depth [board]
   (-(board-size board) (empty-space-count board)))
