@@ -1,4 +1,4 @@
-(ns tic-tac-toe.terminal-test
+(ns tic-tac-toe.display.terminal-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.display.terminal :refer :all]
             [tic-tac-toe.protocol.display :refer :all]))
