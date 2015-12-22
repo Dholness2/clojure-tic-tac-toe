@@ -83,8 +83,8 @@
 
 (defn ai-move [game]
  (let [open-positions (possible-moves game)
-        move-score (minimax game true 0 -100 100)
-        board-dimension (board-dimensions (:board game))]
+       move-score (minimax game true 0 -100 100)
+       board-dimension (board-dimensions (:board game))]
     (matrix-convrt (open-positions (first move-score)) board-dimension)))
 
 (defn game-move [game marker]
