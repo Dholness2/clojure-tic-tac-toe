@@ -1,7 +1,7 @@
 (ns tic-tac-toe.game-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.game :refer [draw row-check column-check diagonal-check draw? winner? game-depth]]))
+            [tic-tac-toe.game :refer [draw row-check column-check diagonal-check draw? winner game-depth]]))
 
 (deftest board-row-check
   (testing "check for winner from row"
@@ -21,7 +21,7 @@
 
 (deftest winner-test
   (testing "check for win state or draw"
-    (is (= "x" (winner? [["x" "x" "x"] ["y" "x" "Y"] ["x" "x" "y"]])))))
+    (is (= "x" (winner [["x" "x" "x"] ["y" "x" "Y"] ["x" "x" "y"]])))))
 
 (deftest game-depth-test
   (testing "returns the depth of the board"

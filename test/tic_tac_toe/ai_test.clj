@@ -1,7 +1,7 @@
 (ns tic-tac-toe.ai-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.ai :refer :all]
-            [tic-tac-toe.game :refer [winner? draw]]
+            [tic-tac-toe.game :refer [winner draw]]
             [tic-tac-toe.display.terminal :refer [->TerminalDisplay print-winner display-board index-board]]
             [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
@@ -9,7 +9,7 @@
   (or (= player-marker winner-state) (= player-marker draw)))
 
 (defn correct-ai-choice? [game]
-  (let [winner (winner? (:board game))]
+  (let [winner (winner (:board game))]
     (cond
       (= winner (:ai-marker game)) true
       (= winner draw) true
@@ -19,7 +19,7 @@
 (declare check-every-possible-gamestate)
 
 (defn check-gamestate [gamestate]
-  (let [winner-state (winner? (:board gamestate))]
+  (let [winner-state (winner (:board gamestate))]
     (if (nil? winner-state)
       (check-every-possible-gamestate gamestate)
        (correct-ai-choice? gamestate))))
@@ -27,7 +27,7 @@
 (def check-every-possible-gamestate
   (memoize ( fn [gamestate]
     (let [ai-choice (game-move gamestate (:ai-marker gamestate))]
-      (if (= nil (winner? (:board ai-choice)))
+      (if (= nil (winner (:board ai-choice)))
         (let [possible-games (game-states (possible-moves ai-choice) ai-choice (:player-marker ai-choice))]
            (map check-gamestate possible-games))
         (correct-ai-choice? ai-choice))))))
