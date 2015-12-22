@@ -1,4 +1,4 @@
-  (ns tic-tac-toe.ai-test
+(ns tic-tac-toe.ai-test
   (:require [clojure.test :refer :all]
             [tic-tac-toe.ai :refer :all]
             [tic-tac-toe.game :refer [winner?]]
@@ -6,11 +6,11 @@
             [tic-tac-toe.protocol.player :refer [PlayerProtocol next-move]]))
 
 (defn win-or-draw? [player-marker winner-state]
- (or (= player-marker winner-state) (= player-marker "its a draw")))
+  (or (= player-marker winner-state) (= player-marker "its a draw")))
 
 (defn correct-ai-choice? [game]
-    (let [winner (winner? (:board game))]
-     (cond
+  (let [winner (winner? (:board game))]
+    (cond
       (= winner (:ai-marker game)) true
       (= winner "its a draw") true
       (= winner nil) true
@@ -25,72 +25,52 @@
        (correct-ai-choice? gamestate))))
 
 (def check-every-possible-gamestate
-   (memoize ( fn [gamestate]
-   (let [ai-choice (game-move gamestate (:ai-marker gamestate))]
-     (if (= nil (winner? (:board ai-choice)))
-       (let [possible-games (game-states (possible-moves ai-choice) ai-choice (:player-marker ai-choice))]
+  (memoize ( fn [gamestate]
+    (let [ai-choice (game-move gamestate (:ai-marker gamestate))]
+      (if (= nil (winner? (:board ai-choice)))
+        (let [possible-games (game-states (possible-moves ai-choice) ai-choice (:player-marker ai-choice))]
            (map check-gamestate possible-games))
-       (correct-ai-choice? ai-choice))))))
+        (correct-ai-choice? ai-choice))))))
 
-(deftest game-value-test-three-by-three
+(deftest game-value-test-3-by-3
   (let [game {:board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "returns scoring base value of board- size + 1 "
-      (is (=  10 (scoring-base game))))))
+      (is (= 10 (scoring-base game))))))
 
-(deftest game-value-test-four-by-four
+(deftest game-value-test-4-by-4
   (let [game {:board [["_" "_" "_" "_"] ["_" "_" "_" "_"] ["_" "_" "_" "_"] ["_" "_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "returns scoring base value of board- size + 1 "
-      (is (=  17 (scoring-base game))))))
+      (is (= 17 (scoring-base game))))))
 
-(deftest game-state-score-draw-depth-zero
+(deftest game-state-score-draw-3-by-3
   (let [game   { :board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of zero"
       (is (= 0 (score-game game 0))))))
 
-(deftest game-state-score-draw-depth-nine
-  (let [ game { :board [["x" "o" "x"] ["x" "o" "o"] ["o" "x" "x"]] :ai-marker "o" :player-marker "x"}]
+(deftest game-state-score-draw-4-by-4
+  (let [game { :board [["x" "o" "x" "o"] ["x" "o" "o""x"] ["o" "x" "x" "o"] ["_" "_" "_" "_" ]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of nine"
-      (is (= 0 (score-game game 9))))))
+      (is (= 0 (score-game game 0))))))
 
-(deftest game-state-score-depth-one
-  (let [ game { :board [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-    (testing "scores the current game state of the board at a game depth of one"
-      (is (= 0 (score-game game 1))))))
+(deftest game-state-score-win-3-by-3
+  (let [game   { :board [["o" "o" "o"] ["x" "_" "x"] ["x" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+    (testing "scores the current game state of the board at a game depth of zero"
+      (is (= 9 (score-game game 1))))))
 
-(deftest game-state-score-depth-two
-  (let [game { :board [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-    (testing "scores the current game state of the board at a game depth of two"
-      (is (= 0 (score-game game 2))))))
+(deftest game-state-score-win-4-by-4
+  (let [game { :board [["x" "o" "x" "x"] ["o" "o" "o" "o"] ["x" "x" "x" "o"]["_" "_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+    (testing "scores the current game state of the board at a game depth of nine"
+      (is (= 16 (score-game game 1))))))
 
-(deftest game-state-score-depth-three
-  (let [game { :board [["x" "_" "x"] ["_" "o" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"} ]
-    (testing "scores the current game state of the board at a game depth of three"
-      (is (= 0 (score-game game 3))))))
+(deftest game-state-score-loss-3-by-3
+  (let [game   { :board [["x" "x" "x"] ["o" "_" "x"] ["o" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+    (testing "scores the current game state of the board at a game depth of zero"
+      (is (= -9 (score-game game 1))))))
 
-(deftest game-state-score-depth-four
-  (let [game { :board [["x" "x" "_"] ["o" "_" "o"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-    (testing "scores the current game state of the board at a game depth of four"
-      (is (= 0 (score-game game 4))))))
-
-(deftest game-state-score-max-depth-five
-  (let [game { :board [["o" "o" "o"] ["x" "_" "x"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-    (testing "scores the current game state of the board at a game depth of five"
-      (is (= 5 (score-game game 5))))))
-
-(deftest game-state-score-min-depth-six
-  (let [game { :board [["x" "_" "x"] ["o" "_" "o"] ["o" "_" "x"]] :ai-marker "o" :player-marker "x"}]
-    (testing "scores the current game state of the board at a game depth of six"
-      (is (= 0 (score-game game 6))))))
-
-(deftest game-state-score-max-depth-seven
-  (let [game { :board [["o" "x" "o"] ["x" "o" "x"] ["x" "_" "o"]]:ai-marker "o" :player-marker "x"}]
-    (testing "scores the current game state of the board at a game depth of seven"
-      (is (= 3 (score-game game 7))))))
-
-(deftest game-state-score-depth-eight
-  (let [game { :board[["x" "o" "x"] ["o" "_" "o"] ["x" "o" "x"]] :ai-marker "o" :player-marker "x"}]
-    (testing "scores the current game state of the board at a game depth of eight"
-      (is (= 0 (score-game game 8))))))
+(deftest game-state-score-loss-4-by-4
+  (let [game { :board [["x" "x" "x" "x"] ["x" "o" "o" "o"] ["o" "o" "x" "o"]["_" "_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
+    (testing "scores the current game state of the board at a game depth of nine"
+      (is (= -16 (score-game game 1))))))
 
 (deftest space-available-test
   (let [board  [["_" "x" "o"] ["x" "x" "o"] ["o" "x" "o"]]
@@ -111,7 +91,7 @@
 
 (deftest best-move-possible-max
   (testing "returns the  index and score of the best maximizing move"
-    (is (=[8 10] (best-score-index [2 3 4 5 6 7 8 9 10] true )))))
+    (is (= [8 10] (best-score-index [2 3 4 5 6 7 8 9 10] true )))))
 
 (deftest best-move-possible-mini
   (testing "returns the score and index of the best minimizing move"
@@ -119,7 +99,7 @@
 
 (deftest possible-board-state
   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]
-      marker "x"]
+        marker "x"]
     (testing "return a posible board state based on input"
       (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 marker board))))))
 
@@ -147,21 +127,21 @@
     (is (= expected-output (beta-min game-results game))))))
 
 (deftest get-scores-test
- (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-          children (game-states [3 5  7 9 ] game "o")
-          depth 0
-          value -100
-          alpha -100
-          beta 100]
+  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+        children (game-states [3 5  7 9 ] game "o")
+        depth 0
+        value -100
+        alpha -100
+        beta 100]
    (testing "return the scores for the prodvided children"
      (is (= [9 9 9 9] (get-scores alpha-max value alpha beta depth children))))))
 
 (deftest score-test-max
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-          maximizing true
-          open-positions [3 5  7 9]
-          player "o"
-          depth 0]
+        maximizing true
+        open-positions [3 5  7 9]
+        player "o"
+        depth 0]
   (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha")
     (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100)))))
 
@@ -185,22 +165,22 @@
 
 (deftest score-test-min
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "x" :player-marker "o"}
-          maximizing false
-          open-positions [3 5 6 8]
-          player "o"
-          depth 0]
+        maximizing false
+        open-positions [3 5 6 8]
+        player "o"
+        depth 0]
      (testing "returns the scores for the the currnet player's moves; if the beta is <= alpha score is set to beta"
       (is(=  [-9 -9 -9 -9] (score game maximizing player  open-positions depth -100  100))))))
 
 (deftest best-score-test
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-          maximizing true
-          depth 0]
+        maximizing true
+        depth 0]
       (is(= [0 9] (get-best-score-for game maximizing depth -100 100)))))
 
 (deftest minimax-test
- (let [ game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-        depth 0]
+ (let [game { :board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+       depth 0]
     (testing "return best score and its index based on the board state"
       (is (= [0 9] (minimax game true depth -100 100))))))
 
@@ -255,18 +235,16 @@
     (testing "creates defrecord of player protocol"
      (is (= expected-result(assoc game :board [["o" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]) (next-move player game))))))
 
-(deftest ai-move-win-state-test-3-by-3
+(deftest ai-move-win-state-test-3-by-3-x
   (let [ai-marker "x"
         new-game { :board [["_" "_" "_"]["_" "_" "_"]["_" "_" "_"]]  :ai-marker "x" :player-marker "o"}
         gamestates (flatten (check-every-possible-gamestate new-game))]
    (testing "ai never loses"
      (is (= true (every? true? gamestates))))))
 
-(deftest ai-move-win-state-test-4-by-4
-  (let [ai-marker "x"
-        new-game { :board [["_" "_" "_" "_"]["_" "_" "_" "_"]["_" "_" "_" "_"]["_" "_" "_" "_"]]  :ai-marker "x" :player-marker "o"}
+(deftest ai-move-win-state-test-3-by-3-o
+  (let [ai-marker "o"
+        new-game { :board [["x" "_" "_"]["_" "_" "_"]["_" "_" "_"]]  :ai-marker "o" :player-marker "x"}
         gamestates (flatten (check-every-possible-gamestate new-game))]
    (testing "ai never loses"
      (is (= true (every? true? gamestates))))))
-
-
