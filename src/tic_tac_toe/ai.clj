@@ -41,31 +41,49 @@
   (move (matrix-convrt location (board-dimensions current-board)) marker current-board))
 
 (defn game-states [open-positions game marker]
-  (map (fn [move] {:board (possible-board move marker (:board game)) :ai-marker (:ai-marker game) :player-marker (:player-marker game)}) open-positions))
+  (let[ai (:ai-marker game)
+       player (:player-marker game)
+       board (:board game)]
+    (map (fn [move] {:board (possible-board move marker board) :ai-marker ai :player-marker player}) open-positions)))
 
 (declare minimax)
 
-(defn alpha_max [game-results child]
-  (if (<= (:beta game-results) (:alpha game-results))
-    (assoc game-results :scores (conj (:scores game-results) (:alpha game-results)))
-    (let [new-value (max (:current-value game-results) (last (minimax child false (inc (:depth game-results)) (:alpha game-results) (:beta game-results))))
-         new-alpha (max (:alpha game-results) new-value)]
-      (assoc game-results :current-value new-value :alpha new-alpha :scores (conj (:scores game-results) new-value)))))
+(defn alpha-max [game-results child]
+  (let[beta (:beta game-results)
+       alpha (:alpha game-results)
+       current-value (:current-value game-results)
+       depth (:depth game-results)
+       scores (:scores game-results)]
+    (if (<= beta alpha)
+      (assoc game-results :scores (conj scores alpha))
+      (let [score (last (minimax child false (inc depth) alpha beta))
+            new-value (max current-value score)
+            new-alpha (max alpha new-value)]
+        (assoc game-results :current-value new-value :alpha new-alpha :scores (conj scores new-value))))))
 
-(defn beta_min [game-results child]
-  (if (<= (:beta game-results) (:alpha game-results))
-    (assoc game-results :scores (conj (:scores game-results) (:beta game-results)))
-    (let [new-value (min (:current-value game-results) (last (minimax child true (inc (:depth game-results)) (:alpha game-results) (:beta game-results))))
-         new-beta (min (:beta game-results) new-value)]
-      (assoc game-results :current-value new-value :beta new-beta :scores (conj (:scores game-results) new-value)))))
+(defn beta-min [game-results child]
+  (let[beta (:beta game-results)
+       alpha (:alpha game-results)
+       current-value (:current-value game-results)
+       depth (:depth game-results)
+       scores (:scores game-results)]
+    (if (<= beta alpha)
+      (assoc game-results :scores (conj scores beta))
+      (let [score (last (minimax child true (inc depth) alpha beta))
+            new-value (min current-value score)
+            new-beta (min beta new-value)]
+        (assoc game-results :current-value new-value :beta new-beta :scores (conj scores new-value))))))
+
+(defn get-scores [alpha-or-beta value alpha beta depth children]
+  (:scores (reduce alpha-or-beta {:current-value value :alpha alpha :beta beta :depth depth :scores []} children)))
 
 (defn score [game maximizing player open-positions depth alpha beta]
   (let [children (game-states open-positions game player)]
     (if maximizing
       (let [value -100]
-        (:scores (reduce alpha_max {:current-value value :alpha alpha :beta beta :depth depth :scores []} children)))
+        (get-scores alpha-max value alpha beta depth children))
       (let [value 100]
-        (:scores (reduce beta_min {:current-value value :alpha alpha :beta beta  :depth depth :scores []} children))))))
+        (get-scores beta-min value alpha beta depth children)))))
 
 (defn get-best-score-for [game maximizing depth alpha beta]
   (let [open-positions (possible-moves game)]
