@@ -112,10 +112,28 @@
     (testing "returns possible board states based on available moves"
       (is (= possible-game-states (game-states available-moves game current-player))))))
 
+(deftest find-alpha-beta-test-alpha
+  (let [optimal -100
+        maximizing false
+        child {:board [["o" "o" "o"] ["x" "_" "x"] ["_" "_ " " _"]] :ai-marker "o" :player-marker "x"}
+        game-results {:current-value optimal :alpha optimal :beta 100 :depth 0 :scores []}
+        expected-output {:current-value 9 :alpha 9 :beta 100 :depth 0 :scores [9]}]
+    (testing "returns game results with updated max alpha and max current-value"
+      (is (= expected-output (find-alpha-beta game-results optimal max  maximizing child))))))
+
+(deftest find-alpha-beta-test-beta
+  (let [optimal 100
+        maximizing true
+        child {:board [["o" "o" "o"] ["x" "_" "x"] ["_" "_ " " _"]] :ai-marker "x" :player-marker "o"}
+        game-results {:current-value optimal :alpha -100 :beta optimal :depth 0 :scores []}
+        expected-output {:current-value 100 :alpha -100 :beta 100 :depth 0 :scores [100]}]
+    (testing "returns game-results with updated min beta and current-value"
+      (is (= expected-output (find-alpha-beta game-results optimal max  maximizing child))))))
+
 (deftest alpha-max-test
   (let [game {:board [["o" "o" "o"] ["x" "_" "x"] ["_" "_ " " _"]] :ai-marker "o" :player-marker "x"}
         game-results {:current-value -100 :alpha -100 :beta 100 :depth 0 :scores []}
-        expected-output {:current-value 9, :alpha 9, :beta 100, :depth 0, :scores [9]}]
+        expected-output {:current-value 9 :alpha 9 :beta 100 :depth 0 :scores [9]}]
     (testing "returns @alpha if the beta is still less than or equal alpha"
       (is (= expected-output (alpha-max  game-results game))))))
 
@@ -126,7 +144,7 @@
     (testing "returns @beta if the alpha is greater than beta"
       (is (= expected-output (beta-min game-results game))))))
 
-(deftest get-scores-test
+(deftest get-scores-max
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
         children (game-states [3 5  7 9] game "o")
         depth 0
@@ -135,33 +153,6 @@
         beta 100]
     (testing "return the scores for the prodvided children"
       (is (= [9 9 9 9] (get-scores alpha-max value alpha beta depth children))))))
-
-(deftest score-test-max
-  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-        maximizing true
-        open-positions [3 5  7 9]
-        player "o"
-        depth 0]
-    (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha"
-      (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100))))))
-
-(deftest score-test-max
-  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-        maximizing true
-        open-positions [3 5  7 9]
-        player "o"
-        depth 0]
-    (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha"
-      (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100))))))
-
-(deftest score-test-max
-  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
-        maximizing true
-        open-positions [3 5  7 9]
-        player "o"
-        depth 0]
-    (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha"
-      (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100))))))
 
 (deftest score-test-min
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "x" :player-marker "o"}
