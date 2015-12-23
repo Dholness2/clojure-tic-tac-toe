@@ -5,12 +5,12 @@
 
 (defn row-check
   ([board]
-    (let[ row (first (take 1 board))]
-      (if (or (= empty-space (some #{empty-space} row)) (>= (count(distinct row)) 2))
-        (row-check (drop 1 board))
-        (row-check board (get row 0)))))
+   (let [row (first (take 1 board))]
+     (if (or (= empty-space (some #{empty-space} row)) (>= (count (distinct row)) 2))
+       (row-check (drop 1 board))
+       (row-check board (get row 0)))))
   ([board winner]
-    winner))
+   winner))
 
 (defn column-check [board]
   (row-check (transpose board)))
@@ -31,7 +31,7 @@
     (row-check board) (row-check board)
     (column-check board) (column-check board)
     (diagonal-check board (board-dimensions board)) (diagonal-check board (board-dimensions board))
-    (draw? board ) draw))
+    (draw? board) draw))
 
 (defn game-depth [board]
-  (-(board-size board) (empty-space-count board)))
+  (- (board-size board) (empty-space-count board)))

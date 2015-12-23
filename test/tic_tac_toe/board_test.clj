@@ -5,43 +5,43 @@
 (deftest board-create
   (let [board-size 3]
     (testing "Create new board based on user input"
-      (is (= [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (create-empty-board board-size))))))
+      (is (= [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] (create-empty-board board-size))))))
 
 (deftest board-dimension
-  (let [board [["_" "_" "_" "_" ]["_" "_" "_" "_" ]["_" "_" "_" "_"]["_" "_" "_" "_"]]]
+  (let [board [["_" "_" "_" "_"] ["_" "_" "_" "_"] ["_" "_" "_" "_"] ["_" "_" "_" "_"]]]
     (testing "returns the diemension of the board")
-      (is (= 4 (board-dimensions board)))))
+    (is (= 4 (board-dimensions board)))))
 
 (deftest board-size-test
-  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+  (let [board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
     (testing "returns the size of the board "
-      (is ( = 9 (board-size board))))))
+      (is (= 9 (board-size board))))))
 
 (deftest board-empty-test
-  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-   (testing "returns the count of empty spaces in the board "
-      (is ( = 9 (empty-space-count board))))))
+  (let [board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
+    (testing "returns the count of empty spaces in the board "
+      (is (= 9 (empty-space-count board))))))
 
 (deftest board-move
-  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
-	  (testing "creates a new vector with updated representation of the board"
-	    (is ( = [["x" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] (move [0 0] "x" board))))))
+  (let [board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
+    (testing "creates a new vector with updated representation of the board"
+      (is (= [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] (move [0 0] "x" board))))))
 
 (deftest valid-move-zero
   (let [board-size 9
         move 0]
     (testing "test to mke sure user input is within game move option[1-9]"
- 	    (is (= false (validmove? move board-size))))))
+      (is (= false (validmove? move board-size))))))
 
 (deftest valid-move-ten
   (let [board-size 9
-         move  10]
+        move  10]
     (testing "test to mke sure user input is within game move option[1-9]"
       (is (= false (validmove? move board-size))))))
 
 (deftest valid-move-five
   (let [board-size 9
-         move  5]
+        move  5]
     (testing "test to mke sure user input is within game move option[1-9]"
       (is (= true (validmove? move board-size))))))
 
@@ -53,13 +53,13 @@
 
 (deftest valid-move-twenty-larger-board
   (let [board-size 16
-         move  20]
+        move  20]
     (testing "test to mke sure user input is within game move option[1-16]"
       (is (= false (validmove? move board-size))))))
 
 (deftest valid-move-fithteen-larger-board
   (let [board-size 16
-         move  15]
+        move  15]
     (testing "test to mke sure user input is within game move option[1-16]"
       (is (= true (validmove? move board-size))))))
 
@@ -73,14 +73,14 @@
 
 (deftest determine-equality
   (testing "checks for matches"
-    (is (= true (check-equality ["x" "x" "x"] )))))
+    (is (= true (check-equality ["x" "x" "x"])))))
 
 (deftest get-nested-elements
   (testing "gets nested elements in board"
-    (is (= '("y" "y" "y")(get-location [["y" "x" "x"] ["y" "y" "y"] ["y" "x" "y"]] [0 1 2 ] )))))
+    (is (= '("y" "y" "y") (get-location [["y" "x" "x"] ["y" "y" "y"] ["y" "x" "y"]] [0 1 2])))))
 
 (deftest get-diagnoals-test
-  (let [board [["x" "_" "_" ]["_" "x" "_" ]["_" "_" "x" ]]
+  (let [board [["x" "_" "_"] ["_" "x" "_"] ["_" "_" "x"]]
         rowsize 3]
     (testing "gets diagonal positions"
       (is (= (get-diagnoals board 3))))))

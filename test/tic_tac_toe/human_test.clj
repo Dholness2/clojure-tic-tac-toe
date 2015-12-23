@@ -14,9 +14,9 @@
          v#))))
 
 (deftest human-move-test
-  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+  (let [board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
     (testing "updates board with a new move"
-      (is (= [["_" "_" "_"] ["x" "_" "_"] ["_" "_" "_"]] (with-out-str-value (with-in-str "4"(human-move board "x" (->ConsoleInput)))))))))
+      (is (= [["_" "_" "_"] ["x" "_" "_"] ["_" "_" "_"]] (with-out-str-value (with-in-str "4" (human-move board "x" (->ConsoleInput)))))))))
 
 (deftest human-record
   (let [player  (->HumanPlayer "x")]
@@ -25,6 +25,6 @@
 
 (deftest human-record
   (let [player  (->HumanPlayer "x" (->ConsoleInput))
-        game {:board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]] :ai-marker "o"  :player-marker "x"}]
+        game {:board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o"  :player-marker "x"}]
     (testing "creates defrecord of player protocol"
-      (is (= ( assoc game :board [["_" "_" "_"] ["x" "_" "_"] ["_" "_" "_"]]) (with-out-str-value (with-in-str "4" (next-move player game))))))))
+      (is (= (assoc game :board [["_" "_" "_"] ["x" "_" "_"] ["_" "_" "_"]]) (with-out-str-value (with-in-str "4" (next-move player game))))))))

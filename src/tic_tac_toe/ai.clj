@@ -22,38 +22,38 @@
 
 (defn possible-moves
   ([game]
-    (possible-moves game 0 []))
+   (possible-moves game 0 []))
   ([game move-index moves]
-    (if (< move-index (board-size (:board game)))
-      (let [next-move-index (+ 1 move-index)]
-        (if (space-available? (:board game) move-index)
-          (possible-moves game next-move-index (conj moves next-move-index))
-          (possible-moves game next-move-index moves)))
-    moves)))
+   (if (< move-index (board-size (:board game)))
+     (let [next-move-index (+ 1 move-index)]
+       (if (space-available? (:board game) move-index)
+         (possible-moves game next-move-index (conj moves next-move-index))
+         (possible-moves game next-move-index moves)))
+     moves)))
 
-(defn best-score-index[scores maximizing]
+(defn best-score-index [scores maximizing]
   (let [scores (vec scores)]
     (if maximizing
-     [(.indexOf scores (apply max scores)) (apply max scores)]
-     [(.indexOf scores (apply min scores)) (apply min scores)])))
+      [(.indexOf scores (apply max scores)) (apply max scores)]
+      [(.indexOf scores (apply min scores)) (apply min scores)])))
 
 (defn possible-board [location marker current-board]
   (move (matrix-convrt location (board-dimensions current-board)) marker current-board))
 
 (defn game-states [open-positions game marker]
-  (let[ai (:ai-marker game)
-       player (:player-marker game)
-       board (:board game)]
+  (let [ai (:ai-marker game)
+        player (:player-marker game)
+        board (:board game)]
     (map (fn [move] {:board (possible-board move marker board) :ai-marker ai :player-marker player}) open-positions)))
 
 (declare minimax)
 
 (defn alpha-max [game-results child]
-  (let[beta (:beta game-results)
-       alpha (:alpha game-results)
-       current-value (:current-value game-results)
-       depth (:depth game-results)
-       scores (:scores game-results)]
+  (let [beta (:beta game-results)
+        alpha (:alpha game-results)
+        current-value (:current-value game-results)
+        depth (:depth game-results)
+        scores (:scores game-results)]
     (if (<= beta alpha)
       (assoc game-results :scores (conj scores alpha))
       (let [score (last (minimax child false (inc depth) alpha beta))
@@ -62,11 +62,11 @@
         (assoc game-results :current-value new-value :alpha new-alpha :scores (conj scores new-value))))))
 
 (defn beta-min [game-results child]
-  (let[beta (:beta game-results)
-       alpha (:alpha game-results)
-       current-value (:current-value game-results)
-       depth (:depth game-results)
-       scores (:scores game-results)]
+  (let [beta (:beta game-results)
+        alpha (:alpha game-results)
+        current-value (:current-value game-results)
+        depth (:depth game-results)
+        scores (:scores game-results)]
     (if (<= beta alpha)
       (assoc game-results :scores (conj scores beta))
       (let [score (last (minimax child true (inc depth) alpha beta))
@@ -93,22 +93,22 @@
 
 (def minimax
   (memoize (fn [game maximizing depth alpha beta]
-    (if (or (winner (:board game)) (= moves-ahead depth))
-      (let [score (score-game game depth)
-            score-index 0]
-       [score-index score])
-    (get-best-score-for game maximizing depth alpha beta)))))
+             (if (or (winner (:board game)) (= moves-ahead depth))
+               (let [score (score-game game depth)
+                     score-index 0]
+                 [score-index score])
+               (get-best-score-for game maximizing depth alpha beta)))))
 
 (defn ai-move [game]
- (let [open-positions (possible-moves game)
-       move-score (minimax game true 0 -100 100)
-       board-dimension (board-dimensions (:board game))]
+  (let [open-positions (possible-moves game)
+        move-score (minimax game true 0 -100 100)
+        board-dimension (board-dimensions (:board game))]
     (matrix-convrt (open-positions (first move-score)) board-dimension)))
 
 (defn game-move [game marker]
   (if-not (winner (:board game))
     (assoc game :board (move (ai-move game) marker (:board game)))))
 
-(defrecord AiPlayer[marker]
+(defrecord AiPlayer [marker]
   PlayerProtocol
   (next-move [player game] (game-move game marker)))
