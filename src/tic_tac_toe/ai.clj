@@ -41,10 +41,7 @@
   (move (matrix-convrt location (board-dimensions current-board)) marker current-board))
 
 (defn game-states [open-positions game marker]
-  (let [ai (:ai-marker game)
-        player (:player-marker game)
-        board (:board game)]
-    (map (fn [move] {:board (possible-board move marker board) :ai-marker ai :player-marker player}) open-positions)))
+  (map #(assoc game :board (possible-board % marker (:board game))) open-positions))
 
 (declare minimax)
 
