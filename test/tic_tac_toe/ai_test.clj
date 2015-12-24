@@ -131,28 +131,37 @@
       (is (= expected-output (find-alpha-beta game-results optimal max  maximizing child))))))
 
 (deftest alpha-max-test
-  (let [game {:board [["o" "o" "o"] ["x" "_" "x"] ["_" "_ " " _"]] :ai-marker "o" :player-marker "x"}
+  (let [child {:board [["o" "o" "o"] ["x" "_" "x"] ["_" "_ " " _"]] :ai-marker "o" :player-marker "x"}
         game-results {:current-value -100 :alpha -100 :beta 100 :depth 0 :scores []}
         expected-output {:current-value 9 :alpha 9 :beta 100 :depth 0 :scores [9]}]
-    (testing "returns @alpha if the beta is still less than or equal alpha"
-      (is (= expected-output (alpha-max  game-results game))))))
+    (testing "returns updated game-results :beta and :current-vauleu data  based on score of child"
+      (is (= expected-output (alpha-max  game-results child))))))
 
 (deftest beta-min-test
   (let [game {:board [["o" "o" "o"] ["x" "_" "x"] ["_" "_ " " _"]] :ai-marker "x" :player-marker "o"}
         game-results {:current-value 100 :alpha -100 :beta 100 :depth 0 :scores []}
         expected-output {:current-value -9, :alpha -100, :beta -9, :depth 0, :scores [-9]}]
-    (testing "returns @beta if the alpha is greater than beta"
+    (testing "returns updated game-results :beta and :current-value based on score of child"
       (is (= expected-output (beta-min game-results game))))))
 
-(deftest get-scores-max
+(deftest get-scores
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
         children (game-states [3 5  7 9] game "o")
         depth 0
         value -100
         alpha -100
         beta 100]
-    (testing "return the scores for the prodvided children"
+    (testing "return the scores for the provided children"
       (is (= [9 9 9 9] (get-scores alpha-max value alpha beta depth children))))))
+
+(deftest score-test-max
+  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+        maximizing true
+        open-positions [3 5  7 9]
+        player "o"
+        depth 0]
+    (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha"
+      (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100))))))
 
 (deftest score-test-min
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "x" :player-marker "o"}
