@@ -144,7 +144,7 @@
     (testing "returns updated game-results :beta and :current-value based on score of child"
       (is (= expected-output (beta-min game-results game))))))
 
-(deftest get-scores
+(deftest get-scores-test
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
         children (game-states [3 5  7 9] game "o")
         depth 0

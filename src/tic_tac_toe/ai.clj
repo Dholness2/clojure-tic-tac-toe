@@ -41,43 +41,6 @@
   (move (matrix-convrt location (board-dimensions current-board)) marker current-board))
 
 (defn game-states [open-positions game marker]
-<<<<<<< HEAD
-  (let[ai (:ai-marker game)
-       player (:player-marker game)
-       board (:board game)]
-    (map (fn [move] {:board (possible-board move marker board) :ai-marker ai :player-marker player}) open-positions)))
-
-(declare minimax)
-
-(defn alpha-max [game-results child]
-  (let[beta (:beta game-results)
-       alpha (:alpha game-results)
-       current-value (:current-value game-results)
-       depth (:depth game-results)
-       scores (:scores game-results)]
-    (if (<= beta alpha)
-      (assoc game-results :scores (conj scores alpha))
-      (let [score (last (minimax child false (inc depth) alpha beta))
-            new-value (max current-value score)
-            new-alpha (max alpha new-value)]
-        (assoc game-results :current-value new-value :alpha new-alpha :scores (conj scores new-value))))))
-
-(defn beta-min [game-results child]
-  (let[beta (:beta game-results)
-       alpha (:alpha game-results)
-       current-value (:current-value game-results)
-       depth (:depth game-results)
-       scores (:scores game-results)]
-    (if (<= beta alpha)
-      (assoc game-results :scores (conj scores beta))
-      (let [score (last (minimax child true (inc depth) alpha beta))
-            new-value (min current-value score)
-            new-beta (min beta new-value)]
-        (assoc game-results :current-value new-value :beta new-beta :scores (conj scores new-value))))))
-
-(defn get-scores [alpha-or-beta value alpha beta depth children]
-  (:scores (reduce alpha-or-beta {:current-value value :alpha alpha :beta beta :depth depth :scores []} children)))
-=======
   (map #(assoc game :board (possible-board % marker (:board game))) open-positions))
 
 (declare minimax)
@@ -103,7 +66,6 @@
 
 (defn get-scores [alpha-or-beta optimal-node-value alpha beta depth children]
   (:scores (reduce alpha-or-beta {:current-value optimal-node-value :alpha alpha :beta beta :depth depth :scores []} children)))
->>>>>>> 1f4f3041fe75bbb2ecadeb32d11cd7285b7aa732
 
 (defn score [game maximizing player open-positions depth alpha beta]
   (let [children (game-states open-positions game player)]
