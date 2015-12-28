@@ -28,7 +28,7 @@
   [(quot (- move 1) rowsize) (mod (- move 1) rowsize)])
 
 (defn check-equality [items]
- (not (or (= empty-space (some #{empty-space} items)) (>= (count(distinct items)) 2))))
+  (not (or (= empty-space (some #{empty-space} items)) (>= (count (distinct items)) 2))))
 
 (defn get-location [board locations]
   (map (fn [location] (get-in board [location location])) locations))

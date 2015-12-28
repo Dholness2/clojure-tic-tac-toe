@@ -5,7 +5,11 @@
 
 (deftest board-row-check
   (testing "check for winner from row"
+<<<<<<< HEAD
     (is (= "x" (row-check [["x" "x" "x"] ["y" "x" "Y"] ["Y" "x" "y"] ])))))
+=======
+    (is (= "x" (row-check [["x" "x" "x"] ["y" "x" "Y"] ["Y" "x" "y"]])))))
+>>>>>>> 1f4f3041fe75bbb2ecadeb32d11cd7285b7aa732
 
 (deftest board-colunm-check
   (testing "check for winner from column"
@@ -13,7 +17,7 @@
 
 (deftest diagonal-checker
   (testing "checks for any diagonal wins"
-    (is (= "y" (diagonal-check [["y" "x" "_"]["x" "y" "x"]["x" "x" "y"]] 3)))))
+    (is (= "y" (diagonal-check [["y" "x" "_"] ["x" "y" "x"] ["x" "x" "y"]] 3)))))
 
 (deftest board-draw
   (testing "game is a draw"
@@ -25,4 +29,8 @@
 
 (deftest game-depth-test
   (testing "returns the depth of the board"
+<<<<<<< HEAD
     (is (= 0 (game-depth [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]])))))
+=======
+    (is (= 0 (game-depth [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]])))))
+>>>>>>> 1f4f3041fe75bbb2ecadeb32d11cd7285b7aa732

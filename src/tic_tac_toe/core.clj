@@ -3,7 +3,7 @@
   (require [tic-tac-toe.board :refer [create-empty-board]]
            [clojure.core.matrix :refer [rotate]]
            [tic-tac-toe.game :refer [winner]]
-           [tic-tac-toe.ai :refer [->AiPlayer ]]
+           [tic-tac-toe.ai :refer [->AiPlayer]]
            [tic-tac-toe.display.terminal :refer [->TerminalDisplay print-winner]]
            [tic-tac-toe.human :refer [->HumanPlayer]]
            [tic-tac-toe.input.console :refer [->ConsoleInput]]
@@ -52,4 +52,3 @@
         prompter (->ConsoleInput)
         assembled-game (game-initializer display prompter)]
     (game-runner assembled-game display)))
-
