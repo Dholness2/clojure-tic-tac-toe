@@ -24,18 +24,18 @@
   ([game]
    (possible-moves game 0 []))
   ([game move-index moves]
-    (if (< move-index (board-size (:board game)))
-      (let [next-move-index (+ 1 move-index)]
-        (if (space-available? (:board game) move-index)
-          (possible-moves game next-move-index (conj moves next-move-index))
-          (possible-moves game next-move-index moves)))
-    moves)))
+   (if (< move-index (board-size (:board game)))
+     (let [next-move-index (+ 1 move-index)]
+       (if (space-available? (:board game) move-index)
+         (possible-moves game next-move-index (conj moves next-move-index))
+         (possible-moves game next-move-index moves)))
+     moves)))
 
 (defn best-score-index [scores maximizing]
   (let [scores (vec scores)]
     (if maximizing
-     [(.indexOf scores (apply max scores)) (apply max scores)]
-     [(.indexOf scores (apply min scores)) (apply min scores)])))
+      [(.indexOf scores (apply max scores)) (apply max scores)]
+      [(.indexOf scores (apply min scores)) (apply min scores)])))
 
 (defn possible-board [location marker current-board]
   (move (matrix-convrt location (board-dimensions current-board)) marker current-board))
