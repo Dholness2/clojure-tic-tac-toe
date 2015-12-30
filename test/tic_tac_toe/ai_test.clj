@@ -100,7 +100,7 @@
 (deftest possible-board-state
   (let [board  [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]]
         marker "x"]
-    (testing "return a posible board state based on input"
+    (testing "return a possible board state based on input"
       (is (= [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "x"]] (possible-board 9 marker board))))))
 
 (deftest possible-game-state
@@ -134,8 +134,8 @@
   (let [child {:board [["o" "o" "o"] ["x" "_" "x"] ["_" "_ " " _"]] :ai-marker "o" :player-marker "x"}
         game-results {:current-value -100 :alpha -100 :beta 100 :depth 0 :scores []}
         expected-output {:current-value 9 :alpha 9 :beta 100 :depth 0 :scores [9]}]
-    (testing "returns updated game-results :beta and :current-vauleu data  based on score of child"
-      (is (= expected-output (alpha-max  game-results child))))))
+    (testing "returns updated game-results :beta and :current-value data based on score of child"
+      (is (= expected-output (alpha-max game-results child))))))
 
 (deftest beta-min-test
   (let [game {:board [["o" "o" "o"] ["x" "_" "x"] ["_" "_ " " _"]] :ai-marker "x" :player-marker "o"}
@@ -160,7 +160,7 @@
         open-positions [3 5  7 9]
         player "o"
         depth 0]
-    (testing "return the scores for the prodvided positions; if the beta is <= alpha score is set to alpha"
+    (testing "return the scores for the provided positions; if the beta is <= alpha score is set to alpha"
       (is (= [9 9 9 9] (score game maximizing player open-positions depth -100  100))))))
 
 (deftest score-test-min
@@ -169,7 +169,7 @@
         open-positions [3 5 6 8]
         player "o"
         depth 0]
-    (testing "returns the scores for the the currnet player's moves; if the beta is <= alpha score is set to beta"
+    (testing "returns the scores for the current player's moves; if the beta is <= alpha score is set to beta"
       (is (= [-9 -9 -9 -9] (score game maximizing player  open-positions depth -100  100))))))
 
 (deftest best-score-test
@@ -226,7 +226,7 @@
   (let [player (->AiPlayer "o")
         game {:board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}
         expected-result {:board [[#tic_tac_toe.ai.AiPlayer {:marker "o"} "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
-    (testing "returns a game set with updated board with ai's move"
+    (testing "returns a game set with updated board with AI's move"
       (is (= expected-result (game-move game player))))))
 
 (deftest ai-record
@@ -247,5 +247,5 @@
   (let [ai-marker "o"
         new-game {:board [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]  :ai-marker "o" :player-marker "x"}
         gamestates (flatten (check-every-possible-gamestate new-game))]
-    (testing "ai never loses"
+    (testing "AI  never loses"
       (is (= true (every? true? gamestates))))))
