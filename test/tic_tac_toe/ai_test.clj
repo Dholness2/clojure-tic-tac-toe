@@ -10,11 +10,11 @@
 
 (defn correct-ai-choice? [game]
   (let [winner (winner (:board game))]
-    (cond
-      (= winner (:ai-marker game)) true
-      (= winner draw) true
-      (= winner nil) true
-      :else false)))
+    (condp = winner
+      (:ai-marker game) true
+      draw true
+      nil true
+      false)))
 
 (declare check-every-possible-gamestate)
 
@@ -144,15 +144,25 @@
     (testing "returns updated game-results :beta and :current-value based on score of child"
       (is (= expected-output (beta-min game-results game))))))
 
-(deftest get-scores-test
+(deftest get-scores-test-max
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
         children (game-states [3 5  7 9] game "o")
         depth 0
         value -100
         alpha -100
         beta 100]
-    (testing "return the scores for the provided children"
+    (testing "return the scores for the provided children unless alpha is greater than beta"
       (is (= [9 9 9 9] (get-scores alpha-max value alpha beta depth children))))))
+
+(deftest get-scores-test-min
+  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
+        children (game-states [3 5  7 9] game "o")
+        depth 0
+        value -100
+        alpha -100
+        beta 100]
+    (testing "return the scores for the provided children unless alpha is greater than beta"
+      (is (= [-100 -100 -100 -100] (get-scores beta-min value alpha beta depth children))))))
 
 (deftest score-test-max
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
@@ -172,12 +182,19 @@
     (testing "returns the scores for the current player's moves; if the beta is <= alpha score is set to beta"
       (is (= [-9 -9 -9 -9] (score game maximizing player  open-positions depth -100  100))))))
 
-(deftest best-score-test
+(deftest best-score-test-max
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
         maximizing true
         depth 0]
     (testing "returns the best score and its index"
       (is (= [0 9] (get-best-score-for game maximizing depth -100 100))))))
+
+(deftest best-score-test-min
+  (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}
+        maximizing false
+        depth 0]
+    (testing "returns the best score and its index"
+      (is (= [1 -9] (get-best-score-for game maximizing depth -100 100))))))
 
 (deftest minimax-test
   (let [game {:board [["o" "o" "_"] ["x" "_" "x"] ["_" "x" "_"]] :ai-marker "o" :player-marker "x"}
