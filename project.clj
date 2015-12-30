@@ -8,5 +8,5 @@
   :main ^:skip-aot tic-tac-toe.core
   :target-path "target/%s"
   :aliases {"autotest" ["with-profile" "test" "auto" "test"]}
-  :profiles {:test {:plugins [[lein-auto "0.1.2"] [cljfmt "0.3.0"]]}
+  :profiles {:test {:plugins [[lein-auto "0.1.2"]]}
              :uberjar {:aot :all}})

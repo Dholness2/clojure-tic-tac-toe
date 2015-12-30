@@ -7,6 +7,6 @@
 (defn human-move [board marker input-protocol]
   (move (get-move input-protocol board) marker board))
 
-(defrecord HumanPlayer[marker input-protocol]
+(defrecord HumanPlayer [marker input-protocol]
   PlayerProtocol
   (next-move [player game] (assoc game :board (human-move (game :board) marker input-protocol))))
