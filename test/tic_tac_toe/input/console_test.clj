@@ -20,35 +20,40 @@
 
 (deftest check-input-test-invalid
   (testing "for invalid input"
-    (is (= true(invalid-input? "#$#$")))))
+    (is (= true (invalid-input? "#$#$")))))
 
 (deftest check-validation-move
-  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]
+  (let [board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]
         input 3]
     (testing "user input is valid choice"
       (is (= true (valid-selection input board))))))
 
 (deftest console-get-input
-    (testing "gets user input from console"
-      (is (= 1  (with-out-str-value (with-in-str "1" (prompt-terminal "next move")))))))
+  (testing "gets user input from console"
+    (is (= 1 (with-out-str-value (with-in-str "1" (prompt-terminal "next move")))))))
 
 (deftest console-get-input
-  (let [board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+  (let [board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
     (testing "gets user input from console"
-      (is (= [0 0]  (with-out-str-value (with-in-str "1" (user-input-move board))))))))
+      (is (= [0 0] (with-out-str-value (with-in-str "1" (user-input-move board))))))))
 
-(deftest test-diemension
-  (testing "return conslole supplied selection of board diemension"
-    (is ( = 4 (with-out-str-value (with-in-str "4"(get-board-dimension)))))))
+(deftest test-dimension
+  (testing "return console supplied selection of board dimension"
+    (is (= 4 (with-out-str-value (with-in-str "4" (get-board-dimension)))))))
+
+(deftest game-key-to-strings-test 
+  (let [games [:computer-vs-human :human-vs-computer]]
+    (testing "converts empty board spaces to move index"
+      (is (= "1.computer-vs-human\n2.human-vs-computer\n" (game-key-to-strings games))))))
 
 (deftest get-game-type-test
   (let [games [":computer-vs-human"  ":human-vs-computer"]]
-    (testing "prompts the user to selecta specfic game type and returns its number index"
-      ( is ( = 0  (with-out-str-value (with-in-str "1" (get-game-selection games))))))))
+    (testing "prompts the user to select a specific game type and returns its number index"
+      (is (= 0 (with-out-str-value (with-in-str "1" (get-game-selection games))))))))
 
 (deftest ConsoleInput-get-move
   (let [input (->ConsoleInput)
-        board [["_" "_" "_" ]["_" "_" "_" ]["_" "_" "_" ]]]
+        board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]
     (testing "test if #get-move returns user move selection based on provided input"
       (is (= [0 0] (with-out-str-value (with-in-str "1" (get-move input board))))))))
 
