@@ -8,7 +8,7 @@
 (def draw-score 0)
 
 (defn scoring-base [game]
-  (+ 1 (board-size (:board game))))
+  (inc (board-size (:board game))))
 
 (defn score-game [game depth]
   (let [current-winner (winner (game :board))]
@@ -25,7 +25,7 @@
    (possible-moves game 0 []))
   ([game move-index moves]
    (if (< move-index (board-size (:board game)))
-     (let [next-move-index (+ 1 move-index)]
+     (let [next-move-index (inc move-index)]
        (if (space-available? (:board game) move-index)
          (possible-moves game next-move-index (conj moves next-move-index))
          (possible-moves game next-move-index moves)))
@@ -54,7 +54,7 @@
       (let [score (last (minimax child maximizing (inc (:depth game-results)) alpha beta))
             optimal-node-value (min-or-max (:current-value game-results) score)
             root-optimal (min-or-max optimal optimal-node-value)]
-        (if (not maximizing)
+        (if-not maximizing
           (assoc game-results :current-value optimal-node-value :alpha root-optimal :scores (conj scores optimal-node-value))
           (assoc game-results :current-value optimal-node-value :beta root-optimal :scores (conj scores optimal-node-value)))))))
 

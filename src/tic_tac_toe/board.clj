@@ -22,10 +22,10 @@
   (and (<= move board-size) (>=  move 1)))
 
 (defn moveopen? [board move]
-  (= "_" ((vec (flatten board)) (- move 1))))
+  (= "_" ((vec (flatten board)) (dec move))))
 
 (defn matrix-convrt [move rowsize]
-  [(quot (- move 1) rowsize) (mod (- move 1) rowsize)])
+  [(quot (dec move) rowsize) (mod (dec move) rowsize)])
 
 (defn check-equality [items]
   (not (or (= empty-space (some #{empty-space} items)) (>= (count (distinct items)) 2))))
@@ -35,5 +35,5 @@
 
 (defn get-diagnoals [board rowsize]
   (let [diagonal-indexs-top (vec (take rowsize (iterate inc 0)))
-        diagonal-indexs-bottom (vec (take rowsize (iterate dec (- rowsize 1))))]
+        diagonal-indexs-bottom (vec (take rowsize (iterate dec (dec rowsize))))]
     [(get-location board diagonal-indexs-top) (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
