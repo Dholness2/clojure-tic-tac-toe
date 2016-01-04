@@ -31,7 +31,7 @@
   (let [board-size 9
         move 0]
     (testing "test to make sure user input is within game move option[1-9]"
-      (is (= false (validmove? move board-size))))))
+      (is (false? (validmove? move board-size))))))
 
 (deftest valid-move-ten
   (let [board-size 9
@@ -55,17 +55,17 @@
   (let [board-size 16
         move  20]
     (testing "test to make sure user input is within game move option[1-16]"
-      (is (= false (validmove? move board-size))))))
+      (is (false? (validmove? move board-size))))))
 
 (deftest valid-move-fithteen-larger-board
   (let [board-size 16
         move  15]
     (testing "test to make sure user input is within game move option[1-16]"
-      (is (= true (validmove? move board-size))))))
+      (is (true? (validmove? move board-size))))))
 
 (deftest open-move
   (testing "checks to see if move is taken"
-    (is (= false (moveopen? [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] 1)))))
+    (is (false? (moveopen? [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] 1)))))
 
 (deftest matrix-convrt-test
   (testing "takes the users move and converts to nested vector location "
@@ -73,7 +73,7 @@
 
 (deftest determine-equality
   (testing "checks for matches"
-    (is (= true (check-equality ["x" "x" "x"])))))
+    (is (true? (check-equality ["x" "x" "x"])))))
 
 (deftest get-nested-elements
   (testing "gets nested elements in board"
