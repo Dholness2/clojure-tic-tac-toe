@@ -37,19 +37,19 @@
   (let [board-size 9
         move  10]
     (testing "test to make sure user input is within game move option[1-9]"
-      (is (= false (validmove? move board-size))))))
+      (is (false? (validmove? move board-size))))))
 
 (deftest valid-move-five
   (let [board-size 9
         move  5]
     (testing "test to make sure user input is within game move option[1-9]"
-      (is (= true (validmove? move board-size))))))
+      (is (true? (validmove? move board-size))))))
 
 (deftest valid-move-zero-larger-board
   (let [board-size 16
         move 0]
     (testing "test to make sure user input is within game move option[1-16]"
-      (is (= false (validmove? move board-size))))))
+      (is (false? (validmove? move board-size))))))
 
 (deftest valid-move-twenty-larger-board
   (let [board-size 16
