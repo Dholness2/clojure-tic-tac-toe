@@ -23,19 +23,19 @@
   (testing "returns true or false for empty positions"
     (is (false? (empty-marker? "o")))))
 
-(deftest add-column-test-small-right-test
+(deftest add-column-right-test-small-right-test
   (let [small-right-column "  |"
         element "_"
         position 2]
     (testing "appends small right column element if element positon  is less than 9"
-      (is (= (str 3 small-right-column) (add-column position element))))))
+      (is (= (str 3 small-right-column) (add-column-right position element))))))
 
-(deftest add-column-test-large-right-test
+(deftest add-column-right-test-large-right-test
   (let [large-right-column " |"
         element "_"
         position 9]
     (testing "appends small right column element if element positon is less than 9, if not then large"
-      (is (= (str 10 large-right-column) (add-column position element))))))
+      (is (= (str 10 large-right-column) (add-column-right position element))))))
 
 (deftest index-board-test
   (let [board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]]

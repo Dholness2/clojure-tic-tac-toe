@@ -4,6 +4,7 @@
             [tic-tac-toe.protocol.display :refer [DisplayProtocol]]))
 
 (def base-index 0)
+(def large-row-index 9)
 
 (def empty-marker "_")
 (def marker-a "x")
@@ -12,7 +13,6 @@
 (def left-column "| ")
 (def small-right-column " |")
 (def large-right-column "  |")
-(def large-row-index 9)
 
 (defn clear-terminal[]
   (println "\033[2J"))
@@ -23,17 +23,17 @@
 (defn empty-marker? [marker]
   (or (= marker empty-marker) (not (or (= marker-a marker)(= marker-b marker)))))
 
-(defn add-column [index item]
-  (let[position (inc index)
+(defn add-column-right [index item]
+  (let[adjusted-index (inc index)
        marker item]
-    (if (and (empty-marker? marker) (< large-row-index position))
-       (str position small-right-column)
+    (if (and (empty-marker? marker) (< large-row-index adjusted-index))
+       (str adjusted-index small-right-column)
        (if (empty-marker? marker)
-          (str position large-right-column)
+          (str adjusted-index large-right-column)
           (str marker large-right-column)))))
 
 (defn index-board [board]
-  (partition (board-dimensions board) (map-indexed add-column (flatten board))))
+  (partition (board-dimensions board) (map-indexed add-column-right (flatten board))))
 
 (defn row-print [row]
   (println (str left-column (clojure.string/join " " row))))
