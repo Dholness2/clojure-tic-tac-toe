@@ -27,7 +27,7 @@
 
 (defn possible-moves
   ([game]
-   (possible-moves game 0 []))
+   (possible-moves game move-depth []))
   ([game move-index moves]
    (if (< move-index (board-size (:board game)))
      (let [next-move-index (inc move-index)]
@@ -75,9 +75,9 @@
 (defn score [game maximizing player open-positions depth alpha beta]
   (let [children (game-states open-positions game player)]
     (if maximizing
-      (let [optimal-node-value -100]
+      (let [optimal-node-value alpha]
         (get-scores alpha-max optimal-node-value alpha beta depth children))
-      (let [optimal-node-value  100]
+      (let [optimal-node-value  beta]
         (get-scores beta-min optimal-node-value alpha beta depth children)))))
 
 (defn get-best-score-for [game maximizing depth alpha beta]
