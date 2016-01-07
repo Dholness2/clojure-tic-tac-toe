@@ -1,5 +1,4 @@
 (ns tic-tac-toe.core
-  (:gen-class)
   (require [tic-tac-toe.board :refer [create-empty-board]]
            [clojure.core.matrix :refer [rotate]]
            [tic-tac-toe.game :refer [winner]]
