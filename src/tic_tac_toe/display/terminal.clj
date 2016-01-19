@@ -39,7 +39,7 @@
   (println (str left-column (clojure.string/join " " row))))
 
 (defn display-board [board]
-  (if (= false (empty? board))
+  (if (false? (empty? board))
     (let[row (first board)]
       (row-print row)
     (display-board (rest board)))))

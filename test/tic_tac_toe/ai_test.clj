@@ -27,7 +27,7 @@
 (def check-every-possible-gamestate
   (memoize (fn [gamestate]
              (let [ai-choice (game-move gamestate (:ai-marker gamestate))]
-               (if (= nil (winner (:board ai-choice)))
+               (if (nil? (winner (:board ai-choice)))
                  (let [possible-games (game-states (possible-moves ai-choice) ai-choice (:player-marker ai-choice))]
                    (map check-gamestate possible-games))
                  (correct-ai-choice? ai-choice))))))
@@ -45,12 +45,12 @@
 (deftest game-state-score-draw-3-by-3
   (let [game   {:board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of zero"
-      (is (= 0 (score-game game 0))))))
+      (is (zero? (score-game game 0))))))
 
 (deftest game-state-score-draw-4-by-4
   (let [game {:board [["x" "o" "x" "o"] ["x" "o" "o" "x"] ["o" "x" "x" "o"] ["_" "_" "_" "_"]] :ai-marker "o" :player-marker "x"}]
     (testing "scores the current game state of the board at a game depth of nine"
-      (is (= 0 (score-game game 0))))))
+      (is (zero?  (score-game game 0))))))
 
 (deftest game-state-score-win-3-by-3
   (let [game   {:board [["o" "o" "o"] ["x" "_" "x"] ["x" "_" "_"]] :ai-marker "o" :player-marker "x"}]
@@ -76,13 +76,13 @@
   (let [board  [["_" "x" "o"] ["x" "x" "o"] ["o" "x" "o"]]
         position 0]
     (testing "returns true if there are any empty spaces"
-      (is (= true (space-available? board position))))))
+      (is (true? (space-available? board position))))))
 
 (deftest space-available-test-false
   (let [board  [["0" "x" "o"] ["x" "x" "o"] ["o" "x" "o"]]
         position 8]
     (testing "returns false if there are no empty spaces"
-      (is (= false (space-available? board position))))))
+      (is (false? (space-available? board position))))))
 
 (deftest game-possible-moves
   (let [game  {:board [["x" "_" "_"] ["_" "o" "_"] ["_" "_" "y"]] :ai-marker "o" :player-marker "x"}]
@@ -258,11 +258,11 @@
         new-game {:board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]  :ai-marker "x" :player-marker "o"}
         gamestates (flatten (check-every-possible-gamestate new-game))]
     (testing "ai never loses"
-      (is (= true (every? true? gamestates))))))
+      (is (true? (every? true? gamestates))))))
 
 (deftest ai-move-win-state-test-3-by-3-o
   (let [ai-marker "o"
         new-game {:board [["x" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]  :ai-marker "o" :player-marker "x"}
         gamestates (flatten (check-every-possible-gamestate new-game))]
     (testing "AI  never loses"
-      (is (= true (every? true? gamestates))))))
+      (is (true? (every? true? gamestates))))))

@@ -17,7 +17,7 @@
 
 (deftest board-draw
   (testing "game is a draw"
-    (is (= true (draw? [["x" "y" "y"] ["x" "y" "x"] ["Y" "x" "y"]])))))
+    (is (true? (draw? [["x" "y" "y"] ["x" "y" "x"] ["Y" "x" "y"]])))))
 
 (deftest winner-test
   (testing "check for win state or draw"
@@ -25,4 +25,4 @@
 
 (deftest game-depth-test
   (testing "returns the depth of the board"
-    (is (= 0 (game-depth [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]])))))
+    (is (zero? (game-depth [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]])))))

@@ -12,21 +12,21 @@
 
 (deftest check-input-test
   (testing "for valid input"
-    (is (= false (invalid-input? "4")))))
+    (is (false? (invalid-input? "4")))))
 
 (deftest check-input-test-invalid
   (testing "for invalid input"
-    (is (= true (invalid-input? "")))))
+    (is (true? (invalid-input? "")))))
 
 (deftest check-input-test-invalid
   (testing "for invalid input"
-    (is (= true (invalid-input? "#$#$")))))
+    (is (true? (invalid-input? "#$#$")))))
 
 (deftest check-validation-move
   (let [board [["_" "_" "_"] ["_" "_" "_"] ["_" "_" "_"]]
         input 3]
     (testing "user input is valid choice"
-      (is (= true (valid-selection input board))))))
+      (is (true? (valid-selection input board))))))
 
 (deftest console-get-input
   (testing "gets user input from console"
@@ -49,7 +49,7 @@
 (deftest get-game-type-test
   (let [games [":computer-vs-human"  ":human-vs-computer"]]
     (testing "prompts the user to select a specific game type and returns its number index"
-      (is (= 0 (with-out-str-value (with-in-str "1" (get-game-selection games))))))))
+      (is (zero? (with-out-str-value (with-in-str "1" (get-game-selection games))))))))
 
 (deftest ConsoleInput-get-move
   (let [input (->ConsoleInput)
@@ -61,7 +61,7 @@
   (let [input (->ConsoleInput)
         games [":computer-vs-human"  ":human-vs-computer"]]
     (testing "test if the protocol gets selected game type and returns the selected games index"
-      (is (= 0 (with-out-str-value (with-in-str "1" (get-game-type input games))))))))
+      (is (zero? (with-out-str-value (with-in-str "1" (get-game-type input games))))))))
 
 (deftest ConsoleInput-get-board-size
   (let [input (->ConsoleInput)]
