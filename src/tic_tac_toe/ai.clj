@@ -5,7 +5,12 @@
 
 (def moves-ahead 6)
 (def move-depth 0)
+
 (def draw-score 0)
+
+(def alpha -100)
+(def beta 100)
+(def maximize true)
 
 (defn scoring-base [game]
   (inc (board-size (:board game))))
@@ -22,7 +27,7 @@
 
 (defn possible-moves
   ([game]
-   (possible-moves game 0 []))
+   (possible-moves game move-depth []))
   ([game move-index moves]
    (if (< move-index (board-size (:board game)))
      (let [next-move-index (inc move-index)]
@@ -70,9 +75,9 @@
 (defn score [game maximizing player open-positions depth alpha beta]
   (let [children (game-states open-positions game player)]
     (if maximizing
-      (let [optimal-node-value -100]
+      (let [optimal-node-value alpha]
         (get-scores alpha-max optimal-node-value alpha beta depth children))
-      (let [optimal-node-value  100]
+      (let [optimal-node-value  beta]
         (get-scores beta-min optimal-node-value alpha beta depth children)))))
 
 (defn get-best-score-for [game maximizing depth alpha beta]
@@ -91,7 +96,7 @@
 
 (defn ai-move [game]
   (let [open-positions (possible-moves game)
-        move-score (minimax game true 0 -100 100)
+        move-score (minimax game maximize move-depth alpha beta)
         board-dimension (board-dimensions (:board game))]
     (matrix-convrt (open-positions (first move-score)) board-dimension)))
 
