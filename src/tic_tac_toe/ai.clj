@@ -6,6 +6,7 @@
 (def moves-ahead 6)
 (def move-depth 0)
 
+(def score-index 0)
 (def draw-score 0)
 
 (def alpha -100)
@@ -89,8 +90,7 @@
 (def minimax
   (memoize (fn [game maximizing depth alpha beta]
              (if (or (winner (:board game)) (= moves-ahead depth))
-               (let [score (score-game game depth)
-                     score-index 0]
+               (let [score (score-game game depth)]
                  [score-index score])
                (get-best-score-for game maximizing depth alpha beta)))))
 
