@@ -3,6 +3,10 @@
 
 (def empty-space "_")
 
+(def markers-count 2)
+(def lowest-move 1)
+(def starting-index 0)
+
 (defn create-empty-board [dimension]
   (vec (take dimension (repeat (vec (take dimension (repeat empty-space)))))))
 
@@ -19,21 +23,21 @@
   (assoc-in board location player))
 
 (defn validmove? [move board-size]
-  (and (<= move board-size) (>=  move 1)))
+  (and (<= move board-size) (>= move lowest-move)))
 
 (defn moveopen? [board move]
-  (= "_" ((vec (flatten board)) (dec move))))
+  (= empty-space ((vec (flatten board)) (dec move))))
 
 (defn matrix-convrt [move rowsize]
   [(quot (dec move) rowsize) (mod (dec move) rowsize)])
 
 (defn check-equality [items]
-  (not (or (= empty-space (some #{empty-space} items)) (>= (count (distinct items)) 2))))
+  (not (or (= empty-space (some #{empty-space} items)) (>= (count (distinct items)) markers-count))))
 
 (defn get-location [board locations]
   (map (fn [location] (get-in board [location location])) locations))
 
 (defn get-diagnoals [board rowsize]
-  (let [diagonal-indexs-top (vec (take rowsize (iterate inc 0)))
+  (let [diagonal-indexs-top (vec (take rowsize (iterate inc starting-index)))
         diagonal-indexs-bottom (vec (take rowsize (iterate dec (dec rowsize))))]
     [(get-location board diagonal-indexs-top) (get-location (vec (reverse board)) diagonal-indexs-bottom)]))
