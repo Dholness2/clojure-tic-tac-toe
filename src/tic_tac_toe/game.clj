@@ -3,22 +3,23 @@
             [clojure.core.matrix :refer [transpose]]))
 
 (def draw "it's a draw")
+(def one-vector 1)
 
 (defn row-check
   ([board]
-   (let [row (first (take 1 board))]
-     (if (or (= empty-space (some #{empty-space} row)) (>= (count (distinct row)) 2))
-       (row-check (drop 1 board))
-       (row-check board (get row 0)))))
+    (let [row (first board)]
+      (if (not (check-equality row))
+         (row-check (drop one-vector board))
+         (row-check board (first row)))))
   ([board winner]
-   winner))
+    winner))
 
 (defn column-check [board]
   (row-check (transpose board)))
 
 (defn diagonal-check [board rowsize]
-  (let [diagonal-top ((get-diagnoals board rowsize) 0)
-        diagonal-bottom ((get-diagnoals board rowsize) 1)]
+  (let [diagonal-top (first (get-diagnoals board rowsize))
+        diagonal-bottom (last (get-diagnoals board rowsize))]
     (if (check-equality diagonal-top)
       (first diagonal-top)
       (if (check-equality diagonal-bottom)
