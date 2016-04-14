@@ -1,6 +1,6 @@
 (ns tic-tac-toe.input.console
   (:require [tic-tac-toe.protocol.input :refer :all]
-            [tic-tac-toe.board :refer [validmove? moveopen? matrix-convrt move board-dimensions board-size]]
+            [tic-tac-toe.board :refer [valid-move? move-open? matrix-convrt move board-dimensions board-size]]
             [tic-tac-toe.display.terminal :refer [print-message]]))
 
 (def dimensions-limits #{3 4})
@@ -16,7 +16,7 @@
       response)))
 
 (defn valid-selection [input board]
-  (and (number? input) (validmove? input (board-size board)) (moveopen? board input)))
+  (and (number? input) (valid-move? input (board-size board)) (move-open? board input)))
 
 (defn get-board-dimension []
   (let [selection (read-string (prompt-terminal "What size board do you want? x by x (provide one number for x)"))]

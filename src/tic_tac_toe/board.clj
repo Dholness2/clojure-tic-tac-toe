@@ -22,10 +22,10 @@
 (defn move [location player board]
   (assoc-in board location player))
 
-(defn validmove? [move board-size]
+(defn valid-move? [move board-size]
   (and (<= move board-size) (>= move lowest-move)))
 
-(defn moveopen? [board move]
+(defn move-open? [board move]
   (= empty-space ((vec (flatten board)) (dec move))))
 
 (defn matrix-convrt [move rowsize]
